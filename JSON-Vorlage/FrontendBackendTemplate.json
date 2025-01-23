@@ -1,0 +1,16 @@
+{
+  "name": "FrontendBackendTemplate",
+  "version": "1.0.0",
+  "description": "Template for Frontend and Backend",
+  "signals": [
+    {
+      "signalname": "signal1",
+      "signalunit": "string",
+      "signalvalues": [
+        [1,2],
+        [1,2],
+        [1,2]
+      ]
+    }
+  ]
+}
