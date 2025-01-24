@@ -110,5 +110,8 @@ if(LIBXML2_XMLLINT_EXECUTABLE AND NOT TARGET LibXml2::xmllint)
   add_executable(LibXml2::xmllint IMPORTED)
   set_target_properties(LibXml2::xmllint PROPERTIES IMPORTED_LOCATION "${LIBXML2_XMLLINT_EXECUTABLE}")
 endif()
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/dbcppp/third-party/libxml2/include/libxml)
+
+set(LIBXML_INCLUDE_DIRS_TEMP ${CMAKE_SOURCE_DIR}/dbcppp/third-party/libxml2/include/libxml)
+# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/dbcppp/third-party/libxml2/include/libxml)
+
 cmake_policy(POP)

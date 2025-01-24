@@ -14,13 +14,7 @@ option(build_examples "Build examples" ON)
 
 # DEPENDENCIES & Requirements
 
-find_package(Boost)
-
-if(NOT Boost_FOUND)
-    message(WARNING "Boost not found. Using libdbcppp boost (third-party/boost)")
-    include_directories("third-party/boost")
-endif()
-
+find_package(Boost REQUIRED COMPONENTS headers filesystem system)
 # kcd is an xml based can database
 message("kcd enabled: ${build_kcd}")
 
@@ -58,6 +52,12 @@ add_library(${PROJECT_NAME} SHARED ${include} ${headers} ${sources})
 
 
 # CONFIGURE LIBRARY
+
+target_link_libraries(dbcppp PUBLIC Boost::headers Boost::filesystem Boost::system)
+if(NOT Boost_FOUND)
+    message(WARNING "Boost not found. Using libdbcppp boost (third-party/boost)")
+    include_directories("third-party/boost")
+endif()
 
 if (build_kcd)
     target_link_libraries(${PROJECT_NAME} PUBLIC libxmlmm)

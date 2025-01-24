@@ -9,10 +9,11 @@ find_package(LibXml2 REQUIRED)
 
 #Add the dbcppp library
 add_subdirectory("dbcppp")
-target_include_directories(dbcppp PUBLIC "dbcppp/include")
 
 
 add_executable(EyeCAN main.cpp)
+target_include_directories(dbcppp PUBLIC "dbcppp/include")
+target_include_directories(EyeCAN PRIVATE ${LIBXML_INCLUDE_DIRS_TEMP})
 
 # Link the dbcppp and libxml2 libraries
 target_link_libraries(EyeCAN dbcppp xml2)
