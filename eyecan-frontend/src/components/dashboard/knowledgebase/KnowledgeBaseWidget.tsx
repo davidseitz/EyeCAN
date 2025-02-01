@@ -8,7 +8,7 @@ function KnowledgeBaseWidget() {
     return (
         <VStack maxHeight="100%" overflowY="hidden">
             <KbHeader/>
-            <ScrollableContainer>
+            <ScrollableContainer fade={{show: true, size: 100}}>
                 {mockData.articles.map((article) =>
                     <ArticlePreview key={article.id} article={article}/>)}
             </ScrollableContainer>
