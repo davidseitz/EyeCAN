@@ -1,11 +1,9 @@
-import Dashboard from "./components/dashboard/Dashboard.tsx";
+import Dashboard from "@/components/dashboard/Dashboard.tsx";
 
 function App() {
 
   return (
-    <>
-        <Dashboard/>
-    </>
+    <Dashboard/>
   )
 }
 

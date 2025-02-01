@@ -1,5 +1,9 @@
+import DashBoardLayoutGrid from "@/components/dashboard/DashBoardLayoutGrid.tsx";
+
 function Dashboard() {
-    return (<div>Dashboard</div>)
+    return (
+        <DashBoardLayoutGrid/>
+    )
 }
 
 export default Dashboard;
