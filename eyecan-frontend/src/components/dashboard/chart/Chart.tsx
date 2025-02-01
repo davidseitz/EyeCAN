@@ -1,5 +1,4 @@
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
-import mockData from "../../data/mock-data/MockData.ts"
 import {useColorModeValue} from "@/components/ui/color-mode.tsx";
 import {hex} from 'generate-random-color';
 import style from './chart.module.css'
@@ -11,19 +10,20 @@ export interface AxisConfig {
 
 interface ChartProps {
     axisConfig: AxisConfig;
+    data: object[];
 }
 
-function Chart({axisConfig}: ChartProps) {
+function Chart({axisConfig, data}: ChartProps) {
     const axisStrokeColor = useColorModeValue('#818181', '#ffffff');
     const axisStyle = {stroke: axisStrokeColor, strokeWidth: 2}
     const gridColor = '#ccc';
     const tickStyle = {fill: axisStrokeColor};
-    const keys = Object.keys(mockData.chartData[0]).filter(key => key !== 'time');
+    const keys = Object.keys(data[0]).filter(key => key !== 'time');
 
     return (
         <ResponsiveContainer className={style.chart} width="100%" height="100%">
             <LineChart margin={{top: 2, right: -20, left: -20}}
-                       data={mockData.chartData}>
+                       data={data}>
                 <CartesianGrid stroke={gridColor} strokeDasharray="3 3"/>
                 <XAxis axisLine={axisStyle}
                        tick={tickStyle}
@@ -52,5 +52,3 @@ function Chart({axisConfig}: ChartProps) {
 
 export default Chart;
 
-
-//
