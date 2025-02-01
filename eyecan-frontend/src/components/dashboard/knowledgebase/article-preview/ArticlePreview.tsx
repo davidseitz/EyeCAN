@@ -16,7 +16,7 @@ export interface Article{
 function ArticlePreview({article}: ArticlePreviewProps) {
     return(
         <VStack paddingY={2} gap={0}>
-            <ApHeader title={article.title} date={article.date} author={article.author} />
+            <ApHeader article={article} />
             <Text fontSize="sm" lineHeight={1.1} color="gray.500">
                 {article.content.length > 500 ? article.content.slice(0, 400) + "..." : article.content}
             </Text>

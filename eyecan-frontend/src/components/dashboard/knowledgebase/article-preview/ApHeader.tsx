@@ -1,18 +1,17 @@
 import {Em, Heading, HStack} from "@chakra-ui/react";
+import {Article} from "@/components/dashboard/knowledgebase/article-preview/ArticlePreview.tsx";
 
 interface ApHeaderProps {
-    title: string;
-    date: string;
-    author: string;
+    article: Article;
 }
 
-function ApHeader({title, date, author}: ApHeaderProps) {
+function ApHeader({article}: ApHeaderProps) {
     return(
         <HStack width="100%" justifyContent="left" gap={10}>
-            <Heading fontWeight="bold">{title}</Heading>
+            <Heading fontSize="md" fontWeight="bold">{article.title}</Heading>
             <HStack gap={4}>
-                <Em fontSize="sm"> {date}</Em>
-                <Em fontSize="sm">{author}</Em>
+                <Em fontSize="11px"> {article.date}</Em>
+                <Em fontSize="11px">{article.author}</Em>
             </HStack>
 
         </HStack>

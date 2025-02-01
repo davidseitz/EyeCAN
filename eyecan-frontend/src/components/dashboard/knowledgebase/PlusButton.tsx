@@ -6,9 +6,11 @@ interface PlusButtonProps {
     onClick: () => void;
 }
 
+// TODO Move to misc
+
 function PlusButton({onClick, size}: PlusButtonProps) {
     return (
-        <FaPlusCircle className={styles.btn} onClick={onClick} size={size || 32}/>
+        <FaPlusCircle className={styles.btn} onClick={onClick} size={size || 28}/>
     )
 }
 
