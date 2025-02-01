@@ -3,7 +3,7 @@ import PlusButton from "@/components/dashboard/knowledgebase/PlusButton.tsx";
 
 function KbHeader() {
     return (
-        <HStack justifyContent="space-between">
+        <HStack marginBottom={2} width="100%" justifyContent="space-between">
             <Heading fontSize="4xl" fontWeight="bold">Knowledge Base</Heading>
             <PlusButton onClick={() => {}}/>
         </HStack>

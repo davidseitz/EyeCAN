@@ -1,11 +1,25 @@
 import {VStack, Text} from "@chakra-ui/react";
 import ApHeader from "@/components/dashboard/knowledgebase/article-preview/ApHeader.tsx";
 
-function ArticlePreview() {
+interface ArticlePreviewProps {
+    maxLines?: number;
+    article: Article;
+}
+
+export interface Article{
+    title: string;
+    date: string;
+    author: string;
+    content: string;
+}
+
+function ArticlePreview({article}: ArticlePreviewProps) {
     return(
-        <VStack gap={0}>
-            <ApHeader title="Title" date="10.02.2025" author="Leon Eltrich" />
-            <Text fontSize="sm" lineHeight={1.1} color="gray.500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, libero quis tincidunt tincidunt, libero massa tincidunt erat, quis tincidunt dolor libero quis turpis. </Text>
+        <VStack paddingY={2} gap={0}>
+            <ApHeader title={article.title} date={article.date} author={article.author} />
+            <Text fontSize="sm" lineHeight={1.1} color="gray.500">
+                {article.content.length > 500 ? article.content.slice(0, 400) + "..." : article.content}
+            </Text>
         </VStack>
     )
 }
