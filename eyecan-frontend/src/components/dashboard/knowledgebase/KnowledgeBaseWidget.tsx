@@ -1,10 +1,8 @@
-import {Heading} from "@chakra-ui/react";
+import KbHeader from "@/components/dashboard/knowledgebase/KbHeader.tsx";
 
 function KnowledgeBaseWidget() {
     return (
-        <>
-            <Heading fontSize="4xl" fontWeight="bold">Knowledge Base</Heading>
-        </>
+        <KbHeader/>
     )
 }
 
