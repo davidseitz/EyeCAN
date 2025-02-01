@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./scrollbar-contianer.module.css"
+import {Box} from "@chakra-ui/react";
 
 export interface Fade{
     show: boolean;
@@ -15,10 +16,16 @@ interface ScrollableContainerProps {
 
 function ScrollableContainer ({ children, width, height, fade }: ScrollableContainerProps)  {
     return (
-        <div style={{width, height,}} className={styles.scrollbarContainer}>
+        <Box style={{width, height,}} className={styles.scrollbarContainer}>
             {children}
-            {fade?.show && <div style={{height: fade.size, width}} className={styles.scrollableContainerFade}/>}
-        </div>
+            {fade?.show &&
+                <Box
+                    bg={{
+                        base: "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)",
+                        _dark: "linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)"}}
+                    style={{height: fade.size, width}} className={styles.scrollableContainerFade}/>
+            }
+        </Box>
 
     );
 }
