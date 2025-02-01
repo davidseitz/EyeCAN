@@ -1,6 +1,10 @@
+import {Heading} from "@chakra-ui/react";
+
 function KnowledgeBaseWidget() {
     return (
-        <div>KbWidget</div>
+        <>
+            <Heading fontSize="4xl" fontWeight="bold">Knowledge Base</Heading>
+        </>
     )
 }
 

@@ -8,7 +8,7 @@ function DashBoardLayoutGrid() {
             </GridItem>
             <GridItem area="sideWidgets" colSpan={12} rowSpan={2}>
             </GridItem>
-            <GridItem area="knowledgeBaseWidget" colSpan={24} rowSpan={1}>
+            <GridItem paddingLeft={14} area="knowledgeBaseWidget" colSpan={24} rowSpan={1}>
                 <KnowledgeBaseWidget/>
             </GridItem>
         </Grid>
