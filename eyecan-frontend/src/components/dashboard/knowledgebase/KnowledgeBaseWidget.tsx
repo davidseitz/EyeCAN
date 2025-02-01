@@ -1,5 +1,7 @@
 function KnowledgeBaseWidget() {
-    return ()
+    return (
+        <div>KbWidget</div>
+    )
 }
 
 
