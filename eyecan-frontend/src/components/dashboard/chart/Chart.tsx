@@ -1,16 +1,24 @@
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import mockData from "../../data/mock-data/MockData.ts"
 import {useColorModeValue} from "@/components/ui/color-mode.tsx";
+import {hex} from 'generate-random-color';
 import style from './chart.module.css'
 
-function Chart() {
-    const axisStrokeColor = useColorModeValue('#000000', '#ffffff');
+export interface AxisConfig {
+    left: string[];
+    right: string[];
+}
+
+interface ChartProps {
+    axisConfig: AxisConfig;
+}
+
+function Chart({axisConfig}: ChartProps) {
+    const axisStrokeColor = useColorModeValue('#818181', '#ffffff');
     const axisStyle = {stroke: axisStrokeColor, strokeWidth: 2}
     const gridColor = '#ccc';
-    const tickStyle = {
-        fill: axisStrokeColor
-    };
-
+    const tickStyle = {fill: axisStrokeColor};
+    const keys = Object.keys(mockData.chartData[0]).filter(key => key !== 'time');
 
     return (
         <ResponsiveContainer className={style.chart} width="100%" height="100%">
@@ -32,12 +40,17 @@ function Chart() {
                        yAxisId="right" orientation="right"/>
                 <Tooltip/>
                 <Legend/>
-                <Line yAxisId="left" type="monotone" dataKey="pv" stroke="#8884d8"/>
-                <Line yAxisId="right" type="monotone" dataKey="uv" stroke="#82ca9d"/>
-                <Line yAxisId="right" type="monotone" dataKey="amt" stroke="#82cef4"/>
+                {keys.map((key) => {
+                    const yAxisId = axisConfig.left.includes(key)  ? 'left' : axisConfig.right.includes(key)  ? 'right' : null;
+                    if (!yAxisId) return null;
+                    return <Line yAxisId={yAxisId} type="monotone" key={key} dataKey={key} stroke={hex()}/>
+                } )}
             </LineChart>
         </ResponsiveContainer>
     );
 }
 
 export default Chart;
+
+
+//
