@@ -1,6 +1,6 @@
 import KbHeader from "@/components/dashboard/knowledgebase/KbHeader.tsx";
-import ArticlePreview from "@/components/dashboard/knowledgebase/article-preview/ArticlePreview.tsx";
-import mockData from "@/components/data/mock-data/MockData.ts";
+import ArticlePreviewCard from "@/components/dashboard/knowledgebase/article-preview/ArticlePreviewCard.tsx";
+import mockData from "@/data/MockData.ts";
 import {VStack} from "@chakra-ui/react";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
 
@@ -10,7 +10,7 @@ function KnowledgeBaseWidget() {
             <KbHeader/>
             <ScrollableContainer fade={{show: true, size: 100}}>
                 {mockData.articles.map((article) =>
-                    <ArticlePreview key={article.id} article={article}/>)}
+                    <ArticlePreviewCard key={article.id} article={article}/>)}
             </ScrollableContainer>
         </VStack>
 

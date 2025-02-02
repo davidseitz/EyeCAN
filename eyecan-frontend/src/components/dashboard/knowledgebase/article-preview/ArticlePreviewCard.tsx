@@ -1,19 +1,13 @@
 import {VStack, Text} from "@chakra-ui/react";
 import ApHeader from "@/components/dashboard/knowledgebase/article-preview/ApHeader.tsx";
+import {Article} from "@/types/article.ts";
 
 interface ArticlePreviewProps {
     maxLines?: number;
     article: Article;
 }
 
-export interface Article{
-    title: string;
-    date: string;
-    author: string;
-    content: string;
-}
-
-function ArticlePreview({article}: ArticlePreviewProps) {
+function ArticlePreviewCard({article}: ArticlePreviewProps) {
     return(
         <VStack paddingY={2} gap={0}>
             <ApHeader article={article} />
@@ -24,4 +18,4 @@ function ArticlePreview({article}: ArticlePreviewProps) {
     )
 }
 
-export default ArticlePreview;
+export default ArticlePreviewCard;

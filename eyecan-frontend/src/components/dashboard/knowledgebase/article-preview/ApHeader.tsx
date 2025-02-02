@@ -1,5 +1,5 @@
 import {Em, Heading, HStack} from "@chakra-ui/react";
-import {Article} from "@/components/dashboard/knowledgebase/article-preview/ArticlePreview.tsx";
+import {Article} from "@/types/article.ts";
 
 interface ApHeaderProps {
     article: Article;
