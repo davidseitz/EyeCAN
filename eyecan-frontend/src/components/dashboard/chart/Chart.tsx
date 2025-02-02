@@ -13,11 +13,39 @@ interface ChartProps {
     data: object[];
 }
 
+interface ColorModeProperties {
+    axisStrokeColor: string;
+    contentStyle: ContentStyle;
+    labelStyle: LabelStyle;
+}
+
+interface ContentStyle {
+    backgroundColor: string;
+    border: string;
+    color: string;
+    borderRadius: number;
+    boxShadow: string;
+}
+
+interface LabelStyle {
+    color: string;
+}
+
 function Chart({axisConfig, data}: ChartProps) {
-    const axisStrokeColor = useColorModeValue('#818181', '#ffffff');
-    const axisStyle = {stroke: axisStrokeColor, strokeWidth: 2}
+    const colorProperties = useColorModeValue<ColorModeProperties>({
+        axisStrokeColor: '#818181',
+        contentStyle: {backgroundColor: 'white', border: 'none', color: 'black', borderRadius: 5, boxShadow: '0px 0px 10px 0px rgba(140, 140, 140, 0.5)'},
+        labelStyle: {color: 'black'}
+    }, {
+        axisStrokeColor: '#ffffff',
+        contentStyle: {backgroundColor: 'black', border: 'none', color: 'white', borderRadius: 5, boxShadow: '0px 0px 5px 0px rgba(140, 140, 140, 0.5)'},
+        labelStyle: {color: 'white'}
+    })
+
+//     const axisStrokeColor = useColorModeValue('#818181', '#ffffff');
+    const axisStyle = {stroke: colorProperties.axisStrokeColor, strokeWidth: 2}
     const gridColor = '#ccc';
-    const tickStyle = {fill: axisStrokeColor};
+    const tickStyle = {fill: colorProperties.axisStrokeColor};
     const keys = Object.keys(data[0]).filter(key => key !== 'time');
 
     return (
@@ -39,9 +67,9 @@ function Chart({axisConfig, data}: ChartProps) {
                        tickLine={axisStyle}
                        yAxisId="right" orientation="right"/>
                 <Tooltip
-                    contentStyle={{backgroundColor: 'white', border: 'none', color: 'black', borderRadius: 5, boxShadow: '0px 0px 10px 0px rgba(140, 140, 140, 0.5)'}}
-                    itemStyle={{color: 'black'}}
-                    labelStyle={{color: 'black'}}
+                    contentStyle={colorProperties.contentStyle}
+                    labelStyle={colorProperties.labelStyle}
+                    cursor={{ stroke: '#a0a0a0', strokeWidth: 1 }}
                 />
                 <Legend/>
                 {keys.map((key) => {
