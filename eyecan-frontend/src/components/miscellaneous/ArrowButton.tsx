@@ -5,11 +5,12 @@ interface ArrowButtonProps {
     direction: "left" | "right";
     color?: string;
     size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "2xs";
+    onClick?: () => void;
 }
 
-function ArrowButton({color, size, direction}: ArrowButtonProps) {
+function ArrowButton({color, size, direction, onClick}: ArrowButtonProps) {
     return (
-        <IconButton size={size || "sm"} variant="ghost">
+        <IconButton onClick={onClick} size={size || "sm"} variant="ghost">
             {direction === "left" ? <TbChevronCompactLeft color={color} /> : <TbChevronCompactRight color={color}/>}
         </IconButton>
     )

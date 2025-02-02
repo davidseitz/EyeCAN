@@ -23,7 +23,7 @@ function FilterCollection() {
 
     return (
         <DropShadowContainer padding={{paddingX: 8, paddingY: 6}} height={"55%"}>
-            <Heading fontSize="2xl" fontWeight={700}>
+            <Heading marginBottom={4} fontSize="2xl" fontWeight={700}>
                 Filter Collection
             </Heading>
             <ScrollableContainer height="90%" margins={{marginX: 0, marginY: 0}} fade={{show: true, size: 100}}>

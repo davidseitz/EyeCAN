@@ -17,7 +17,7 @@ function FilterPreviewCard({filter, datasetUnits, textPreviewLength = 180, appli
     const allUnitsIncluded = filter.units.every(unit => datasetUnits.includes(unit));
 
     return (
-        <Card.Root marginTop={4} backgroundColor="transparent" border="none">
+        <Card.Root backgroundColor="transparent" border="none">
             <Card.Header padding={0}>
                 <HStack justifyContent="space-between" alignItems="center">
                     <Heading margin={0} fontSize="xs" fontWeight="800">{filter.title}</Heading>
@@ -27,7 +27,7 @@ function FilterPreviewCard({filter, datasetUnits, textPreviewLength = 180, appli
             <Card.Body lineHeight={1.1} fontSize={10} color="#808080" padding={0}>
                 {filter.description.length > textPreviewLength ? filter.description.slice(0, textPreviewLength) + "..." : filter.description}
             </Card.Body>
-            <Card.Footer padding={0} paddingTop={2} justifyContent="space-between">
+            <Card.Footer padding={0} paddingTop={2} marginBottom={5} justifyContent="space-between">
                 <UnitsCard text="Filter Units" units={filter.units}/>
                 <ApplyFilterButton
                     disabled={!allUnitsIncluded}

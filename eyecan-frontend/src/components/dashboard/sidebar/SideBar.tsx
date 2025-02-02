@@ -1,11 +1,12 @@
 import DropShadowContainer from "@/components/miscellaneous/drop-shadow-container/DropShadowContainer.tsx";
 import FilterCollection from "@/components/dashboard/sidebar/filter-collection/FilterCollection.tsx";
+import DataCollectionCard from "@/components/dashboard/sidebar/data-collection/DataCollectionCard.tsx";
 
 function SideBar() {
     return (
         <>
             <FilterCollection/>
-            <DropShadowContainer height={"30%"} margins={{marginY: 8}}/>
+            <DataCollectionCard/>
             <DropShadowContainer height={"15%"} />
         </>
     )

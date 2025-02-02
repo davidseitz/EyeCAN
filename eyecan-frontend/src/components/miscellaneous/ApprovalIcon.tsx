@@ -7,7 +7,7 @@ interface ApprovalIconProps {
 
 function ApprovalIcon({approved, color}: ApprovalIconProps) {
     if (approved) return <FaRegCircleCheck color={color}/>
-    return <FaRegCircleXmark color={color}/>
+    return <FaRegCircleXmark opacity={0.4} color={color}/>
 
 }
 
