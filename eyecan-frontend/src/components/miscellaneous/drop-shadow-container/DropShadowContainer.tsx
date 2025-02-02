@@ -15,9 +15,10 @@ interface DropShadowContainerProps {
 }
 
 function DropShadowContainer({children, margins, height = "100%", width = "100%"}: DropShadowContainerProps) {
+    const boxShadow = useColorModeValue("", "0px 0px 8px 0px rgba(128, 128, 128, 0.3)")
     return (
         <Box height={height} width={width} paddingY={margins?.marginY} paddingX={margins?.marginX}>
-            <Box height="100%" width="100%" shadow="xl" borderRadius="2xl">
+            <Box height="100%" width="100%" style={{boxShadow: boxShadow}} shadow="xl" borderRadius="2xl">
                 {children}
             </Box>
         </Box>
