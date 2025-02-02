@@ -1,9 +1,8 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import KnowledgeBaseWidget from "@/components/dashboard/knowledgebase/KnowledgeBaseWidget.tsx";
-import Chart from "@/components/dashboard/chart/Chart.tsx";
-import mockData from "../data/mock-data/MockData.ts"
 import DashboardHeader from "@/components/dashboard/DashboardHeader.tsx";
 import SideBar from "@/components/dashboard/sidebar/SideBar.tsx";
+import ChartWidget from "@/components/dashboard/chart/ChartWidget.tsx";
 
 function DashboardLayoutGrid() {
     return (
@@ -13,8 +12,8 @@ function DashboardLayoutGrid() {
                       maxHeight="100%">
                 <DashboardHeader/>
             </GridItem>
-            <GridItem area="chartWidget" colSpan={24} rowSpan={12} paddingLeft={14} paddingTop={4} overflow="hidden" maxHeight="100%">
-                <Chart data={mockData.chartData} axisConfig={{right: ["pv"], left: ["uv", "amt"]}}/>
+            <GridItem area="chartWidget" colSpan={24} rowSpan={12} paddingLeft={14} overflow="hidden" maxHeight="100%">
+                <ChartWidget />
             </GridItem>
             <GridItem area="sideWidgets" colSpan={11} rowSpan={24} paddingLeft={8} paddingBottom={10} maxHeight="100%">
                 <SideBar/>

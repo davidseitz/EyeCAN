@@ -1,0 +1,15 @@
+.badge {
+    font-size: 8px;
+    font-weight: bold;
+    color: #FF0303;
+    border: 1.1pt solid #FF0303;
+    padding: 2px 6px;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.badge:hover {
+    cursor: pointer;
+    background-color: #FF0303;
+    color: white;
+}
