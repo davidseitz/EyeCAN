@@ -38,7 +38,11 @@ function Chart({axisConfig, data}: ChartProps) {
                        tick={tickStyle}
                        tickLine={axisStyle}
                        yAxisId="right" orientation="right"/>
-                <Tooltip/>
+                <Tooltip
+                    contentStyle={{backgroundColor: 'white', border: 'none', color: 'black', borderRadius: 5, boxShadow: '0px 0px 10px 0px rgba(140, 140, 140, 0.5)'}}
+                    itemStyle={{color: 'black'}}
+                    labelStyle={{color: 'black'}}
+                />
                 <Legend/>
                 {keys.map((key) => {
                     const yAxisId = axisConfig.left.includes(key)  ? 'left' : axisConfig.right.includes(key)  ? 'right' : null;
