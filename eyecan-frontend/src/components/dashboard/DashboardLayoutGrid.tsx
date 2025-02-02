@@ -6,7 +6,7 @@ import ChartWidget from "@/components/dashboard/chart/ChartWidget.tsx";
 
 function DashboardLayoutGrid() {
     return (
-        <Grid maxHeight="100%" w="100%" templateColumns="repeat(36, 1fr)" templateRows="repeat(24, 1fr)" gap={4}>
+        <Grid maxHeight="100%" w="100%" maxWidth="1800px" templateColumns="repeat(36, 1fr)" templateRows="repeat(24, 1fr)" gapY={4} gapX={{base: 0, lg: 8}}>
             <GridItem colSpan={36} rowSpan={1} area="navBar" display="flex"
                       justifyContent="center"
                       maxHeight="100%">
@@ -16,7 +16,7 @@ function DashboardLayoutGrid() {
                 <ChartWidget/>
             </GridItem>
             <GridItem area="sideWidgets" display={{base: "none", lg: "block"}}
-                      colSpan={11} rowSpan={24} paddingLeft={8} paddingBottom={10} maxHeight="100%">
+                      colSpan={11} rowSpan={24} paddingLeft={8} paddingRight={4} paddingBottom={10} maxHeight="100%">
                 <SideBar/>
             </GridItem>
             <GridItem colSpan={{ base: 36, lg: 24 }} rowSpan={11} area="knowledgeBaseWidget" paddingLeft={14} paddingRight={{base: 14, lg: 0}} paddingBottom={10}

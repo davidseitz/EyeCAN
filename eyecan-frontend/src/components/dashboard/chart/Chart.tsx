@@ -68,7 +68,8 @@ function Chart({axisConfig, data}: ChartProps) {
                        yAxisId="right" orientation="right"/>
                 <Tooltip
                     contentStyle={colorProperties.contentStyle}
-                    labelStyle={colorProperties.labelStyle}
+                    labelStyle={{...colorProperties.labelStyle, fontWeight: 'bold', fontSize: 12}}
+                    itemStyle={{fontWeight: 'bold', fontSize: 12}}
                     cursor={{ stroke: '#a0a0a0', strokeWidth: 1 }}
                 />
                 <Legend/>
