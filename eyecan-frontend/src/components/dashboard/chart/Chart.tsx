@@ -21,7 +21,7 @@ function Chart({axisConfig, data}: ChartProps) {
     const keys = Object.keys(data[0]).filter(key => key !== 'time');
 
     return (
-        <ResponsiveContainer className={style.chart} width="100%" height="85%">
+        <ResponsiveContainer className={style.chart} width="100%" height="86%">
             <LineChart margin={{top: 2, right: -20, left: -20}}
                        data={data}>
                 <CartesianGrid stroke={gridColor} strokeDasharray="3 3"/>

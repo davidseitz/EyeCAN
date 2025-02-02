@@ -3,7 +3,7 @@ import {HStack} from "@chakra-ui/react";
 
 function DashboardHeader() {
     return (
-        <HStack padding={2} width="100%" justifyContent="flex-end">
+        <HStack paddingTop={2} paddingRight={2} width="100%" justifyContent="flex-end">
             <ColorModeButton />
         </HStack>
     )

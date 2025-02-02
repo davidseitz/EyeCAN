@@ -1,5 +1,5 @@
 import {Heading, HStack} from "@chakra-ui/react";
-import PlusButton from "@/components/dashboard/knowledgebase/PlusButton.tsx";
+import PlusButton from "@/components/miscellaneous/PlusButton.tsx";
 
 function KbHeader() {
     return (
