@@ -1,4 +1,3 @@
-import DropShadowContainer from "@/components/miscellaneous/drop-shadow-container/DropShadowContainer.tsx";
 import FilterCollection from "@/components/dashboard/sidebar/filter-collection/FilterCollection.tsx";
 import DataCollectionCard from "@/components/dashboard/sidebar/data-collection/DataCollectionCard.tsx";
 import ActionButtons from "@/components/dashboard/sidebar/action-buttons/ActionButtons.tsx";

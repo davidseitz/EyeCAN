@@ -57,7 +57,6 @@ export default {
         },
         {
             time: 30,
-            uv: 2000,
             pv: 9800,
             amt: 2290,
         },
@@ -91,46 +90,100 @@ export default {
             "id": 1,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["speed", "temp", "angle", "temp", "voltage", "current"]
-
+            "units": ["speed", "temp", "angle", "temp", "voltage", "current"],
+            "settings": {}
         },
         {
             "id": 2,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["angle", "temp"]
-
+            "units": ["angle", "temp"],
+            "settings": {}
         },
         {
             "id": 3,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["voltage", "current"]
-
+            "units": ["voltage", "current"],
+            "settings": {}
         },
         {
             "id": 4,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["speed", "temp"]
+            "units": ["speed", "temp"],
+            "settings": {}
         },
         {
             "id": 5,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["voltage", "current"]
+            "units": ["voltage", "current"],
+            "settings": {}
         },
         {
             "id": 6,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["voltage", "current"]
+            "units": ["voltage", "current"],
+            "settings": {}
         },
         {
             "id": 7,
             "title": "Filter 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "units": ["power", "energy"]
+            "units": ["power", "energy"],
+            "settings": {}
+        }
+    ],
+    "datasets": [
+        {
+            "id": 1,
+            "title": "Dataset 1",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "signals": [
+                {
+                    "signalname": "signal1",
+                    "signalunit": "string",
+                    "signalvalues": [
+                        [1,1],
+                        [1,2],
+                        [1,3]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Dataset 2",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "signals": [
+                {
+                    "signalname": "signal1",
+                    "signalunit": "string",
+                    "signalvalues": [
+                        [2,1],
+                        [2,2],
+                        [2,3]
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Dataset 3",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "signals": [
+                {
+                    "signalname": "signal1",
+                    "signalunit": "string",
+                    "signalvalues": [
+                        [3,1],
+                        [3,2],
+                        [3,3]
+                    ]
+                }
+            ]
         }
     ]
 }

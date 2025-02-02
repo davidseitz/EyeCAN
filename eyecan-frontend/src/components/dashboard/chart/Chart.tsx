@@ -72,11 +72,11 @@ function Chart({axisConfig, data}: ChartProps) {
                     itemStyle={{fontWeight: 'bold', fontSize: 12}}
                     cursor={{ stroke: '#a0a0a0', strokeWidth: 1 }}
                 />
-                <Legend />
+                <Legend maxWidth="100%"/>
                 {keys.map((key) => {
                     const yAxisId = axisConfig.left.includes(key)  ? 'left' : axisConfig.right.includes(key)  ? 'right' : null;
                     if (!yAxisId) return null;
-                    return <Line yAxisId={yAxisId} type="monotone" key={key} dataKey={key} stroke={hex()}/>
+                    return <Line yAxisId={yAxisId} connectNulls={true} type="monotone" key={key} dataKey={key} stroke={hex()}/>
                 } )}
             </LineChart>
         </ResponsiveContainer>
