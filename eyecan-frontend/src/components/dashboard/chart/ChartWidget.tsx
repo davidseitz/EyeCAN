@@ -6,7 +6,7 @@ import {VStack} from "@chakra-ui/react";
 function ChartWidget() {
     return (
         <VStack gap={3} height={"100%"} overflow="hidden">
-            <ChHeader units={{unit1: "Unit 1", unit2: "Unit 2"}} />
+            <ChHeader />
             <Chart data={mockData.chartData} axisConfig={{right: ["pv"], left: ["uv", "amt"]}}/>
         </VStack>
     )

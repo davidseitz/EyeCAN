@@ -72,7 +72,7 @@ function Chart({axisConfig, data}: ChartProps) {
                     itemStyle={{fontWeight: 'bold', fontSize: 12}}
                     cursor={{ stroke: '#a0a0a0', strokeWidth: 1 }}
                 />
-                <Legend maxWidth="100%"/>
+                <Legend />
                 {keys.map((key) => {
                     const yAxisId = axisConfig.left.includes(key)  ? 'left' : axisConfig.right.includes(key)  ? 'right' : null;
                     if (!yAxisId) return null;
@@ -85,3 +85,4 @@ function Chart({axisConfig, data}: ChartProps) {
 
 export default Chart;
 
+// TODO Figure out what to do with legend if to many items

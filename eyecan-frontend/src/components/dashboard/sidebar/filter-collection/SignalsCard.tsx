@@ -7,12 +7,12 @@ import {
 } from "@/components/ui/hover-card"
 import { Link, List} from "@chakra-ui/react";
 
-interface UnitsCardProps {
+interface SignalsCardProps {
     text: string;
-    units: string[];
+    signals: string[];
 }
 
-function UnitsCard({units, text}: UnitsCardProps) {
+function SignalsCard({signals, text}: SignalsCardProps) {
     const [open, setOpen] = useState(false)
 
     return (
@@ -25,7 +25,7 @@ function UnitsCard({units, text}: UnitsCardProps) {
             <HoverCardContent width="200px">
                 <HoverCardArrow />
                 <List.Root fontSize={10} color="#808080">
-                    {units.map((unit, index) => <List.Item key={index}>{unit}</List.Item>)}
+                    {signals.map((signal, index) => <List.Item key={index}>{signal}</List.Item>)}
                 </List.Root>
             </HoverCardContent>
         </HoverCardRoot>
@@ -33,4 +33,4 @@ function UnitsCard({units, text}: UnitsCardProps) {
     )
 }
 
-export default UnitsCard
+export default SignalsCard;

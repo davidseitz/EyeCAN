@@ -1,6 +1,6 @@
 import {Card, HStack, Text} from "@chakra-ui/react";
 import DropShadowContainer from "@/components/miscellaneous/drop-shadow-container/DropShadowContainer.tsx";
-import SelectUnitsDialog from "@/components/dashboard/sidebar/data-collection/SelectUnitsDialog.tsx";
+import SelectSignalsDialog from "@/components/dashboard/sidebar/data-collection/SelectSignalsDialog.tsx";
 import ArrowButton from "@/components/miscellaneous/ArrowButton.tsx";
 import {Dataset} from "@/types/dataset.ts";
 
@@ -24,7 +24,7 @@ function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
                     {dataset.description.length > 180 ? dataset.description.slice(0, 180) + "..." : dataset.description}
                 </Card.Body>
                 <Card.Footer padding={0} marginTop={4} justifyContent="space-between">
-                    <SelectUnitsDialog dataset={dataset} />
+                    <SelectSignalsDialog dataset={dataset} />
                     <HStack>
                         <ArrowButton onClick={()=>onNavigate(false)} size="2xs" direction={"left"}/>
                         <ArrowButton onClick={()=>onNavigate(true)} size="2xs" direction={"right"}/>

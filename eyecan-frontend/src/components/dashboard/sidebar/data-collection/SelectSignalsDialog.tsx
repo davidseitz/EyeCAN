@@ -9,21 +9,21 @@ import {
 } from "@/components/ui/dialog.tsx";
 import {Button, Link,} from "@chakra-ui/react";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
-import SelectUnitsForm from "@/components/dashboard/sidebar/data-collection/SelectUnitsForm.tsx";
+import SelectSignalsForm from "@/components/dashboard/sidebar/data-collection/SelectSignalsForm.tsx";
 import {Dataset} from "@/types/dataset.ts";
 
-interface SelectUnitsDialogProps {
+interface SelectSignalsDialogProps {
     dataset: Dataset;
 }
 
-function SelectUnitsDialog({dataset}: SelectUnitsDialogProps) {
-    const units = dataset.signals.map((signal)=>signal.signalName)
+function SelectSignalsDialog({dataset}: SelectSignalsDialogProps) {
+    const signals = dataset.signals.map((signal)=>signal.signalName)
 
     return (
         <DialogRoot placement={"center"}>
             <DialogTrigger asChild>
                 <Link fontSize={10} fontWeight="bold" color="#808080">
-                    Select Units
+                    Select Signals
                 </Link>
             </DialogTrigger>
             <DialogContent backgroundColor={{base: "#ffffff", _dark: "rgb(9, 9, 11)"}}
@@ -31,12 +31,12 @@ function SelectUnitsDialog({dataset}: SelectUnitsDialogProps) {
                            borderRadius="20px"
             >
                 <DialogHeader>
-                    <DialogTitle>Select Units</DialogTitle>
+                    <DialogTitle>Select Signals</DialogTitle>
                 </DialogHeader>
                 <DialogBody >
 
                     <ScrollableContainer height={"300px"} fade={{show: true, size: 50}}>
-                        <SelectUnitsForm units={units} selectedUnits={dataset.selectedSignalValues}/>
+                        <SelectSignalsForm signals={signals} selectedSignalValues={dataset.selectedSignalValues}/>
                     </ScrollableContainer>
 
                 </DialogBody>
@@ -51,4 +51,4 @@ function SelectUnitsDialog({dataset}: SelectUnitsDialogProps) {
     )
 }
 
-export default SelectUnitsDialog;
+export default SelectSignalsDialog;

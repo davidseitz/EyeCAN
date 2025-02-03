@@ -32,7 +32,7 @@ function FilterCollection() {
                         key={filter.id}
                         filter={filter}
                         appliedFiltersIds={appliedFiltersIds}
-                        datasetUnits={["voltage", "current"]}
+                        datasetSignals={["voltage", "current"]}
                         onApplyFilter={appliedFiltersIds.includes(filter.id) ? removeFromAppliedFilters : addToAppliedFilters}
                     />)
                 }

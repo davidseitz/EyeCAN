@@ -2,5 +2,5 @@ export interface Filter {
     id: number,
     title: string,
     description: string,
-    units: string[]
+    signals: string[]
 }

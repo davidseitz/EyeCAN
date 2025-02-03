@@ -3,14 +3,14 @@ import {CheckboxGroup, Fieldset} from "@chakra-ui/react";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {useEffect} from "react";
 
-interface SelectUnitsFormProps {
-    units: string[];
-    selectedUnits: string[];
+interface SelectSignalsFormProps {
+    signals: string[];
+    selectedSignalValues: string[];
 }
 
-function SelectUnitsForm({units, selectedUnits}: SelectUnitsFormProps) {
+function SelectSignalsForm({signals, selectedSignalValues}: SelectSignalsFormProps) {
     const {control} = useForm()
-    const framework = useController({control, name: "units", defaultValue: selectedUnits})
+    const framework = useController({control, name: "signals", defaultValue: selectedSignalValues})
 
     useEffect(() => {
         console.log(framework.field.value)
@@ -19,12 +19,12 @@ function SelectUnitsForm({units, selectedUnits}: SelectUnitsFormProps) {
     return (
         <Fieldset.Root>
             <CheckboxGroup value={framework.field.value} onValueChange={framework.field.onChange} name={framework.field.name}>
-                {units.map((unit, index) =>
-                    <Checkbox value={unit} name={unit} key={index}>{unit}</Checkbox>)}
+                {signals.map((signal, index) =>
+                    <Checkbox value={signal} name={signal} key={index}>{signal}</Checkbox>)}
             </CheckboxGroup>
             {console.log(framework.field.value)}
         </Fieldset.Root>
     )
 }
 
-export default SelectUnitsForm;
+export default SelectSignalsForm;
