@@ -54,7 +54,7 @@ int main()
 {
     std::unique_ptr<dbcppp::INetwork> net;
     {
-        std::ifstream idbc("your.dbc");
+        std::ifstream idbc("../gfr_dbc_files/Battery.dbc");
         net = dbcppp::INetwork::LoadDBCFromIs(idbc);
     }
 
