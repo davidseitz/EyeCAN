@@ -2,16 +2,12 @@ export interface Dataset {
     id: number;
     title: string;
     description: string;
-    selectedUnits: string[]
-    "signals": [
-        {
-            "signalName": "signal1",
-            "signalUnit": "string",
-            "signalValues": [
-                [1,1],
-                [1,2],
-                [1,3]
-            ]
-        }
-    ]
+    selectedSignalValues: string[];
+    signals: Signal[];
+}
+
+interface Signal {
+    signalName: string;
+    signalUnit: string;
+    signalValues: [number, number][];
 }

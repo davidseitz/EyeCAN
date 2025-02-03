@@ -7,16 +7,17 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
-import {Button, CheckboxGroup, Link,} from "@chakra-ui/react";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
+import {Button, Link,} from "@chakra-ui/react";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
 import SelectUnitsForm from "@/components/dashboard/sidebar/data-collection/SelectUnitsForm.tsx";
+import {Dataset} from "@/types/dataset.ts";
 
 interface SelectUnitsDialogProps {
-    units: string[];
+    dataset: Dataset;
 }
 
-function SelectUnitsDialog({units}: SelectUnitsDialogProps) {
+function SelectUnitsDialog({dataset}: SelectUnitsDialogProps) {
+    const units = dataset.signals.map((signal)=>signal.signalName)
 
     return (
         <DialogRoot placement={"center"}>
@@ -35,7 +36,7 @@ function SelectUnitsDialog({units}: SelectUnitsDialogProps) {
                 <DialogBody >
 
                     <ScrollableContainer height={"300px"} fade={{show: true, size: 50}}>
-                        <SelectUnitsForm units={units}/>
+                        <SelectUnitsForm units={units} selectedUnits={dataset.selectedSignalValues}/>
                     </ScrollableContainer>
 
                 </DialogBody>

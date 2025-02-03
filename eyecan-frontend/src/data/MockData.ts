@@ -141,41 +141,42 @@ export default {
             "id": 1,
             "title": "Dataset 1",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "selectedSignalValues": [""],
             "signals": [
                 {
                     "signalName": "Test0",
                     "signalUnit": "string",
                     "signalValues": [
-                        [1,1],
-                        [1,2],
-                        [1,3]
+                        [1,1] as [number, number],
+                        [1,2] as [number, number],
+                        [1,3] as [number, number]
                     ]
                 },
                 {
                     "signalName": "Test1",
                     "signalUnit": "string",
                     "signalValues": [
-                        [1,1],
-                        [1,2],
-                        [1,3]
+                        [1,1] as [number, number],
+                        [1,2] as [number, number],
+                        [1,3] as [number, number]
                     ]
                 },
                 {
                     "signalName": "Test2",
                     "signalUnit": "string",
                     "signalValues": [
-                        [1,1],
-                        [1,2],
-                        [1,3]
+                        [1,1] as [number, number],
+                        [1,2] as [number, number],
+                        [1,3] as [number, number]
                     ]
                 },
                 {
                     "signalName": "Test3",
                     "signalUnit": "string",
                     "signalValues": [
-                        [1,1],
-                        [1,2],
-                        [1,3]
+                        [1,1] as [number, number],
+                        [1,2] as [number, number],
+                        [1,3] as [number, number]
                     ]
                 }
             ]
@@ -184,14 +185,15 @@ export default {
             "id": 2,
             "title": "Dataset 2",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "selectedSignalValues": [""],
             "signals": [
                 {
                     "signalName": "signalDS2",
                     "signalUnit": "string",
                     "signalValues": [
-                        [2,1],
-                        [2,2],
-                        [2,3]
+                        [2,1] as [number, number],
+                        [2,2] as [number, number],
+                        [2,3] as [number, number]
                     ]
                 }
             ]
@@ -200,14 +202,15 @@ export default {
             "id": 3,
             "title": "Dataset 3",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "selectedSignalValues": [""],
             "signals": [
                 {
                     "signalName": "signalDS3",
                     "signalUnit": "string",
                     "signalValues": [
-                        [3,1],
-                        [3,2],
-                        [3,3]
+                        [3,1] as [number, number],
+                        [3,2] as [number, number],
+                        [3,3] as [number, number]
                     ]
                 }
             ]

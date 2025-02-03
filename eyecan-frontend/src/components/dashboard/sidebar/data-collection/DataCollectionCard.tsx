@@ -10,7 +10,6 @@ interface DataCollectionCardProps {
 }
 
 function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
-    const units = dataset.signals.map((signal)=>signal.signalName)
 
     return (
         <DropShadowContainer padding={{paddingX: 5, paddingY: 3}} height={"30%"} margins={{marginY: 8}}>
@@ -25,7 +24,7 @@ function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
                     {dataset.description.length > 180 ? dataset.description.slice(0, 180) + "..." : dataset.description}
                 </Card.Body>
                 <Card.Footer padding={0} marginTop={4} justifyContent="space-between">
-                    <SelectUnitsDialog  units={units} />
+                    <SelectUnitsDialog dataset={dataset} />
                     <HStack>
                         <ArrowButton onClick={()=>onNavigate(false)} size="2xs" direction={"left"}/>
                         <ArrowButton onClick={()=>onNavigate(true)} size="2xs" direction={"right"}/>
