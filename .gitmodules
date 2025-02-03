@@ -1,0 +1,6 @@
+[submodule "dbcppp"]
+	path = dbcppp
+	url = https://github.com/xR3b0rn/dbcppp.git
+[submodule "gfr_dbc_files"]
+	path = gfr_dbc_files
+	url = https://github.com/GlobalFormulaRacing/gfr_dbc_files.git
