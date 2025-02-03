@@ -7,12 +7,16 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
-import {Button, Link, VStack} from "@chakra-ui/react";
+import {Button, CheckboxGroup, Link,} from "@chakra-ui/react";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
+import SelectUnitsForm from "@/components/dashboard/sidebar/data-collection/SelectUnitsForm.tsx";
 
-function SelectUnitsDialog() {
-    const units = ["speed", "temp", "angle", "voltage", "current", "frequency", "power", "energy", "resistance", "capacitance", "pressure", "density", "force", "magnetism", "inductance", "luminous flux", "illumination", "length", "mass"];
+interface SelectUnitsDialogProps {
+    units: string[];
+}
+
+function SelectUnitsDialog({units}: SelectUnitsDialogProps) {
 
     return (
         <DialogRoot placement={"center"}>
@@ -29,10 +33,9 @@ function SelectUnitsDialog() {
                     <DialogTitle>Select Units</DialogTitle>
                 </DialogHeader>
                 <DialogBody >
+
                     <ScrollableContainer height={"300px"} fade={{show: true, size: 50}}>
-                        <VStack align="start">
-                            {units.map((unit, index) => <Checkbox value={unit} key={index}>{unit}</Checkbox>)}
-                        </VStack>
+                        <SelectUnitsForm units={units}/>
                     </ScrollableContainer>
 
                 </DialogBody>

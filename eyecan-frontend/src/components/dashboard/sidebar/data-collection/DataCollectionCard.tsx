@@ -2,8 +2,16 @@ import {Card, HStack, Text} from "@chakra-ui/react";
 import DropShadowContainer from "@/components/miscellaneous/drop-shadow-container/DropShadowContainer.tsx";
 import SelectUnitsDialog from "@/components/dashboard/sidebar/data-collection/SelectUnitsDialog.tsx";
 import ArrowButton from "@/components/miscellaneous/ArrowButton.tsx";
+import {Dataset} from "@/types/dataset.ts";
 
-function DataCollectionCard() {
+interface DataCollectionCardProps {
+    dataset: Dataset;
+    onNavigate: (increase: boolean)=>void;
+}
+
+function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
+    const units = dataset.signals.map((signal)=>signal.signalName)
+
     return (
         <DropShadowContainer padding={{paddingX: 5, paddingY: 3}} height={"30%"} margins={{marginY: 8}}>
             <Card.Root backgroundColor="transparent" border="none">
@@ -12,18 +20,15 @@ function DataCollectionCard() {
                 </Card.Header>
                 <Card.Body lineHeight={1.1} fontSize={10} color="#808080" padding={0}>
                     <Text fontSize="sm" fontWeight="bold" marginBottom={1}>
-                        Dataset Title
+                        {dataset.title}
                     </Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    {dataset.description.length > 180 ? dataset.description.slice(0, 180) + "..." : dataset.description}
                 </Card.Body>
                 <Card.Footer padding={0} marginTop={4} justifyContent="space-between">
-                    <SelectUnitsDialog/>
+                    <SelectUnitsDialog  units={units} />
                     <HStack>
-                        <ArrowButton size="2xs" direction={"left"}/>
-                        <ArrowButton size="2xs" direction={"right"}/>
+                        <ArrowButton onClick={()=>onNavigate(false)} size="2xs" direction={"left"}/>
+                        <ArrowButton onClick={()=>onNavigate(true)} size="2xs" direction={"right"}/>
                     </HStack>
                 </Card.Footer>
             </Card.Root>

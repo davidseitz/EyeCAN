@@ -143,9 +143,36 @@ export default {
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             "signals": [
                 {
-                    "signalname": "signal1",
-                    "signalunit": "string",
-                    "signalvalues": [
+                    "signalName": "Test0",
+                    "signalUnit": "string",
+                    "signalValues": [
+                        [1,1],
+                        [1,2],
+                        [1,3]
+                    ]
+                },
+                {
+                    "signalName": "Test1",
+                    "signalUnit": "string",
+                    "signalValues": [
+                        [1,1],
+                        [1,2],
+                        [1,3]
+                    ]
+                },
+                {
+                    "signalName": "Test2",
+                    "signalUnit": "string",
+                    "signalValues": [
+                        [1,1],
+                        [1,2],
+                        [1,3]
+                    ]
+                },
+                {
+                    "signalName": "Test3",
+                    "signalUnit": "string",
+                    "signalValues": [
                         [1,1],
                         [1,2],
                         [1,3]
@@ -159,9 +186,9 @@ export default {
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             "signals": [
                 {
-                    "signalname": "signal1",
-                    "signalunit": "string",
-                    "signalvalues": [
+                    "signalName": "signalDS2",
+                    "signalUnit": "string",
+                    "signalValues": [
                         [2,1],
                         [2,2],
                         [2,3]
@@ -175,9 +202,9 @@ export default {
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             "signals": [
                 {
-                    "signalname": "signal1",
-                    "signalunit": "string",
-                    "signalvalues": [
+                    "signalName": "signalDS3",
+                    "signalUnit": "string",
+                    "signalValues": [
                         [3,1],
                         [3,2],
                         [3,3]
