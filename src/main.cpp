@@ -1,11 +1,12 @@
 #include <fstream>
 #include <dbcppp/Network.h>
 
-#include <fstream>
-#include <unordered_map>
-
 #include "dbcppp/CApi.h"
-#include "dbcppp/Network.h"
+#include <iostream>
+#include <memory>
+
+#include <mdflibrary/MdfChannelObserver.h>
+#include <mdflibrary/MdfReader.h>
 
 // from uapi/linux/can.h
 using canid_t = uint32_t;
@@ -50,43 +51,184 @@ void receive_frame_data(can_frame* frame)
     // expected output after decoding and rawToPhys: s3_1 = 15 * 0.5 + 1 = 8.5
     frame->data[2] |= 15;
 }
-int main()
-{
-    std::unique_ptr<dbcppp::INetwork> net;
-    {
-        std::ifstream idbc("../gfr_dbc_files/Battery.dbc");
-        net = dbcppp::INetwork::LoadDBCFromIs(idbc);
+
+void printCANSignals(const std::string& dbcFilePath) {
+    // Read the DBC file into a string
+    std::ifstream file(dbcFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open DBC file." << std::endl;
+        return;
+    }
+    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+
+    // Parse the DBC file
+    std::istringstream dbcStream(dbcContent);
+    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);
+    if (!network) {
+        std::cerr << "Error: Failed to parse DBC file." << std::endl;
+        return;
     }
 
-    if (net.get() == nullptr) {
-        std::cerr << "failed to parse!\n";
-        return -1;
-    }
-
-    std::unordered_map<uint64_t, const dbcppp::IMessage *> messages;
-    for (const dbcppp::IMessage& msg : net->Messages())
-    {
-        messages.insert(std::make_pair(msg.Id(), &msg));
-    }
-    can_frame frame;
-    while (1)
-    {
-        receive_frame_data(&frame);
-        auto iter = messages.find(frame.can_id);
-        if (iter != messages.end())
-        {
-            const dbcppp::IMessage* msg = iter->second;
-            std::cout << "Received Message: " << msg->Name() << "\n";
-            for (const dbcppp::ISignal& sig : msg->Signals())
-            {
-                const dbcppp::ISignal* mux_sig = msg->MuxSignal();
-                if (sig.MultiplexerIndicator() != dbcppp::ISignal::EMultiplexer::MuxValue ||
-                    (mux_sig && mux_sig->Decode(frame.data) == sig.MultiplexerSwitchValue()))
-                {
-                    std::cout << "\t" << sig.Name() << "=" << sig.RawToPhys(sig.Decode(frame.data)) << sig.Unit() << "\n";
-                }
-            }
+    // Iterate over all messages and print signals
+    for (const auto& message : network->Messages()) {
+        std::cout << "Message: " << message.Name() << " (ID: " << message.Id() << ")\n";
+        for (const auto& signal : message.Signals()) {
+            std::cout << "  Signal: " << signal.Name()
+                      << ", Start Bit: " << signal.StartBit()
+                      << ", Length: " << signal.BitSize()
+                      << ", Factor: " << signal.Factor()
+                      << ", Offset: " << signal.Offset()
+                      << "\n";
         }
     }
-    std::cout << std::flush;
 }
+
+
+int readMdf() {
+    {
+        std::cout << "Read" << std::endl;
+        MdfLibrary::MdfReader Reader("../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4");
+        Reader.ReadEverythingButData();
+        auto Header = Reader.GetHeader();
+        std::cout << "Author: " << Header.GetAuthor().c_str() << std::endl;
+        std::cout << "Department: " << Header.GetDepartment() << std::endl;
+        std::cout << "Description: " << Header.GetDescription() << std::endl;
+        std::cout << "Project: " << Header.GetProject() << std::endl;
+        std::cout << "StartTime: " << Header.GetStartTime() << std::endl;
+        std::cout << "Subject: " << Header.GetSubject() << std::endl;
+
+        auto Historys = Header.GetFileHistorys();
+        std::cout << "History: " << Historys.size() << std::endl;
+        for (const auto& Histroy : Historys) {
+            std::cout << "Time: " << Histroy.GetTime() << std::endl;
+            std::cout << "Description: " << Histroy.GetDescription() << std::endl;
+            std::cout << "ToolName: " << Histroy.GetToolName() << std::endl;
+            std::cout << "ToolVendor: " << Histroy.GetToolVendor() << std::endl;
+            std::cout << "ToolVersion: " << Histroy.GetToolVersion() << std::endl;
+            std::cout << "UserName: " << Histroy.GetUserName() << std::endl;
+            std::cout << std::endl;
+        }
+
+        auto DataGroups = Header.GetDataGroups();
+        std::cout << "DataGroups: " << DataGroups.size() << std::endl;
+        for (const auto& DataGroup : DataGroups) {
+            auto ChannelGroups = DataGroup.GetChannelGroups();
+            std::cout << "ChannelGroups: " << ChannelGroups.size() << std::endl;
+            for (const auto& ChannelGroup : ChannelGroups) {
+                std::cout << "Name: " << ChannelGroup.GetName() << std::endl;
+                std::cout << "Description: " << ChannelGroup.GetDescription()
+                          << std::endl;
+
+                auto SourceInformation = ChannelGroup.GetSourceInformation();
+                std::cout << "SI Name: " << SourceInformation.GetName() << std::endl;
+                std::cout << "SI Path: " << SourceInformation.GetPath() << std::endl;
+                std::cout << "SI Description: " << SourceInformation.GetDescription()
+                          << std::endl;
+
+                std::cout << "Nof Samples: " << ChannelGroup.GetNofSamples()
+                          << std::endl;
+
+                auto Channels = ChannelGroup.GetChannels();
+                std::cout << "Channels: " << Channels.size() << std::endl;
+                std::vector<MdfLibrary::MdfChannelObserver> Observers;
+                for (const auto& Channel : Channels) {
+                    std::cout << "Name: " << Channel.GetName() << std::endl;
+                    std::cout << "Description: " << Channel.GetDescription() << std::endl;
+                    std::cout << "Type: " << static_cast<int>(Channel.GetType())
+                              << std::endl;
+                    std::cout << "Sync: " << static_cast<int>(Channel.GetSync())
+                              << std::endl;
+                    std::cout << "DataType: " << static_cast<int>(Channel.GetDataType())
+                              << std::endl;
+                    std::cout << "DataBytes: " << Channel.GetDataBytes() << std::endl;
+                    std::cout << "Unit: " << Channel.GetUnit() << std::endl;
+                    std::cout << std::endl;
+
+                    Observers.push_back(
+                        MdfLibrary::MdfChannelObserver(DataGroup, ChannelGroup, Channel));
+                }
+
+                Reader.ReadData(DataGroup);
+
+                for (size_t i = 0; i < ChannelGroup.GetNofSamples(); i++) {
+                    std::cout << "Sample: " << i << std::endl;
+                    for (const auto& Observer : Observers) {
+                        switch (Observer.GetChannel().GetDataType()) {
+                            case MdfLibrary::ChannelDataType::CanOpenDate:
+                            case MdfLibrary::ChannelDataType::CanOpenTime: {
+                                uint64_t channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value
+                                          << ", Eng: " << eng_value << std::endl;
+                                break;
+                            }
+                            case MdfLibrary::ChannelDataType::UnsignedIntegerLe:
+                            case MdfLibrary::ChannelDataType::UnsignedIntegerBe: {
+                                uint64_t channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value
+                                          << ", Eng: " << eng_value << std::endl;
+                                break;
+                            }
+                            case MdfLibrary::ChannelDataType::SignedIntegerLe:
+                            case MdfLibrary::ChannelDataType::SignedIntegerBe: {
+                                int64_t channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value
+                                          << ", Eng: " << eng_value << std::endl;
+                                break;
+                            }
+                            case MdfLibrary::ChannelDataType::FloatLe:
+                            case MdfLibrary::ChannelDataType::FloatBe: {
+                                double channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value
+                                          << ", Eng: " << eng_value << std::endl;
+                                break;
+                            }
+                            case MdfLibrary::ChannelDataType::StringAscii:
+                            case MdfLibrary::ChannelDataType::StringUTF8:
+                            case MdfLibrary::ChannelDataType::StringUTF16Le:
+                            case MdfLibrary::ChannelDataType::StringUTF16Be: {
+                                std::string channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value
+                                          << ", Eng: " << eng_value << std::endl;
+                                break;
+                            }
+                            case MdfLibrary::ChannelDataType::MimeStream:
+                            case MdfLibrary::ChannelDataType::MimeSample:
+                            case MdfLibrary::ChannelDataType::ByteArray: {
+                                std::vector<uint8_t> channel_value, eng_value;
+                                Observer.GetChannelValue(i, channel_value);
+                                Observer.GetEngValue(i, eng_value);
+                                std::cout << "Channel: " << channel_value.size()
+                                          << ", Eng: " << eng_value.size() << std::endl;
+                                break;
+                            }
+                            default:
+                                break;
+                        }
+                    }
+                    std::cout << std::endl;
+                }
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        }
+    }
+    return 0;
+}
+
+int main()
+{
+    printCANSignals("../gfr_dbc_files/Battery.dbc");
+    readMdf();
+}
+
