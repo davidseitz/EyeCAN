@@ -4,3 +4,6 @@
 [submodule "gfr_dbc_files"]
 	path = gfr_dbc_files
 	url = https://github.com/GlobalFormulaRacing/gfr_dbc_files.git
+[submodule "mdflib"]
+	path = mdflib
+	url = https://github.com/ihedvall/mdflib.git
