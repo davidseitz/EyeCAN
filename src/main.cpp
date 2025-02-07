@@ -145,8 +145,8 @@ int readMdf() {
                     std::cout << "Unit: " << Channel.GetUnit() << std::endl;
                     std::cout << std::endl;
 
-                    Observers.push_back(
-                        MdfLibrary::MdfChannelObserver(DataGroup, ChannelGroup, Channel));
+                    Observers.emplace_back(
+                        DataGroup, ChannelGroup, Channel);
                 }
 
                 Reader.ReadData(DataGroup);
