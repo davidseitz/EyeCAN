@@ -3,6 +3,7 @@ import DropShadowContainer from "@/components/miscellaneous/drop-shadow-containe
 import SelectSignalsDialog from "@/components/dashboard/sidebar/data-collection/SelectSignalsDialog.tsx";
 import ArrowButton from "@/components/miscellaneous/ArrowButton.tsx";
 import {Dataset} from "@/types/dataset.ts";
+import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
 
 interface DataCollectionCardProps {
     dataset: Dataset;
@@ -13,17 +14,19 @@ function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
 
     return (
         <DropShadowContainer padding={{paddingX: 5, paddingY: 3}} height={"30%"} margins={{marginY: 8}}>
-            <Card.Root backgroundColor="transparent" border="none">
-                <Card.Header fontSize="2xl" fontWeight={700} margin={0} padding={0}>
+            <Card.Root maxHeight="100%" justifyContent="space-between" backgroundColor="transparent" border="none">
+                <Card.Header maxHeight="20%" fontSize="2xl" fontWeight={700} margin={0} padding={0}>
                     Datasets
                 </Card.Header>
-                <Card.Body lineHeight={1.1} fontSize={10} color="#808080" padding={0}>
-                    <Text fontSize="sm" fontWeight="bold" marginBottom={1}>
-                        {dataset.title}
-                    </Text>
-                    {dataset.description.length > 180 ? dataset.description.slice(0, 180) + "..." : dataset.description}
+                <Card.Body maxHeight="60%" overflow="hidden" lineHeight={1.1} fontSize={10} color="#808080" padding={0}>
+                    <ScrollableContainer height="100%">
+                        <Text fontSize="sm" fontWeight="bold" marginBottom={1}>
+                            {dataset.title}
+                        </Text>
+                        {dataset.description.length > 180 ? dataset.description.slice(0, 180) + "..." : dataset.description}
+                    </ScrollableContainer>
                 </Card.Body>
-                <Card.Footer padding={0} marginTop={4} justifyContent="space-between">
+                <Card.Footer maxHeight="20%" padding={0} marginTop={4} justifyContent="space-between">
                     <SelectSignalsDialog dataset={dataset} />
                     <HStack>
                         <ArrowButton onClick={()=>onNavigate(false)} size="2xs" direction={"left"}/>
