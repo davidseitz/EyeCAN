@@ -1,2 +1,4 @@
 /cmake-build-debug/
+/libaries/cpp-httplib
+/libaries/json
 /.idea/

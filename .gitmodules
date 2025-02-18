@@ -1,0 +1,6 @@
+[submodule "cpp-httplib"]
+	path = libaries/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib
+[submodule "libaries/json"]
+	path = libaries/json
+	url = https://github.com/nlohmann/json
