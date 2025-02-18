@@ -1,6 +1,9 @@
 #include <iostream>
 
+#include <eyecanserver.h>
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    EyeCANServer server;
+    server.initServer();
     return 0;
 }
