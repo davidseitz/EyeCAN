@@ -2,20 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "EyeCAN Visualizer API",
-    "description": "This API is for using the EyeCAN Visualizer\n\n_If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_\n\nSome useful links:\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)",
-    "termsOfService": "http://swagger.io/terms/",
-    "contact": {
-      "email": "apiteam@swagger.io"
-    },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
+    "description": "This API is for using the EyeCAN Visualizer",
     "version": "1.0.0"
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
   },
   "servers": [
     {
@@ -97,7 +85,30 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ArticleIdLess"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "max. 128 chars",
+                    "example": "Test Title"
+                  },
+                  "date": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "unix timestamp in seconds",
+                    "example": 1739450365
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "max. 128 chars",
+                    "example": "Max Mustermann"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "max. 10000 char",
+                    "example": "Information about an error"
+                  }
+                }
               }
             }
           },
@@ -170,7 +181,7 @@
         "description": "Update an Article",
         "operationId": "updateArticle",
         "requestBody": {
-          "description": "Update an existent user in the store",
+          "description": "Update an existent article",
           "content": {
             "application/json": {
               "schema": {
@@ -265,7 +276,31 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Filter"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "dataset title"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "signals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "settings": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Object"
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -338,7 +373,7 @@
         "description": "Update an Article",
         "operationId": "updateFilter",
         "requestBody": {
-          "description": "Update an existent user in the store",
+          "description": "Update an existent filter",
           "content": {
             "application/json": {
               "schema": {
@@ -433,7 +468,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "to be defined"
+                "$ref": "#/components/schemas/Dataset"
               }
             }
           },
@@ -445,7 +480,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Filter"
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "displayed in dataset card max. 32 chars",
+                      "example": "dataset title"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "max. 280 chars"
+                    },
+                    "selectedSignalValues": {
+                      "type": "array",
+                      "description": "array of signal values that are selected in this array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -468,14 +525,14 @@
         "tags": [
           "Data collection"
         ],
-        "summary": "Delete an Dataset",
-        "description": "Delete an Dataset",
+        "summary": "Delete a Dataset",
+        "description": "Delete a Dataset",
         "operationId": "deleteDataset",
         "parameters": [
           {
             "name": "uuid",
             "in": "query",
-            "description": "Dataset id to delete",
+            "description": "Dataset id too delete",
             "required": true,
             "schema": {
               "type": "string",
@@ -497,37 +554,55 @@
             "description": "An error occurred on the server side"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Data collection"
+        ],
+        "summary": "Edit a Dataset",
+        "description": "Edit a Dataset",
+        "operationId": "editDataset",
+        "requestBody": {
+          "description": "Updated a existent dataset",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "signals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "array of selected signals for this dataset"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
-      "ArticleIdLess": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "max. 128 chars"
-          },
-          "date": {
-            "type": "integer",
-            "format": "int64",
-            "description": "unix timestamp in seconds",
-            "example": 1739450365
-          },
-          "author": {
-            "type": "string",
-            "description": "max. 128 chars"
-          },
-          "content": {
-            "type": "string",
-            "description": "max. 10000 char"
-          }
-        },
-        "xml": {
-          "name": "articleidless"
-        }
-      },
       "Article": {
         "type": "object",
         "properties": {
@@ -538,7 +613,8 @@
           },
           "title": {
             "type": "string",
-            "description": "max. 128 chars"
+            "description": "max. 128 chars",
+            "example": "Test Title"
           },
           "date": {
             "type": "integer",
@@ -548,11 +624,13 @@
           },
           "author": {
             "type": "string",
-            "description": "max. 128 chars"
+            "description": "max. 128 chars",
+            "example": "Max Mustermann"
           },
           "content": {
             "type": "string",
-            "description": "max. 10000 char"
+            "description": "max. 10000 char",
+            "example": "Information about an error"
           }
         },
         "xml": {
@@ -583,9 +661,87 @@
       },
       "Filter": {
         "type": "object",
-        "properties": null,
-        "xml": {
-          "name": "filter"
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+          },
+          "title": {
+            "type": "string",
+            "example": "dataset title"
+          },
+          "description": {
+            "type": "string"
+          },
+          "signals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Object"
+              }
+            }
+          }
+        }
+      },
+      "Object": {
+        "type": "object",
+        "properties": {
+          "signal": {
+            "type": "string",
+            "description": "e.g. temprature"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "e.g. range"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          },
+          "aggregation": {
+            "$ref": "#/components/schemas/Aggregation"
+          }
+        }
+      },
+      "Condition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "e.g. average, in period"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "lower and upper threshold",
+              "example": [
+                1,
+                2
+              ]
+            }
+          }
+        }
+      },
+      "Aggregation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "e.g. between, not between"
+          },
+          "interval": {
+            "type": "integer",
+            "description": "interval in s for the aggregation",
+            "example": 5
+          }
         }
       },
       "FilterList": {
@@ -620,17 +776,56 @@
           },
           "title": {
             "type": "string",
-            "description": "max. 128 chars"
+            "description": "displayed in dataset card max. 32 chars",
+            "example": "dataset title"
           },
           "description": {
             "type": "string",
-            "description": "max. 10000 chars"
+            "description": "max. 280 chars"
           },
           "selectedSignalValues": {
             "type": "array",
-            "description": "Array of strings containing the names of signals",
+            "description": "array of signal values that are selected in this array",
             "items": {
               "type": "string"
+            }
+          },
+          "signals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            }
+          }
+        },
+        "xml": {
+          "name": "Dataset"
+        }
+      },
+      "Signal": {
+        "type": "object",
+        "properties": {
+          "signalName": {
+            "type": "string",
+            "description": "name of the signal, e.g. temperature"
+          },
+          "signalUnit": {
+            "type": "string",
+            "description": "signal unit, e.g. '°C'"
+          },
+          "signalValues": {
+            "type": "array",
+            "description": "array of value pairs",
+            "items": {
+              "type": "array",
+              "description": "value pair array",
+              "items": {
+                "type": "number",
+                "description": "current value as float, time stamp in seconds",
+                "example": [
+                  3,
+                  1
+                ]
+              }
             }
           }
         }

@@ -32,43 +32,16 @@ void EyeCANServer::initServer() {
 
 void EyeCANServer::initApiEndpoints() {
 
-    svr.set_mount_point("/api/v1", "static/api");
-    /*
-    svr.Get("/api/v1/index.html", [](const Request&, Response& res) {
-        std::string index = readFile("dist/index.html");
-        res.set_content(index, "text/html");
-    });
+    std::string exists = readFile("static/api/index.html");
 
-    svr.Get("/api/v1/index.html", [](const Request&, Response& res) {
-        std::string index = readFile("dist/index.css");
-        res.set_content(index, "text/css");
-    });
-
-    svr.Get("/api/v1/api.config.yaml", [](const Request&, Response& res) {
-        std::string api = readFile("src/openapi.yaml");
-        res.set_content(api, "application/x-yaml");
-    });
-
-    svr.Get("/api/v1/swagger-ui-bundle.js", [this](const Request&, Response& res) {
-        std::string js = readFile("dist/swagger-ui-bundle.js");
-        res.set_content(js, "application/javascript");
-    });
-
-    svr.Get("/api/v1/swagger-initializer.js", [this](const Request&, Response& res) {
-        std::string js = readFile("dist/swagger-initializer.js");
-        res.set_content(js, "application/javascript");
-    });
-
-    svr.Get("/api/v1/swagger-ui-standalone-preset.js", [this](const Request&, Response& res) {
-        std::string js = readFile("dist/swagger-ui-standalone-preset.js");
-        res.set_content(js, "application/javascript");
-    });
-
-    svr.Get("/api/v1/swagger-ui.css", [this](const Request&, Response& res) {
-        std::string css = readFile("dist/swagger-ui.css");
-        res.set_content(css, "text/css");
-    });
-    */
+    if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") {
+        svr.Get("/api/v1/", [](const Request& req, Response& res) {
+            std::string yaml = readFile("static/api/eyecan-api-defintion.json");
+            res.set_content(yaml, "application/json");
+        });
+    } else {
+        svr.set_mount_point("/api/v1", "static/api");
+    }
 
     svr.Post("/api/v1/knowledgebase", [](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
