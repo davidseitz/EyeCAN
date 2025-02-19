@@ -11,6 +11,9 @@ public:
 
 private:
     void initApiEndpoints();
+    void initKnowledgebaseEndpoints();
+    void initFilterEndpoints();
+    void initDatasetEndpoints();
     static std::string readFile(const std::string &filename);
 };
 
