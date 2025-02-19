@@ -1,3 +1,9 @@
+# Pre-requisites
+
+**Before building how to get the submodule libaries:**
+1. git submodule init
+2. git submodule update
+
 # How to start server
 
 1. Build project
