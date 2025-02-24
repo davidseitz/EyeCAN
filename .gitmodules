@@ -1,3 +1,9 @@
+[submodule "dbcppp"]
+	path = libraries/dbcppp
+	url = https://github.com/xR3b0rn/dbcppp.git
+[submodule "mdflib"]
+	path = libraries/mdflib
+	url = https://github.com/ihedvall/mdflib.git
 [submodule "libraries/cpp-httplib"]
 	path = libraries/cpp-httplib
 	url = https://github.com/yhirose/cpp-httplib

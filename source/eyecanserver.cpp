@@ -64,7 +64,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 
                 // TODO Save the knowledgebase article
                 // Set ID for testing
-                request_json["id"] = "1";
+                request_json["id"] = "2";
 
                 // Send JSON response
                 res.status = 201; // Created
