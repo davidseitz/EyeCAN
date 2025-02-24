@@ -1,0 +1,780 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: VCU MC_Front MC_Rear ASCU
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ FR_INVB_Controlmode : 0|7@1+ (1,0) [0|127] "" Vector__XXX
+ SG_ RL_INVA_Controlmode : 0|7@1+ (1,0) [0|127] "" Vector__XXX
+ SG_ RR_INVA_Controlmode : 0|7@1+ (1,0) [0|127] "" Vector__XXX
+ SG_ FL_INVB_Controlmode : 0|7@1+ (1,0) [0|127] "" Vector__XXX
+
+BO_ 1300 AS_Cmd: 8 ASCU
+ SG_ AS_Steering_cmd : 32|32@1- (0.01,0) [-40|40] " "  VCU
+ SG_ AS_Speed_cmd : 16|16@1- (0.01,0) [0|40] "m/s"  VCU
+ SG_ AS_Accel_cmd : 0|16@1- (0.01,0) [0|100] "%"  VCU
+
+BO_ 1346 MC_RxPDO_RRRL_DeviceSetpoint: 8 VCU
+ SG_ systemTimeStamp : 0|16@1+ (1,0) [0|65535] "ms"  MC_Rear
+
+BO_ 1282 MC_RxPDO_RR_Setpoint2: 8 VCU
+ SG_ RR_MOTA_dc_link_voltage_max : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Front
+ SG_ RR_MOTA_dc_link_voltage_min : 16|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Front
+ SG_ RR_MOTA_mot_power_max : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+ SG_ RR_MOTA_gen_power_max : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+
+BO_ 1026 MC_RxPDO_RR_Setpoint1: 8 VCU
+ SG_ RR_INVA_Controlword : 0|16@1+ (1,0) [0|65535] ""  MC_Front
+ SG_ RR_MOTA_target_velocity : 16|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  MC_Front
+ SG_ RR_MOTA_target_torque : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+
+BO_ 1281 MC_RxPDO_FL_Setpoint2: 8 VCU
+ SG_ FL_MOTB_dc_link_voltage_max : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Front
+ SG_ FL_MOTB_dc_link_voltage_min : 16|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Front
+ SG_ FL_MOTB_mot_power_max : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+ SG_ FL_MOTB_gen_power_max : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+
+BO_ 1025 MC_RxPDO_FL_Setpoint1: 8 VCU
+ SG_ FL_INVB_Controlword : 0|16@1+ (1,0) [0|65535] ""  MC_Front
+ SG_ FL_MOTB_target_velocity : 16|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  MC_Front
+ SG_ FL_MOTB_target_torque : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front
+
+BO_ 386 MC_TxPDO_RRRL_DeviceActual: 8 MC_Rear
+ SG_ RRRL_Device_dc_link_voltage : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  VCU
+ SG_ RRRL_Device_ambient_temperature : 16|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+ SG_ RRRL_Device_dc_link_power : 32|16@1- (0.016,0) [-524.288|524.272] "kW"  VCU
+
+BO_ 449 MC_TxPDO_FR_Status: 8 MC_Front
+ SG_ FR_INVB_Statusword : 0|16@1+ (1,0) [0|65535] ""  MC_Front,VCU
+ SG_ FR_EVENTBUFFER_NEW_EVENT : 16|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_EVENTBUFFER_OVERFLOW : 17|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_TRIPZONE_OVERCURR : 18|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_CURRENT_OFFSET_IN : 19|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_TEMPSENSOR_ERROR : 20|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_TEMPERATURE_WARNI : 21|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_OVERTEMPERATURE : 22|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_IXT_FAULT : 23|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_SW_OVERCURRENT : 24|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_PATTERNDATA_INCON : 25|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_DCBUS_TRIPZONE_OVERVOLTAGE : 26|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_DCBUS_SW_OVERVOLTAGE : 27|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_DCBUS_SW_UNDERVOLTAGE : 28|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_NEIGHBOUR_FAULT : 29|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_TEMPSENSOR_ERROR : 30|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_TEMPERATURE_WARNING : 31|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_OVERTEMPERATURE : 32|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_STATOR_FREQ_TO_HIGH : 33|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_SUPPLYVOLTAGE_ERROR : 34|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_RPDO_TIMEOUT : 35|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_NMT_NOT_OPERATIONAL : 36|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_TASKOVERRUN : 37|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_NETSYNC_ERROR : 38|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POSDEVICE_SIGNAL_TO_LOW : 39|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POSDEVICE_SIGNAL_TO_HIGH : 40|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_RESOLVER_CALIBRATION_FAILED : 41|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_SYSTEM_FAULT : 42|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_INTERLOCK_OPEN : 43|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_APPC_HAS_GATE_DRIVER_DISABLED : 44|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_STALL_ERROR : 45|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_AMBIENT_TEMPERATURE_WARNING : 46|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_AMBIENT_OVERTEMPERATURE : 47|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_AMBIENT_TEMPSENSOR_ERROR : 48|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_CLAMPING_TIMEOUT : 49|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_DCBUS_RIPPLE_TO_HIGH : 50|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_I2XT_WARNING : 51|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_I2XT_ERROR : 52|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_FIELDWEAKENING_ERROR : 53|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_INVALID_PARAMETER_COMBINATION : 54|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_PLUG_COVER_SENSOR_SIGNAL_LOW : 55|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_MOTOR_CONNECTION_TEST_FAILED : 56|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+ SG_ FR_POWERMODULE_IXT_WARNING : 57|1@1+ (1,0) [0|1] ""  MC_Front,VCU
+
+BO_ 641 MC_TxPDO_FR_Actual2: 8 MC_Front
+ SG_ FR_MOTB_actual_temperature : 0|16@1- (0.0625,0) [-2048|2047.9375] " C"  MC_Front,VCU
+ SG_ FR_MOTB_actual_power : 16|16@1- (0.016,0) [-524.288|524.272] "kW"  MC_Front,VCU
+ SG_ FR_MOTB_actual_voltage : 32|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Front,VCU
+ SG_ FR_POWMODB_actual_temperature : 48|16@1- (0.0625,0) [-2048|2047.9375] " C"  MC_Front,VCU
+
+BO_ 577 MC_TxPDO_FR_Actual1: 8 MC_Front
+ SG_ FR_MOTB_actual_velocity : 0|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  MC_Front,VCU
+ SG_ FR_MOTB_actual_torque : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Front,VCU
+ SG_ FR_MOTB_actual_current : 48|16@1- (0.015625,0) [-512|511.984375] "A"  MC_Front,VCU
+
+BO_ 642 MC_TxPDO_RL_Actual2: 8 MC_Rear
+ SG_ RL_MOTA_actual_temperature : 0|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+ SG_ RL_MOTA_actual_power : 16|16@1- (0.016,0) [-524.288|524.272] "kW"  VCU
+ SG_ RL_MOTA_actual_voltage : 32|16@1- (0.0625,0) [-2048|2047.9375] "V"  VCU
+ SG_ RL_POWMODA_actual_temperature : 48|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+
+BO_ 578 MC_TxPDO_RL_Actual1: 8 MC_Rear
+ SG_ RL_MOTA_actual_velocity : 0|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  VCU
+ SG_ RL_MOTA_actual_torque : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  VCU
+ SG_ RL_MOTA_actual_current : 48|16@1- (0.015625,0) [-512|511.984375] "A"  VCU
+
+BO_ 450 MC_TxPDO_RL_Status: 8 MC_Rear
+ SG_ RL_INVA_Statusword : 0|16@1+ (1,0) [0|65535] ""  VCU
+ SG_ RL_EVENTBUFFER_NEW_EVENT : 16|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_EVENTBUFFER_OVERFLOW : 17|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_TRIPZONE_OVERCURR : 18|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_CURRENT_OFFSET_IN : 19|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_TEMPSENSOR_ERROR : 20|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_TEMPERATURE_WARNI : 21|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_OVERTEMPERATURE : 22|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_IXT_FAULT : 23|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_SW_OVERCURRENT : 24|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_PATTERNDATA_INCON : 25|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_DCBUS_TRIPZONE_OVERVOLTAGE : 26|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_DCBUS_SW_OVERVOLTAGE : 27|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_DCBUS_SW_UNDERVOLTAGE : 28|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_NEIGHBOUR_FAULT : 29|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_TEMPSENSOR_ERROR : 30|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_TEMPERATURE_WARNING : 31|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_OVERTEMPERATURE : 32|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_STATOR_FREQ_TO_HIGH : 33|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_SUPPLYVOLTAGE_ERROR : 34|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_RPDO_TIMEOUT : 35|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_NMT_NOT_OPERATIONAL : 36|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_TASKOVERRUN : 37|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_NETSYNC_ERROR : 38|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POSDEVICE_SIGNAL_TO_LOW : 39|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POSDEVICE_SIGNAL_TO_HIGH : 40|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_RESOLVER_CALIBRATION_FAILED : 41|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_SYSTEM_FAULT : 42|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_INTERLOCK_OPEN : 43|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_APPC_HAS_GATE_DRIVER_DISABLED : 44|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_STALL_ERROR : 45|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_AMBIENT_TEMPERATURE_WARNING : 46|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_AMBIENT_OVERTEMPERATURE : 47|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_AMBIENT_TEMPSENSOR_ERROR : 48|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_CLAMPING_TIMEOUT : 49|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_DCBUS_RIPPLE_TO_HIGH : 50|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_I2XT_WARNING : 51|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_I2XT_ERROR : 52|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_FIELDWEAKENING_ERROR : 53|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_INVALID_PARAMETER_COMBINATION : 54|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_PLUG_COVER_SENSOR_SIGNAL_LOW : 55|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_MOTOR_CONNECTION_TEST_FAILED : 56|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RL_POWERMODULE_IXT_WARNING : 57|1@1+ (1,0) [0|1] ""  VCU
+
+BO_ 385 MC_TxPDO_FLFR_DeviceActual: 8 MC_Front
+ SG_ FLFR_Device_dc_link_voltage : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  VCU
+ SG_ FLFR_Device_ambient_temperature : 16|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+ SG_ FLFR_Device_dc_link_power : 32|16@1- (0.016,0) [-524.288|524.272] "kW"  VCU
+
+BO_ 706 MC_TxPDO_RR_Status: 8 MC_Rear
+ SG_ RR_INVA_Statusword : 0|16@1+ (1,0) [0|65535] ""  VCU
+ SG_ RR_EVENTBUFFER_NEW_EVENT : 16|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_EVENTBUFFER_OVERFLOW : 17|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_TRIPZONE_OVERCURR : 18|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_CURRENT_OFFSET_IN : 19|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_TEMPSENSOR_ERROR : 20|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_TEMPERATURE_WARNI : 21|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_OVERTEMPERATURE : 22|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_IXT_FAULT : 23|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_SW_OVERCURRENT : 24|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_PATTERNDATA_INCON : 25|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_DCBUS_TRIPZONE_OVERVOLTAGE : 26|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_DCBUS_SW_OVERVOLTAGE : 27|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_DCBUS_SW_UNDERVOLTAGE : 28|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_NEIGHBOUR_FAULT : 29|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_TEMPSENSOR_ERROR : 30|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_TEMPERATURE_WARNING : 31|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_OVERTEMPERATURE : 32|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_STATOR_FREQ_TO_HIGH : 33|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_SUPPLYVOLTAGE_ERROR : 34|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_RPDO_TIMEOUT : 35|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_NMT_NOT_OPERATIONAL : 36|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_TASKOVERRUN : 37|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_NETSYNC_ERROR : 38|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POSDEVICE_SIGNAL_TO_LOW : 39|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POSDEVICE_SIGNAL_TO_HIGH : 40|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_RESOLVER_CALIBRATION_FAILED : 41|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_SYSTEM_FAULT : 42|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_INTERLOCK_OPEN : 43|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_APPC_HAS_GATE_DRIVER_DISABLED : 44|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_STALL_ERROR : 45|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_AMBIENT_TEMPERATURE_WARNING : 46|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_AMBIENT_OVERTEMPERATURE : 47|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_AMBIENT_TEMPSENSOR_ERROR : 48|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_CLAMPING_TIMEOUT : 49|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_DCBUS_RIPPLE_TO_HIGH : 50|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_I2XT_WARNING : 51|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_I2XT_ERROR : 52|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_FIELDWEAKENING_ERROR : 53|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_INVALID_PARAMETER_COMBINATION : 54|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_PLUG_COVER_SENSOR_SIGNAL_LOW : 55|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_MOTOR_CONNECTION_TEST_FAILED : 56|1@1+ (1,0) [0|1] ""  VCU
+ SG_ RR_POWERMODULE_IXT_WARNING : 57|1@1+ (1,0) [0|1] ""  VCU
+
+BO_ 834 MC_TxPDO_RR_Actual1: 8 MC_Rear
+ SG_ RR_MOTA_actual_velocity : 0|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  VCU
+ SG_ RR_MOTA_actual_torque : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  VCU
+ SG_ RR_MOTA_actual_current : 48|16@1- (0.015625,0) [-512|511.984375] "A"  VCU
+
+BO_ 898 MC_TxPDO_RR_Actual2: 8 MC_Rear
+ SG_ RR_MOTA_actual_temperature : 0|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+ SG_ RR_MOTA_actual_power : 16|16@1- (0.016,0) [-524.288|524.272] "kW"  VCU
+ SG_ RR_MOTA_actual_voltage : 32|16@1- (0.0625,0) [-2048|2047.9375] "V"  VCU
+ SG_ RR_POWMODA_actual_temperature : 48|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+
+BO_ 705 MC_TxPDO_FL_Status: 8 MC_Front
+ SG_ FL_INVB_Statusword : 0|16@1+ (1,0) [0|65535] ""  VCU
+ SG_ FL_EVENTBUFFER_NEW_EVENT : 16|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_EVENTBUFFER_OVERFLOW : 17|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_TRIPZONE_OVERCURR : 18|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_CURRENT_OFFSET_IN : 19|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_TEMPSENSOR_ERROR : 20|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_TEMPERATURE_WARNI : 21|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_OVERTEMPERATURE : 22|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_IXT_FAULT : 23|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_SW_OVERCURRENT : 24|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_PATTERNDATA_INCON : 25|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_DCBUS_TRIPZONE_OVERVOLTAGE : 26|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_DCBUS_SW_OVERVOLTAGE : 27|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_DCBUS_SW_UNDERVOLTAGE : 28|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_NEIGHBOUR_FAULT : 29|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_TEMPSENSOR_ERROR : 30|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_TEMPERATURE_WARNING : 31|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_OVERTEMPERATURE : 32|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_STATOR_FREQ_TO_HIGH : 33|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_SUPPLYVOLTAGE_ERROR : 34|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_RPDO_TIMEOUT : 35|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_NMT_NOT_OPERATIONAL : 36|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_TASKOVERRUN : 37|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_NETSYNC_ERROR : 38|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POSDEVICE_SIGNAL_TO_LOW : 39|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POSDEVICE_SIGNAL_TO_HIGH : 40|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_RESOLVER_CALIBRATION_FAILED : 41|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_SYSTEM_FAULT : 42|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_INTERLOCK_OPEN : 43|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_APPC_HAS_GATE_DRIVER_DISABLED : 44|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_STALL_ERROR : 45|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_AMBIENT_TEMPERATURE_WARNING : 46|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_AMBIENT_OVERTEMPERATURE : 47|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_AMBIENT_TEMPSENSOR_ERROR : 48|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_CLAMPING_TIMEOUT : 49|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_DCBUS_RIPPLE_TO_HIGH : 50|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_I2XT_WARNING : 51|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_I2XT_ERROR : 52|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_FIELDWEAKENING_ERROR : 53|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_INVALID_PARAMETER_COMBINATION : 54|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_PLUG_COVER_SENSOR_SIGNAL_LOW : 55|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_MOTOR_CONNECTION_TEST_FAILED : 56|1@1+ (1,0) [0|1] ""  VCU
+ SG_ FL_POWERMODULE_IXT_WARNING : 57|1@1+ (1,0) [0|1] ""  VCU
+
+BO_ 833 MC_TxPDO_FL_Actual1: 8 MC_Front
+ SG_ FL_MOTB_actual_velocity : 0|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  VCU
+ SG_ FL_MOTB_actual_torque : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  VCU
+ SG_ FL_MOTB_actual_current : 48|16@1- (0.015625,0) [-512|511.984375] "A"  VCU
+
+BO_ 897 MC_TxPDO_FL_Actual2: 8 MC_Front
+ SG_ FL_MOTB_actual_temperature : 0|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+ SG_ FL_MOTB_actual_power : 16|16@1- (0.016,0) [-524.288|524.272] "kW"  VCU
+ SG_ FL_MOTB_actual_voltage : 32|16@1- (0.0625,0) [-2048|2047.9375] "V"  VCU
+ SG_ FL_POWMODB_actual_temperature : 48|16@1- (0.0625,0) [-2048|2047.9375] " C"  VCU
+
+BO_ 0 NMT: 2 Vector__XXX
+ SG_ commmand_specifier : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ NodeID : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 514 MC_RxPDO_RL_Setpoint1: 8 VCU
+ SG_ RL_INVA_Controlword : 0|16@1+ (1,0) [0|65535] ""  MC_Rear
+ SG_ RL_MOTA_target_velocity : 16|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  MC_Rear
+ SG_ RL_MOTA_target_torque : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+
+BO_ 770 MC_RxPDO_RL_Setpoint2: 8 VCU
+ SG_ RL_MOTA_dc_link_voltage_max : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Rear
+ SG_ RL_MOTA_dc_link_voltage_min : 16|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Rear
+ SG_ RL_MOTA_mot_power_max : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+ SG_ RL_MOTA_gen_power_max : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+
+BO_ 513 MC_RxPDO_FR_Setpoint1: 8 VCU
+ SG_ FR_INVB_Controlword : 0|16@1+ (1,0) [0|65535] ""  MC_Rear
+ SG_ FR_MOTB_target_velocity : 16|32@1- (6.103515625E-005,0) [-131072|131071.999938965] "rpm"  MC_Rear
+ SG_ FR_MOTB_target_torque : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+
+BO_ 769 MC_RxPDO_FR_Setpoint2: 8 VCU
+ SG_ FR_MOTB_dc_link_voltage_max : 0|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Rear
+ SG_ FR_MOTB_dc_link_voltage_min : 16|16@1- (0.0625,0) [-2048|2047.9375] "V"  MC_Rear
+ SG_ FR_MOTB_mot_power_max : 32|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+ SG_ FR_MOTB_gen_power_max : 48|16@1- (0.1,0) [-3276.8|3276.7] "%"  MC_Rear
+
+BO_ 1345 MC_RxPDO_FLFR_DeviceSetpoint: 8 VCU
+ SG_ systemTimeStamp : 0|16@1+ (1,0) [0|65535] "ms"  MC_Front
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ SG_  "GenSigStartValue" FLOAT -3.4E+038 3.4E+038;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "GenSigStartValue" SG_ 3221225472 FR_INVB_Controlmode 0;
+BA_ "GenSigStartValue" SG_ 3221225472 RL_INVA_Controlmode 0;
+BA_ "GenSigStartValue" SG_ 3221225472 RR_INVA_Controlmode 0;
+BA_ "GenSigStartValue" SG_ 3221225472 FL_INVB_Controlmode 0;
+BA_ "GenSigStartValue" SG_ 1346 systemTimeStamp 0;
+BA_ "GenSigStartValue" SG_ 1282 RR_MOTA_dc_link_voltage_max 0;
+BA_ "GenSigStartValue" SG_ 1282 RR_MOTA_dc_link_voltage_min 0;
+BA_ "GenSigStartValue" SG_ 1282 RR_MOTA_mot_power_max 0;
+BA_ "GenSigStartValue" SG_ 1282 RR_MOTA_gen_power_max 0;
+BA_ "GenSigStartValue" SG_ 1026 RR_INVA_Controlword 0;
+BA_ "GenSigStartValue" SG_ 1026 RR_MOTA_target_velocity 0;
+BA_ "GenSigStartValue" SG_ 1026 RR_MOTA_target_torque 0;
+BA_ "GenSigStartValue" SG_ 1281 FL_MOTB_dc_link_voltage_max 0;
+BA_ "GenSigStartValue" SG_ 1281 FL_MOTB_dc_link_voltage_min 0;
+BA_ "GenSigStartValue" SG_ 1281 FL_MOTB_mot_power_max 0;
+BA_ "GenSigStartValue" SG_ 1281 FL_MOTB_gen_power_max 0;
+BA_ "GenSigStartValue" SG_ 1025 FL_INVB_Controlword 0;
+BA_ "GenSigStartValue" SG_ 1025 FL_MOTB_target_velocity 0;
+BA_ "GenSigStartValue" SG_ 1025 FL_MOTB_target_torque 0;
+BA_ "GenSigStartValue" SG_ 386 RRRL_Device_dc_link_voltage 0;
+BA_ "GenSigStartValue" SG_ 386 RRRL_Device_ambient_temperature 0;
+BA_ "GenSigStartValue" SG_ 386 RRRL_Device_dc_link_power 0;
+BA_ "GenSigStartValue" SG_ 449 FR_INVB_Statusword 0;
+BA_ "GenSigStartValue" SG_ 449 FR_EVENTBUFFER_NEW_EVENT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_EVENTBUFFER_OVERFLOW 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_TRIPZONE_OVERCURR 0;
+BA_ "SystemSignalLongSymbol" SG_ 449 FR_POWERMODULE_TRIPZONE_OVERCURR "FR_POWERMODULE_TRIPZONE_OVERCURRE";
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_CURRENT_OFFSET_IN 0;
+BA_ "SystemSignalLongSymbol" SG_ 449 FR_POWERMODULE_CURRENT_OFFSET_IN "FR_POWERMODULE_CURRENT_OFFSET_INI";
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_TEMPERATURE_WARNI 0;
+BA_ "SystemSignalLongSymbol" SG_ 449 FR_POWERMODULE_TEMPERATURE_WARNI "FR_POWERMODULE_TEMPERATURE_WARNIN";
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_IXT_FAULT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_SW_OVERCURRENT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_PATTERNDATA_INCON 0;
+BA_ "SystemSignalLongSymbol" SG_ 449 FR_POWERMODULE_PATTERNDATA_INCON "FR_POWERMODULE_PATTERNDATA_INCONS";
+BA_ "GenSigStartValue" SG_ 449 FR_DCBUS_TRIPZONE_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_DCBUS_SW_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_DCBUS_SW_UNDERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_NEIGHBOUR_FAULT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_STATOR_FREQ_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 449 FR_SUPPLYVOLTAGE_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_RPDO_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_NMT_NOT_OPERATIONAL 0;
+BA_ "GenSigStartValue" SG_ 449 FR_TASKOVERRUN 0;
+BA_ "GenSigStartValue" SG_ 449 FR_NETSYNC_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POSDEVICE_SIGNAL_TO_LOW 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POSDEVICE_SIGNAL_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 449 FR_RESOLVER_CALIBRATION_FAILED 0;
+BA_ "GenSigStartValue" SG_ 449 FR_SYSTEM_FAULT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_INTERLOCK_OPEN 0;
+BA_ "GenSigStartValue" SG_ 449 FR_APPC_HAS_GATE_DRIVER_DISABLED 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_STALL_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_AMBIENT_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 449 FR_AMBIENT_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 449 FR_AMBIENT_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_CLAMPING_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 449 FR_DCBUS_RIPPLE_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_I2XT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_I2XT_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_FIELDWEAKENING_ERROR 0;
+BA_ "GenSigStartValue" SG_ 449 FR_INVALID_PARAMETER_COMBINATION 0;
+BA_ "GenSigStartValue" SG_ 449 FR_PLUG_COVER_SENSOR_SIGNAL_LOW 0;
+BA_ "GenSigStartValue" SG_ 449 FR_MOTOR_CONNECTION_TEST_FAILED 0;
+BA_ "GenSigStartValue" SG_ 449 FR_POWERMODULE_IXT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 641 FR_MOTB_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 641 FR_MOTB_actual_power 0;
+BA_ "GenSigStartValue" SG_ 641 FR_MOTB_actual_voltage 0;
+BA_ "GenSigStartValue" SG_ 641 FR_POWMODB_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 577 FR_MOTB_actual_velocity 0;
+BA_ "GenSigStartValue" SG_ 577 FR_MOTB_actual_torque 0;
+BA_ "GenSigStartValue" SG_ 577 FR_MOTB_actual_current 0;
+BA_ "GenSigStartValue" SG_ 642 RL_MOTA_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 642 RL_MOTA_actual_power 0;
+BA_ "GenSigStartValue" SG_ 642 RL_MOTA_actual_voltage 0;
+BA_ "GenSigStartValue" SG_ 642 RL_POWMODA_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 578 RL_MOTA_actual_velocity 0;
+BA_ "GenSigStartValue" SG_ 578 RL_MOTA_actual_torque 0;
+BA_ "GenSigStartValue" SG_ 578 RL_MOTA_actual_current 0;
+BA_ "GenSigStartValue" SG_ 450 RL_INVA_Statusword 0;
+BA_ "GenSigStartValue" SG_ 450 RL_EVENTBUFFER_NEW_EVENT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_EVENTBUFFER_OVERFLOW 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_TRIPZONE_OVERCURR 0;
+BA_ "SystemSignalLongSymbol" SG_ 450 RL_POWERMODULE_TRIPZONE_OVERCURR "RL_POWERMODULE_TRIPZONE_OVERCURRE";
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_CURRENT_OFFSET_IN 0;
+BA_ "SystemSignalLongSymbol" SG_ 450 RL_POWERMODULE_CURRENT_OFFSET_IN "RL_POWERMODULE_CURRENT_OFFSET_INI";
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_TEMPERATURE_WARNI 0;
+BA_ "SystemSignalLongSymbol" SG_ 450 RL_POWERMODULE_TEMPERATURE_WARNI "RL_POWERMODULE_TEMPERATURE_WARNIN";
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_IXT_FAULT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_SW_OVERCURRENT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_PATTERNDATA_INCON 0;
+BA_ "SystemSignalLongSymbol" SG_ 450 RL_POWERMODULE_PATTERNDATA_INCON "RL_POWERMODULE_PATTERNDATA_INCONS";
+BA_ "GenSigStartValue" SG_ 450 RL_DCBUS_TRIPZONE_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_DCBUS_SW_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_DCBUS_SW_UNDERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_NEIGHBOUR_FAULT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_STATOR_FREQ_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 450 RL_SUPPLYVOLTAGE_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_RPDO_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_NMT_NOT_OPERATIONAL 0;
+BA_ "GenSigStartValue" SG_ 450 RL_TASKOVERRUN 0;
+BA_ "GenSigStartValue" SG_ 450 RL_NETSYNC_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POSDEVICE_SIGNAL_TO_LOW 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POSDEVICE_SIGNAL_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 450 RL_RESOLVER_CALIBRATION_FAILED 0;
+BA_ "GenSigStartValue" SG_ 450 RL_SYSTEM_FAULT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_INTERLOCK_OPEN 0;
+BA_ "GenSigStartValue" SG_ 450 RL_APPC_HAS_GATE_DRIVER_DISABLED 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_STALL_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_AMBIENT_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 450 RL_AMBIENT_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 450 RL_AMBIENT_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_CLAMPING_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 450 RL_DCBUS_RIPPLE_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_I2XT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_I2XT_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_FIELDWEAKENING_ERROR 0;
+BA_ "GenSigStartValue" SG_ 450 RL_INVALID_PARAMETER_COMBINATION 0;
+BA_ "GenSigStartValue" SG_ 450 RL_PLUG_COVER_SENSOR_SIGNAL_LOW 0;
+BA_ "GenSigStartValue" SG_ 450 RL_MOTOR_CONNECTION_TEST_FAILED 0;
+BA_ "GenSigStartValue" SG_ 450 RL_POWERMODULE_IXT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 385 FLFR_Device_dc_link_voltage 0;
+BA_ "GenSigStartValue" SG_ 385 FLFR_Device_ambient_temperature 0;
+BA_ "GenSigStartValue" SG_ 385 FLFR_Device_dc_link_power 0;
+BA_ "GenSigStartValue" SG_ 706 RR_INVA_Statusword 0;
+BA_ "GenSigStartValue" SG_ 706 RR_EVENTBUFFER_NEW_EVENT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_EVENTBUFFER_OVERFLOW 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_TRIPZONE_OVERCURR 0;
+BA_ "SystemSignalLongSymbol" SG_ 706 RR_POWERMODULE_TRIPZONE_OVERCURR "RR_POWERMODULE_TRIPZONE_OVERCURRE";
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_CURRENT_OFFSET_IN 0;
+BA_ "SystemSignalLongSymbol" SG_ 706 RR_POWERMODULE_CURRENT_OFFSET_IN "RR_POWERMODULE_CURRENT_OFFSET_INI";
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_TEMPERATURE_WARNI 0;
+BA_ "SystemSignalLongSymbol" SG_ 706 RR_POWERMODULE_TEMPERATURE_WARNI "RR_POWERMODULE_TEMPERATURE_WARNIN";
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_IXT_FAULT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_SW_OVERCURRENT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_PATTERNDATA_INCON 0;
+BA_ "SystemSignalLongSymbol" SG_ 706 RR_POWERMODULE_PATTERNDATA_INCON "RR_POWERMODULE_PATTERNDATA_INCONS";
+BA_ "GenSigStartValue" SG_ 706 RR_DCBUS_TRIPZONE_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_DCBUS_SW_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_DCBUS_SW_UNDERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_NEIGHBOUR_FAULT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_STATOR_FREQ_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 706 RR_SUPPLYVOLTAGE_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_RPDO_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_NMT_NOT_OPERATIONAL 0;
+BA_ "GenSigStartValue" SG_ 706 RR_TASKOVERRUN 0;
+BA_ "GenSigStartValue" SG_ 706 RR_NETSYNC_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POSDEVICE_SIGNAL_TO_LOW 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POSDEVICE_SIGNAL_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 706 RR_RESOLVER_CALIBRATION_FAILED 0;
+BA_ "GenSigStartValue" SG_ 706 RR_SYSTEM_FAULT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_INTERLOCK_OPEN 0;
+BA_ "GenSigStartValue" SG_ 706 RR_APPC_HAS_GATE_DRIVER_DISABLED 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_STALL_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_AMBIENT_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 706 RR_AMBIENT_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 706 RR_AMBIENT_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_CLAMPING_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 706 RR_DCBUS_RIPPLE_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_I2XT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_I2XT_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_FIELDWEAKENING_ERROR 0;
+BA_ "GenSigStartValue" SG_ 706 RR_INVALID_PARAMETER_COMBINATION 0;
+BA_ "GenSigStartValue" SG_ 706 RR_PLUG_COVER_SENSOR_SIGNAL_LOW 0;
+BA_ "GenSigStartValue" SG_ 706 RR_MOTOR_CONNECTION_TEST_FAILED 0;
+BA_ "GenSigStartValue" SG_ 706 RR_POWERMODULE_IXT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 834 RR_MOTA_actual_velocity 0;
+BA_ "GenSigStartValue" SG_ 834 RR_MOTA_actual_torque 0;
+BA_ "GenSigStartValue" SG_ 834 RR_MOTA_actual_current 0;
+BA_ "GenSigStartValue" SG_ 898 RR_MOTA_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 898 RR_MOTA_actual_power 0;
+BA_ "GenSigStartValue" SG_ 898 RR_MOTA_actual_voltage 0;
+BA_ "GenSigStartValue" SG_ 898 RR_POWMODA_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 705 FL_INVB_Statusword 0;
+BA_ "GenSigStartValue" SG_ 705 FL_EVENTBUFFER_NEW_EVENT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_EVENTBUFFER_OVERFLOW 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_TRIPZONE_OVERCURR 0;
+BA_ "SystemSignalLongSymbol" SG_ 705 FL_POWERMODULE_TRIPZONE_OVERCURR "FL_POWERMODULE_TRIPZONE_OVERCURRE";
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_CURRENT_OFFSET_IN 0;
+BA_ "SystemSignalLongSymbol" SG_ 705 FL_POWERMODULE_CURRENT_OFFSET_IN "FL_POWERMODULE_CURRENT_OFFSET_INI";
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_TEMPERATURE_WARNI 0;
+BA_ "SystemSignalLongSymbol" SG_ 705 FL_POWERMODULE_TEMPERATURE_WARNI "FL_POWERMODULE_TEMPERATURE_WARNIN";
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_IXT_FAULT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_SW_OVERCURRENT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_PATTERNDATA_INCON 0;
+BA_ "SystemSignalLongSymbol" SG_ 705 FL_POWERMODULE_PATTERNDATA_INCON "FL_POWERMODULE_PATTERNDATA_INCONS";
+BA_ "GenSigStartValue" SG_ 705 FL_DCBUS_TRIPZONE_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_DCBUS_SW_OVERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_DCBUS_SW_UNDERVOLTAGE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_NEIGHBOUR_FAULT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_STATOR_FREQ_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 705 FL_SUPPLYVOLTAGE_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_RPDO_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_NMT_NOT_OPERATIONAL 0;
+BA_ "GenSigStartValue" SG_ 705 FL_TASKOVERRUN 0;
+BA_ "GenSigStartValue" SG_ 705 FL_NETSYNC_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POSDEVICE_SIGNAL_TO_LOW 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POSDEVICE_SIGNAL_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 705 FL_RESOLVER_CALIBRATION_FAILED 0;
+BA_ "GenSigStartValue" SG_ 705 FL_SYSTEM_FAULT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_INTERLOCK_OPEN 0;
+BA_ "GenSigStartValue" SG_ 705 FL_APPC_HAS_GATE_DRIVER_DISABLED 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_STALL_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_AMBIENT_TEMPERATURE_WARNING 0;
+BA_ "GenSigStartValue" SG_ 705 FL_AMBIENT_OVERTEMPERATURE 0;
+BA_ "GenSigStartValue" SG_ 705 FL_AMBIENT_TEMPSENSOR_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_CLAMPING_TIMEOUT 0;
+BA_ "GenSigStartValue" SG_ 705 FL_DCBUS_RIPPLE_TO_HIGH 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_I2XT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_I2XT_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_FIELDWEAKENING_ERROR 0;
+BA_ "GenSigStartValue" SG_ 705 FL_INVALID_PARAMETER_COMBINATION 0;
+BA_ "GenSigStartValue" SG_ 705 FL_PLUG_COVER_SENSOR_SIGNAL_LOW 0;
+BA_ "GenSigStartValue" SG_ 705 FL_MOTOR_CONNECTION_TEST_FAILED 0;
+BA_ "GenSigStartValue" SG_ 705 FL_POWERMODULE_IXT_WARNING 0;
+BA_ "GenSigStartValue" SG_ 833 FL_MOTB_actual_velocity 0;
+BA_ "GenSigStartValue" SG_ 833 FL_MOTB_actual_torque 0;
+BA_ "GenSigStartValue" SG_ 833 FL_MOTB_actual_current 0;
+BA_ "GenSigStartValue" SG_ 897 FL_MOTB_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 897 FL_MOTB_actual_power 0;
+BA_ "GenSigStartValue" SG_ 897 FL_MOTB_actual_voltage 0;
+BA_ "GenSigStartValue" SG_ 897 FL_POWMODB_actual_temperature 0;
+BA_ "GenSigStartValue" SG_ 0 commmand_specifier 0;
+BA_ "GenSigStartValue" SG_ 0 NodeID 0;
+BA_ "GenSigStartValue" SG_ 514 RL_INVA_Controlword 0;
+BA_ "GenSigStartValue" SG_ 514 RL_MOTA_target_velocity 0;
+BA_ "GenSigStartValue" SG_ 514 RL_MOTA_target_torque 0;
+BA_ "GenSigStartValue" SG_ 770 RL_MOTA_dc_link_voltage_max 0;
+BA_ "GenSigStartValue" SG_ 770 RL_MOTA_dc_link_voltage_min 0;
+BA_ "GenSigStartValue" SG_ 770 RL_MOTA_mot_power_max 0;
+BA_ "GenSigStartValue" SG_ 770 RL_MOTA_gen_power_max 0;
+BA_ "GenSigStartValue" SG_ 513 FR_INVB_Controlword 0;
+BA_ "GenSigStartValue" SG_ 513 FR_MOTB_target_velocity 0;
+BA_ "GenSigStartValue" SG_ 513 FR_MOTB_target_torque 0;
+BA_ "GenSigStartValue" SG_ 769 FR_MOTB_dc_link_voltage_max 0;
+BA_ "GenSigStartValue" SG_ 769 FR_MOTB_dc_link_voltage_min 0;
+BA_ "GenSigStartValue" SG_ 769 FR_MOTB_mot_power_max 0;
+BA_ "GenSigStartValue" SG_ 769 FR_MOTB_gen_power_max 0;
+BA_ "GenSigStartValue" SG_ 1345 systemTimeStamp 0;
+VAL_ 3221225472 FR_INVB_Controlmode 0 "NotReadyToSwitchOn" 64 "SwitchOnDisabled" 80 "SwitchOnDisabled" 96 "SwitchOnDisabled" 112 "SwitchOnDisabled" 33 "ReadyToSwitchOn" 49 "ReadyToSwitchOn" 35 "SwitchedOn" 51 "SwitchedOn" 39 "OperationEnabled" 55 "OperationEnabled" 7 "QuickStopActive" 23 "QuickStopActive" 15 "FaultReactionActive" 31 "FaultReactionActive" 47 "FaultReactionActive" 63 "FaultReactionActive" 8 "Fault" 24 "Fault" 40 "Fault" 56 "Fault" ;
+VAL_ 3221225472 RL_INVA_Controlmode 0 "NotReadyToSwitchOn" 64 "SwitchOnDisabled" 80 "SwitchOnDisabled" 96 "SwitchOnDisabled" 112 "SwitchOnDisabled" 33 "ReadyToSwitchOn" 49 "ReadyToSwitchOn" 35 "SwitchedOn" 51 "SwitchedOn" 39 "OperationEnabled" 55 "OperationEnabled" 7 "QuickStopActive" 23 "QuickStopActive" 15 "FaultReactionActive" 31 "FaultReactionActive" 47 "FaultReactionActive" 63 "FaultReactionActive" 8 "Fault" 24 "Fault" 40 "Fault" 56 "Fault" ;
+VAL_ 3221225472 RR_INVA_Controlmode 0 "NotReadyToSwitchOn" 64 "SwitchOnDisabled" 80 "SwitchOnDisabled" 96 "SwitchOnDisabled" 112 "SwitchOnDisabled" 33 "ReadyToSwitchOn" 49 "ReadyToSwitchOn" 35 "SwitchedOn" 51 "SwitchedOn" 39 "OperationEnabled" 55 "OperationEnabled" 7 "QuickStopActive" 23 "QuickStopActive" 15 "FaultReactionActive" 31 "FaultReactionActive" 47 "FaultReactionActive" 63 "FaultReactionActive" 8 "Fault" 24 "Fault" 40 "Fault" 56 "Fault" ;
+VAL_ 3221225472 FL_INVB_Controlmode 56 "Fault" 40 "Fault" 24 "Fault" 8 "Fault" 63 "FaultReactionActive" 47 "FaultReactionActive" 31 "FaultReactionActive" 15 "FaultReactionActive" 23 "QuickStopActive" 7 "QuickStopActive" 55 "OperationEnabled" 39 "OperationEnabled" 51 "SwitchedOn" 35 "SwitchedOn" 49 "ReadyToSwitchOn" 33 "ReadyToSwitchOn" 112 "SwitchOnDisabled" 96 "SwitchOnDisabled" 80 "SwitchOnDisabled" 64 "SwitchOnDisabled" 0 "NotReadyToSwitchOn" ;
+VAL_ 449 FR_EVENTBUFFER_NEW_EVENT 0 "no" 1 "yes" ;
+VAL_ 449 FR_EVENTBUFFER_OVERFLOW 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_TRIPZONE_OVERCURR 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_CURRENT_OFFSET_IN 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_TEMPERATURE_WARNI 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_IXT_FAULT 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_SW_OVERCURRENT 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_PATTERNDATA_INCON 0 "no" 1 "yes" ;
+VAL_ 449 FR_DCBUS_TRIPZONE_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 449 FR_DCBUS_SW_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 449 FR_DCBUS_SW_UNDERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 449 FR_NEIGHBOUR_FAULT 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_STATOR_FREQ_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 449 FR_SUPPLYVOLTAGE_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_RPDO_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 449 FR_NMT_NOT_OPERATIONAL 0 "no" 1 "yes" ;
+VAL_ 449 FR_TASKOVERRUN 0 "no" 1 "yes" ;
+VAL_ 449 FR_NETSYNC_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_POSDEVICE_SIGNAL_TO_LOW 0 "no" 1 "yes" ;
+VAL_ 449 FR_POSDEVICE_SIGNAL_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 449 FR_RESOLVER_CALIBRATION_FAILED 0 "no" 1 "yes" ;
+VAL_ 449 FR_SYSTEM_FAULT 0 "no" 1 "yes" ;
+VAL_ 449 FR_INTERLOCK_OPEN 0 "no" 1 "yes" ;
+VAL_ 449 FR_APPC_HAS_GATE_DRIVER_DISABLED 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_STALL_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_AMBIENT_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 449 FR_AMBIENT_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 449 FR_AMBIENT_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_CLAMPING_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 449 FR_DCBUS_RIPPLE_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_I2XT_WARNING 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_I2XT_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_FIELDWEAKENING_ERROR 0 "no" 1 "yes" ;
+VAL_ 449 FR_INVALID_PARAMETER_COMBINATION 0 "no" 1 "yes" ;
+VAL_ 449 FR_PLUG_COVER_SENSOR_SIGNAL_LOW 0 "no" 1 "yes" ;
+VAL_ 449 FR_MOTOR_CONNECTION_TEST_FAILED 0 "no" 1 "yes" ;
+VAL_ 449 FR_POWERMODULE_IXT_WARNING 0 "no" 1 "yes" ;
+VAL_ 450 RL_EVENTBUFFER_NEW_EVENT 0 "no" 1 "yes" ;
+VAL_ 450 RL_EVENTBUFFER_OVERFLOW 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_TRIPZONE_OVERCURR 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_CURRENT_OFFSET_IN 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_TEMPERATURE_WARNI 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_IXT_FAULT 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_SW_OVERCURRENT 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_PATTERNDATA_INCON 0 "no" 1 "yes" ;
+VAL_ 450 RL_DCBUS_TRIPZONE_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 450 RL_DCBUS_SW_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 450 RL_DCBUS_SW_UNDERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 450 RL_NEIGHBOUR_FAULT 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_STATOR_FREQ_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 450 RL_SUPPLYVOLTAGE_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_RPDO_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 450 RL_NMT_NOT_OPERATIONAL 0 "no" 1 "yes" ;
+VAL_ 450 RL_TASKOVERRUN 0 "no" 1 "yes" ;
+VAL_ 450 RL_NETSYNC_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_POSDEVICE_SIGNAL_TO_LOW 0 "no" 1 "yes" ;
+VAL_ 450 RL_POSDEVICE_SIGNAL_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 450 RL_RESOLVER_CALIBRATION_FAILED 0 "no" 1 "yes" ;
+VAL_ 450 RL_SYSTEM_FAULT 0 "no" 1 "yes" ;
+VAL_ 450 RL_INTERLOCK_OPEN 0 "no" 1 "yes" ;
+VAL_ 450 RL_APPC_HAS_GATE_DRIVER_DISABLED 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_STALL_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_AMBIENT_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 450 RL_AMBIENT_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 450 RL_AMBIENT_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_CLAMPING_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 450 RL_DCBUS_RIPPLE_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_I2XT_WARNING 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_I2XT_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_FIELDWEAKENING_ERROR 0 "no" 1 "yes" ;
+VAL_ 450 RL_INVALID_PARAMETER_COMBINATION 0 "no" 1 "yes" ;
+VAL_ 450 RL_PLUG_COVER_SENSOR_SIGNAL_LOW 0 "no" 1 "yes" ;
+VAL_ 450 RL_MOTOR_CONNECTION_TEST_FAILED 0 "no" 1 "yes" ;
+VAL_ 450 RL_POWERMODULE_IXT_WARNING 0 "no" 1 "yes" ;
+VAL_ 706 RR_INVA_Statusword 0 "NotReadyToSwitchOn" 64 "SwitchOnDisabled" 80 "SwitchOnDisabled" 96 "SwitchOnDisabled" 112 "SwitchOnDisabled" 33 "ReadyToSwitchOn" 49 "ReadyToSwitchOn" 35 "SwitchedOn" 51 "SwitchedOn" 39 "OperationEnabled" 55 "OperationEnabled" 7 "QuickStopActive" 23 "QuickStopActive" 15 "FaultReactionActive" 31 "FaultReactionActive" 47 "FaultReactionActive" 63 "FaultReactionActive" 8 "Fault" 24 "Fault" 40 "Fault" 56 "Fault" ;
+VAL_ 706 RR_EVENTBUFFER_NEW_EVENT 0 "no" 1 "yes" ;
+VAL_ 706 RR_EVENTBUFFER_OVERFLOW 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_TRIPZONE_OVERCURR 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_CURRENT_OFFSET_IN 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_TEMPERATURE_WARNI 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_IXT_FAULT 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_SW_OVERCURRENT 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_PATTERNDATA_INCON 0 "no" 1 "yes" ;
+VAL_ 706 RR_DCBUS_TRIPZONE_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 706 RR_DCBUS_SW_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 706 RR_DCBUS_SW_UNDERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 706 RR_NEIGHBOUR_FAULT 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_STATOR_FREQ_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 706 RR_SUPPLYVOLTAGE_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_RPDO_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 706 RR_NMT_NOT_OPERATIONAL 0 "no" 1 "yes" ;
+VAL_ 706 RR_TASKOVERRUN 0 "no" 1 "yes" ;
+VAL_ 706 RR_NETSYNC_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_POSDEVICE_SIGNAL_TO_LOW 0 "no" 1 "yes" ;
+VAL_ 706 RR_POSDEVICE_SIGNAL_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 706 RR_RESOLVER_CALIBRATION_FAILED 0 "no" 1 "yes" ;
+VAL_ 706 RR_SYSTEM_FAULT 0 "no" 1 "yes" ;
+VAL_ 706 RR_INTERLOCK_OPEN 0 "no" 1 "yes" ;
+VAL_ 706 RR_APPC_HAS_GATE_DRIVER_DISABLED 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_STALL_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_AMBIENT_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 706 RR_AMBIENT_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 706 RR_AMBIENT_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_CLAMPING_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 706 RR_DCBUS_RIPPLE_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_I2XT_WARNING 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_I2XT_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_FIELDWEAKENING_ERROR 0 "no" 1 "yes" ;
+VAL_ 706 RR_INVALID_PARAMETER_COMBINATION 0 "no" 1 "yes" ;
+VAL_ 706 RR_PLUG_COVER_SENSOR_SIGNAL_LOW 0 "no" 1 "yes" ;
+VAL_ 706 RR_MOTOR_CONNECTION_TEST_FAILED 0 "no" 1 "yes" ;
+VAL_ 706 RR_POWERMODULE_IXT_WARNING 0 "no" 1 "yes" ;
+VAL_ 705 FL_EVENTBUFFER_NEW_EVENT 0 "no" 1 "yes" ;
+VAL_ 705 FL_EVENTBUFFER_OVERFLOW 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_TRIPZONE_OVERCURR 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_CURRENT_OFFSET_IN 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_TEMPERATURE_WARNI 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_IXT_FAULT 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_SW_OVERCURRENT 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_PATTERNDATA_INCON 0 "no" 1 "yes" ;
+VAL_ 705 FL_DCBUS_TRIPZONE_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 705 FL_DCBUS_SW_OVERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 705 FL_DCBUS_SW_UNDERVOLTAGE 0 "no" 1 "yes" ;
+VAL_ 705 FL_NEIGHBOUR_FAULT 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_STATOR_FREQ_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 705 FL_SUPPLYVOLTAGE_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_RPDO_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 705 FL_NMT_NOT_OPERATIONAL 0 "no" 1 "yes" ;
+VAL_ 705 FL_TASKOVERRUN 0 "no" 1 "yes" ;
+VAL_ 705 FL_NETSYNC_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_POSDEVICE_SIGNAL_TO_LOW 0 "no" 1 "yes" ;
+VAL_ 705 FL_POSDEVICE_SIGNAL_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 705 FL_RESOLVER_CALIBRATION_FAILED 0 "no" 1 "yes" ;
+VAL_ 705 FL_SYSTEM_FAULT 0 "no" 1 "yes" ;
+VAL_ 705 FL_INTERLOCK_OPEN 0 "no" 1 "yes" ;
+VAL_ 705 FL_APPC_HAS_GATE_DRIVER_DISABLED 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_STALL_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_AMBIENT_TEMPERATURE_WARNING 0 "no" 1 "yes" ;
+VAL_ 705 FL_AMBIENT_OVERTEMPERATURE 0 "no" 1 "yes" ;
+VAL_ 705 FL_AMBIENT_TEMPSENSOR_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_CLAMPING_TIMEOUT 0 "no" 1 "yes" ;
+VAL_ 705 FL_DCBUS_RIPPLE_TO_HIGH 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_I2XT_WARNING 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_I2XT_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_FIELDWEAKENING_ERROR 0 "no" 1 "yes" ;
+VAL_ 705 FL_INVALID_PARAMETER_COMBINATION 0 "no" 1 "yes" ;
+VAL_ 705 FL_PLUG_COVER_SENSOR_SIGNAL_LOW 0 "no" 1 "yes" ;
+VAL_ 705 FL_MOTOR_CONNECTION_TEST_FAILED 0 "no" 1 "yes" ;
+VAL_ 705 FL_POWERMODULE_IXT_WARNING 0 "no" 1 "yes" ;
+VAL_ 0 commmand_specifier 1 "Start" 2 "Stop" 128 "Enter Pre-Operational" 129 "Reset Node" 130 "Reset Communication" ;
+

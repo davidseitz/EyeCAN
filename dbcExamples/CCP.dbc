@@ -1,0 +1,125 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Debug_Laptop
+VAL_TABLE_ Event 6 "Braketest" 5 "DV" 4 "Endurance" 3 "AutoX" 2 "Skidpad" 1 "Accel" 0 "Testing" ;
+VAL_TABLE_ TS_State 3 "TS_Error" 2 "TS_R2D" 1 "TS_Active" 0 "TS_Off" ;
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 22 CCP_RES_Write_Param: 4 Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Parameter_ID : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CCP_Write_Status : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 23 CCP_RES_Read_Sensors: 7 Vector__XXX
+ SG_ CCP_Sensor_Value : 24|32@1+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ CCP_Sensor_ID : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_LastFrame : 8|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 7 CCP_CMD_Read_Sensors: 1 Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 6 CCP_CMD_Write_Config: 8 Debug_Laptop
+ SG_ CCP_Write_Status : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Parameter_Value : 32|32@1+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ CCP_Parameter_ID : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 19 CCP_RES_Reboot: 1 Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 18 CCP_RES_Quit: 1 Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1 CCP_CMD_Connect: 1 Vector__XXX
+ SG_ CCP_ECU_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 2 CCP_CMD_Quit: 1 Debug_Laptop
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 17 CCP_RES_Connect: 4 Vector__XXX
+ SG_ CCP_Software_Version : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CCP_Connection_Status : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 3 CCP_CMD_Reboot: 1 Debug_Laptop
+ SG_ CCP_Session_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgTimeoutTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","not_used","not_used","not_used","not_used","Cyclic","not_used","IfActive","NoMsgSendType";
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 0;
+BA_DEF_  "Bus Speed" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "MultiplexExtEnabled" ENUM  "No","Yes";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgTimeoutTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgSendType" "NoMsgSendType";
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "Bus Speed" "1000k";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "MultiplexExtEnabled" "No";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_ "BusType" "CAN";
+BA_ "DBName" "CCP";
+

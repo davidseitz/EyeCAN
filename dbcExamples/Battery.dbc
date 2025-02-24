@@ -1,0 +1,440 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS
+VAL_TABLE_ SCbit 1 "ok" 0 "FAULT" ;
+VAL_TABLE_ AIRs 1 "CLOSED" 0 "OPEN" ;
+VAL_TABLE_ Status 1 "ok" 0 "error" ;
+
+
+BO_ 525 BMS0_Ex_Temps: 8 BMS
+ SG_ BMS10_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+ SG_ BMS10_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS10_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS10_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS10_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+
+BO_ 541 BMS1_Ex_Temps: 8 BMS
+ SG_ BMS1_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+ SG_ BMS1_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS1_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS1_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS1_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+
+BO_ 105 BMS_Cells: 8 BMS
+ SG_ BMS1_Year m1 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS1_ID m0 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS2_Year m8 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS2_ID m7 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS3_Year m15 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS3_ID m14 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS4_Year m22 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS4_ID m21 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS5_Year m29 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS5_ID m28 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS6_Year m36 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS6_ID m35 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS7_Year m43 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS7_ID m42 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS8_Year m50 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS8_ID m49 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS9_Year m57 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS9_ID m56 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS10_Year m64 : 8|8@1+ (1,2000) [2000|2255] "" Vector__XXX
+ SG_ BMS10_ID m63 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS10_Temp_5 m69 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS10_Temp_4 m69 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS10_Temp_3 m68 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS10_Temp_2 m68 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS10_Temp_1 m68 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS9_Temp_5 m62 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS9_Temp_4 m62 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS9_Temp_3 m61 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS9_Temp_2 m61 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS9_Temp_1 m61 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS8_Temp_5 m55 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS8_Temp_4 m55 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS8_Temp_3 m54 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS8_Temp_2 m54 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS8_Temp_1 m54 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS7_Temp_5 m48 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS7_Temp_4 m48 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS7_Temp_3 m47 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS7_Temp_2 m47 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS7_Temp_1 m47 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS6_Temp_5 m41 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS6_Temp_4 m41 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS6_Temp_3 m40 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS6_Temp_2 m40 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS6_Temp_1 m40 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS5_Temp_5 m34 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS5_Temp_4 m34 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS5_Temp_3 m33 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS5_Temp_2 m33 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS5_Temp_1 m33 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS4_Temp_5 m27 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS4_Temp_4 m27 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS4_Temp_3 m26 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS4_Temp_2 m26 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS4_Temp_1 m26 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS3_Temp_5 m20 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS3_Temp_4 m20 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS3_Temp_3 m19 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS3_Temp_2 m19 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS3_Temp_1 m19 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS2_Temp_5 m13 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS2_Temp_4 m13 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS2_Temp_3 m12 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS2_Temp_2 m12 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS2_Temp_1 m12 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS1_Temp_5 m6 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS1_Temp_4 m6 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS1_Temp_3 m5 : 48|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS1_Temp_2 m5 : 32|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS1_Temp_1 m5 : 16|16@1- (0.01,0) [0|0] "degC" Vector__XXX
+ SG_ BMS10_Cell_14 m67 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_13 m67 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_12 m66 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_11 m66 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_10 m66 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_9 m65 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_8 m65 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_7 m65 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_6 m64 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_5 m64 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_4 m64 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_3 m63 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_2 m63 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Cell_1 m63 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_14 m60 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_13 m60 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_12 m59 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_11 m59 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_10 m59 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_9 m58 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_8 m58 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_7 m58 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_6 m57 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_5 m57 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_4 m57 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_3 m56 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_2 m56 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Cell_1 m56 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_14 m53 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_13 m53 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_12 m52 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_11 m52 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_10 m52 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_9 m51 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_8 m51 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_7 m51 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_6 m50 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_5 m50 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_4 m50 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_3 m49 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_2 m49 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Cell_1 m49 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_14 m46 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_13 m46 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_12 m45 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_11 m45 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_10 m45 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_9 m44 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_8 m44 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_7 m44 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_6 m43 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_5 m43 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_4 m43 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_3 m42 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_2 m42 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Cell_1 m42 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_14 m39 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_13 m39 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_12 m38 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_11 m38 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_10 m38 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_9 m37 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_8 m37 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_7 m37 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_6 m36 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_5 m36 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_4 m36 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_3 m35 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_2 m35 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Cell_1 m35 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_14 m32 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_13 m32 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_12 m31 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_11 m31 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_10 m31 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_9 m30 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_8 m30 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_7 m30 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_6 m29 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_5 m29 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_4 m29 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_3 m28 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_2 m28 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Cell_1 m28 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_14 m25 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_13 m25 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_12 m24 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_11 m24 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_10 m24 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_9 m23 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_8 m23 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_7 m23 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_6 m22 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_5 m22 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_4 m22 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_3 m21 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_2 m21 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Cell_1 m21 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_14 m18 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_13 m18 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_12 m17 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_11 m17 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_10 m17 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_9 m16 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_8 m16 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_7 m16 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_6 m15 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_5 m15 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_4 m15 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_3 m14 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_2 m14 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Cell_1 m14 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_14 m11 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_13 m11 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_12 m10 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_11 m10 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_10 m10 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_9 m9 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_8 m9 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_7 m9 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_6 m8 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_5 m8 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_4 m8 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_3 m7 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_2 m7 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Cell_1 m7 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_14 m4 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_13 m4 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_12 m3 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_11 m3 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_10 m3 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_9 m2 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_8 m2 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_7 m2 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_6 m1 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_5 m1 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_4 m1 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_3 m0 : 48|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_2 m0 : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Cell_1 m0 : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS_Mux M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 534 BMS1_Ex_Volts: 8 BMS
+ SG_ BMS1_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS1_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS1_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS1_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS1_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS1_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 557 BMS2_Ex_Temps: 8 BMS
+ SG_ BMS2_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS2_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS2_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS2_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS2_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 550 BMS2_Ex_Volts: 8 BMS
+ SG_ BMS2_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS2_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS2_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS2_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS2_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS2_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 573 BMS3_Ex_Temps: 8 BMS
+ SG_ BMS3_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS3_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS3_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS3_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS3_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 566 BMS3_Ex_Volts: 8 BMS
+ SG_ BMS3_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS3_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS3_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS3_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS3_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS3_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 582 BMS4_Ex_Volts: 8 BMS
+ SG_ BMS4_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS4_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS4_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS4_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS4_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS4_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 589 BMS4_Ex_Temps: 8 BMS
+ SG_ BMS4_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS4_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS4_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS4_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS4_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 598 BMS5_Ex_Volts: 8 BMS
+ SG_ BMS5_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS5_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS5_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS5_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS5_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS5_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 605 BMS5_Ex_Temps: 8 BMS
+ SG_ BMS5_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS5_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS5_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS5_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS5_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 614 BMS6_Ex_Volts: 8 BMS
+ SG_ BMS6_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS6_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS6_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS6_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS6_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS6_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 621 BMS6_Ex_Temps: 8 BMS
+ SG_ BMS6_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS6_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS6_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS6_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS6_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 630 BMS7_Ex_Volts: 8 BMS
+ SG_ BMS7_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS7_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS7_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS7_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS7_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS7_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 637 BMS7_Ex_Temps: 8 BMS
+ SG_ BMS7_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS7_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS7_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS7_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS7_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 653 BMS8_Ex_Temps: 8 BMS
+ SG_ BMS8_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS8_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS8_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS8_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS8_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 646 BMS8_Ex_Volts: 8 BMS
+ SG_ BMS8_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS8_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS8_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS8_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS8_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS8_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 669 BMS9_Ex_Temps: 8 BMS
+ SG_ BMS9_Min_Temp : 48|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS9_Max_Temp : 32|16@1- (0.01,0) [-327.68|327.67] "degC" Vector__XXX
+ SG_ BMS9_Min_Temp_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS9_Max_Temp_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS9_StackID_Voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+
+BO_ 662 BMS9_Ex_Volts: 8 BMS
+ SG_ BMS9_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS9_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS9_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS9_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS9_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS9_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 518 BMS0_Ex_Volts: 8 BMS
+ SG_ BMS10_Min_Voltage : 48|16@1+ (0.0001,0) [0|6.5535] "" Vector__XXX
+ SG_ BMS10_Max_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS10_Min_Voltage_ID : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS10_Max_Voltage_ID : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS10_YEAR : 8|8@1+ (1,2000) [0|0] "year" Vector__XXX
+ SG_ BMS10_Stack_ID : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
+
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","not_used","not_used","not_used","not_used","Cyclic","not_used","IfActive","NoMsgSendType";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgTimeoutTime" INT 0 0;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 0;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "Bus Speed" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgSendType" "NoMsgSendType";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgTimeoutTime" 0;
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "Bus Speed" "500k";
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_ "Bus Speed" "500";
+BA_ "BusType" "CAN";
+BA_ "DBName" "BMS_CAN";
+

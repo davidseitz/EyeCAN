@@ -1,0 +1,73 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: OSU_Charger
+VAL_TABLE_ Charger_Status 4 "NONRECOVERABLE_ERROR" 3 "RECOVERABLE_ERROR" 2 "CHARGE" 1 "IDLE" ;
+VAL_TABLE_ CommunicationStatus 1 "Communication Interrupted" 0 "Communication Normal" ;
+VAL_TABLE_ InputVoltage 1 "Input Voltage bad" 0 "Input Voltage good" ;
+VAL_TABLE_ BatteryAccessStatus 1 "Battery Not Connected/ Reversed" 0 "Battery Connection Good" ;
+VAL_TABLE_ ChargerTemp 1 "Charger Over Temperature" 0 "Normal" ;
+VAL_TABLE_ HWMalfunction 1 "Hardware Malfunction" 0 "Normal" ;
+VAL_TABLE_ WorkingMode 1 "Heating Mode" 0 "Charging Mode" ;
+VAL_TABLE_ ControlSwitch 1 "Charger Disabled" 0 "Charger Enabled" ;
+
+
+BO_ 2550588916 OSU_Charger_Command: 6 Vector__XXX
+ SG_ WorkingMode : 40|8@1- (1,0) [0|0] ""  OSU_Charger
+ SG_ ControlSwitch : 32|8@1- (1,0) [0|0] ""  OSU_Charger
+ SG_ Charging_CC_Current : 23|16@0+ (0.1,0) [0|0] "A"  OSU_Charger
+ SG_ Charging_CV_Voltage : 7|16@0+ (0.1,0) [0|0] "V"  OSU_Charger
+
+BO_ 2566869221 OSU_Charger_Status: 8 OSU_Charger
+ SG_ Status_InputVoltage : 34|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Status_HW_Malfunction : 32|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Status_Communication : 36|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Status_ChargerTemp : 33|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Status_BatteryAccess : 35|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Output_Current : 23|16@0+ (0.1,0) [0|0] "A" Vector__XXX
+ SG_ Output_Voltage : 7|16@0+ (0.1,0) [0|0] "V" Vector__XXX
+
+
+
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "";
+VAL_ 2550588916 WorkingMode 1 "Heating Mode" 0 "Charging Mode" ;
+VAL_ 2550588916 ControlSwitch 1 "Charger Disabled" 0 "Charger Enabled" ;
+VAL_ 2566869221 Status_InputVoltage 1 "Input Voltage bad" 0 "Input Voltage good" ;
+VAL_ 2566869221 Status_HW_Malfunction 1 "Hardware Malfunction" 0 "Normal" ;
+VAL_ 2566869221 Status_Communication 1 "Communication Interrupted" 0 "Communication Normal" ;
+VAL_ 2566869221 Status_ChargerTemp 1 "Charger Over Temperature" 0 "Normal" ;
+VAL_ 2566869221 Status_BatteryAccess 1 "Battery Not Connected/ Reversed" 0 "Battery Connection Good" ;
+

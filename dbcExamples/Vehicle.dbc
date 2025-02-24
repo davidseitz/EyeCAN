@@ -1,0 +1,335 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Ellipse XSens Dash Beacon CSI2_RR CSI1_STW IVT_S Debug_Laptop PDM VCU BCU CSI0_Pedals
+VAL_TABLE_ Event 6 "Braketest" 5 "DV" 4 "Endurance" 3 "AutoX" 2 "Skidpad" 1 "Accel" 0 "Testing" ;
+VAL_TABLE_ TS_State 3 "TS_Error" 2 "TS_R2D" 1 "TS_Active" 0 "TS_Off" ;
+
+
+BO_ 222 VCU_Velocity: 8 VCU
+ SG_ Vehicle_Speed : 48|16@1- (0.01,0) [-327.68|327.67] "m/s" Vector__XXX
+ SG_ velZ : 32|16@1- (0.01,0) [-327.68|327.67] "m/s" Vector__XXX
+ SG_ velY : 16|16@1- (0.01,0) [-327.68|327.67] "m/s" Vector__XXX
+ SG_ velX : 0|16@1- (0.01,0) [-327.68|327.67] "m/s" Vector__XXX
+
+BO_ 221 VCU_SOC_Estimation: 8 VCU
+ SG_ State_of_Energy : 48|16@1- (0.01,0) [-327.68|327.67] "%" Vector__XXX
+ SG_ OC_Voltage : 32|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ Estimated_Voltage : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ State_of_Charge : 0|16@1- (0.01,0) [-327.68|327.67] "%" Vector__XXX
+
+BO_ 220 VCU_Torque_Vectoring_Diag: 7 VCU
+ SG_ TV_YR_Active : 49|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TV_YR_Enable : 48|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TV_YR_Understeer_Gradient : 32|16@1- (0.001,0) [-32.768|32.767] "" Vector__XXX
+ SG_ TV_YR_PID_Out : 16|16@1- (0.01,0) [-327.68|327.67] "" Vector__XXX
+ SG_ TV_YR_Desired : 0|16@1- (0.01,0) [-327.68|327.67] "" Vector__XXX
+
+BO_ 224 Dash_Status: 1 Dash
+ SG_ SDC_Inertia : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SDC_Dash_SDB : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Dash_Btn_5_Spare : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Dash_Btn_4_NextMission : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Dash_Btn_3_MissionSelect : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Dash_Btn_2_ASBoot : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Dash_Btn_1_Precharge : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1312 VCU_Status: 8 VCU
+ SG_ LC_Active : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TS_R2D : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TS_Off : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TS_Error : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Motor_Temp_Max : 48|16@1+ (0.1,0) [0|6553.5] "°C" Vector__XXX
+ SG_ MC_Temp_Max : 32|16@1+ (0.1,0) [0|6553.5] "°C" Vector__XXX
+ SG_ TS_Active : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Energy_Used : 16|16@1- (0.001,0) [-32.768|32.767] "kWh" Vector__XXX
+ SG_ Event : 13|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ PL_Enable : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TC_Enable : 10|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ RE_Enable : 9|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_Enable : 11|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ DRS_Enable : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 229 BR2_Beacon_Data: 8 Beacon
+ SG_ BR2_Valid_Receptions m0 : 15|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Trigger_Threshold m1 : 23|8@0+ (0.0196078431372549,0) [0|5] "V" Vector__XXX
+ SG_ BR2_Temp m2 : 23|8@0+ (1.96078431372549,-50) [-50|450] "C" Vector__XXX
+ SG_ BR2_Secondary_Threshold m1 : 31|8@0+ (0.0196078431372549,0) [0|5] "V" Vector__XXX
+ SG_ BR2_Reset_Source m2 : 31|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Noise_Bits m2 : 63|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Latest_Detector_Peak m1 : 63|8@0+ (0.0196078431372549,0) [0|5] "V" Vector__XXX
+ SG_ BR2_Internal_12V m1 : 55|8@0+ (0.0627450980392157,0) [0|0] "V" Vector__XXX
+ SG_ BR2_Internal_10V m1 : 47|8@0+ (0.0627450980392157,0) [0|16] "V" Vector__XXX
+ SG_ BR2_Firmware_Version m2 : 39|16@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Diag m2 : 55|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Detector_Peak m0 : 39|8@0+ (0.0196078431372549,0) [0|5] "V" Vector__XXX
+ SG_ BR2_Detector_Background m1 : 39|8@0+ (0.0196078431372549,0) [0|5] "V" Vector__XXX
+ SG_ BR2_Detection_Time m0 : 47|8@0+ (1,0) [0|0] "ms" Vector__XXX
+ SG_ BR2_Bias m1 : 15|8@0+ (0.0392156862745098,0) [0|10] "V" Vector__XXX
+ SG_ BR2_Beacon_Time m85 : 39|16@0+ (0.001,0) [0|0] "s" Vector__XXX
+ SG_ BR2_Beacon_Number m0 : 23|16@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Beacon_Count m0 : 55|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Beacon m85 : 23|16@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ BR2_Bat_Volts m2 : 15|8@0+ (0.10873440285205,0) [0|27.7272727272727] "V" Vector__XXX
+ SG_ BR2_Mux M : 7|8@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 197 CSI2_A3V3_D: 7 CSI2_RR
+ SG_ STW_Button_5_Spare : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ STW_Button_4_PageSwitch : 39|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ STW_Button_3_Cooling : 38|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ STW_Button_2_DRS : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ STW_Button_1_R2D : 36|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 196 CSI2_A5V: 8 CSI2_RR
+ SG_ Rotary_2_TC : 32|16@1+ (0.01,0) [0|655.35] "%" Vector__XXX
+ SG_ Rotary_1_PL : 16|16@1+ (0.01,0) [0|655.35] "%" Vector__XXX
+
+BO_ 195 CSI1_A3V3_D: 5 CSI1_STW
+ SG_ DMP_Heave : 24|12@1+ (0.1,0) [0|409.5] "mm" Vector__XXX
+ SG_ DMP_Roll : 12|12@1+ (0.1,0) [0|409.5] "mm" Vector__XXX
+ SG_ AS_Precharge : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SDC_Splitbox : 38|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SDC_Buttons : 36|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SDC_AS : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 194 CSI1_A5V: 8 CSI1_STW
+
+BO_ 193 CSI0_A3V3_D: 7 CSI0_Pedals
+ SG_ DMP_FR : 12|12@1+ (0.1,0) [0|409.5] "mm" Vector__XXX
+ SG_ DMP_FL : 24|12@1+ (0.1,0) [0|409.5] "mm" Vector__XXX
+ SG_ SDC_Front_Interlock : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SDC_BOTS : 36|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Steering_Angle : 40|16@1+ (0.001,-30) [-32.768|32.767] " " Vector__XXX
+ SG_ Ambient_Temp : 0|12@1+ (0.01,0) [0|40.95] " C" Vector__XXX
+
+BO_ 192 CSI0_A5V: 8 CSI0_Pedals
+ SG_ BP_Rear : 48|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+ SG_ BP_Front : 32|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+ SG_ APPS_2 : 16|16@1+ (0.01,0) [0|100] "%" Vector__XXX
+ SG_ APPS_1 : 0|16@1+ (0.01,0) [0|100] "%" Vector__XXX
+
+BO_ 1320 IVT_Energy: 6 IVT_S
+ SG_ TS_Energy : 16|32@1- (0.001,0) [-20|20] "kWh" Vector__XXX
+
+BO_ 1318 IVT_Power: 6 IVT_S
+ SG_ TS_Power : 16|32@1- (0.001,0) [-200|200] "kW" Vector__XXX
+
+BO_ 1315 IVT_Voltage_2: 6 IVT_S
+ SG_ TS_Con_Volts : 16|32@1- (0.001,0) [-2000|2000] "V" Vector__XXX
+
+BO_ 1314 IVT_Voltage_1: 6 IVT_S
+ SG_ TS_Pack_Volts : 16|32@1- (0.001,0) [-2000|2000] "V" Vector__XXX
+
+BO_ 1313 IVT_Current: 6 IVT_S
+ SG_ TS_Current : 16|32@1- (0.001,0) [-250|250] "A" Vector__XXX
+
+BO_ 1041 IVT_COMMAND: 8 Debug_Laptop
+ SG_ IVT_COMMAND : 0|64@1+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 209 VCU_PDM_Command: 3 VCU
+ SG_ PDM_CH09_Spare : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH08_Spare : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH07_AS : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH06_MCR : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH05_MCF : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH04_Aero : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH03_Radiators : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH02_BatFans : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH20_Spare : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH01_ASMS : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH19_Spare : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH18_Spare : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH17_ASSIY : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH16_ASSIB : 15|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH15_Brakelight : 14|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH14_TS : 13|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH13_Critical : 12|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH12_Pumps : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH10_Auxiliary : 9|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ PDM_CH11_DRS : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 176 PDM_Status: 4 PDM
+ SG_ LVMS_Volts : 16|16@1+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ PDM_Current : 0|16@1+ (0.001,0) [0|65.535] "A" Vector__XXX
+
+BO_ 162 BCU_Extreme_Temps: 6 BCU
+ SG_ BMS_Min_Temp_Cell : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS_Max_Temp_Cell : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS_Min_Temp : 16|16@1- (0.005,0) [-163.84|163.835] " C" Vector__XXX
+ SG_ BMS_Max_Temp : 0|16@1- (0.005,0) [-163.84|163.835] " C" Vector__XXX
+
+BO_ 163 BCU_IMD_Status: 7 BCU
+ SG_ IMD_Frequency : 40|16@1+ (0.1,0) [0|0] "Hz" Vector__XXX
+ SG_ IMD_Duty : 24|16@1+ (1,0) [0|0] "%" Vector__XXX
+ SG_ IMD_UNDERVOLT : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_SPEED_START : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_SHORT : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_NORMAL : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_Isolation_Resistance : 8|16@1+ (10,0) [0|655350] "kR" Vector__XXX
+ SG_ IMD_EARTH_FAULT : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_DEVICE_ERROR : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 161 BCU_Extreme_Voltages: 6 BCU
+ SG_ BMS_Min_Volt_Cell : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS_Max_Volt_Cell : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ BMS_Min_Voltage : 16|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+ SG_ BMS_Max_Voltage : 0|16@1+ (0.0001,0) [0|6.5535] "V" Vector__XXX
+
+BO_ 160 BCU_Status: 7 BCU
+ SG_ REASON_BMS_UV : 14|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_BMS_UT : 13|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_BMS_OV : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_BMS_OT : 11|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SDC_Volts : 24|16@1+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ TSMS_Volts : 40|16@1+ (0.001,0) [0|65.535] "V" Vector__XXX
+ SG_ REASON_SG_TIMEOUT : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ REASON_SG_REQUEST : 19|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_SDC : 16|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_PRECHARGE_TIMER : 18|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_OC : 17|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_IVT_TIMEOUT : 21|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_CSI_TIMEOUT : 22|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ REASON_BMS_OW : 15|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Discharge_Intent : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ HV_State : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ BCU_IMD_State : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ AMS_LED : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ IMD_LED : 9|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TSAL_LED : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ BCU_SDC_State : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TSMS_State : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Precharge_Actual : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ AIR_Minus_Actual : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ AIR_Plus_Actual : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 211 VCU_Torques: 8 VCU
+ SG_ Torque_RR : 48|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+ SG_ Torque_RL : 32|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+ SG_ Torque_FR : 16|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+ SG_ Torque_FL : 0|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+
+BO_ 212 VCU_TC_RefSpeed: 8 VCU
+ SG_ TC_RR_RefSpd : 48|16@1- (1,0) [0|18000] "rpm" Vector__XXX
+ SG_ TC_RL_RefSpd : 32|16@1- (1,0) [0|18000] "rpm" Vector__XXX
+ SG_ TC_FR_RefSpd : 16|16@1- (1,0) [0|18000] "rpm" Vector__XXX
+ SG_ TC_FL_RefSpd : 0|16@1- (1,0) [0|18000] "rpm" Vector__XXX
+
+BO_ 215 VCU_PowerLimitation: 8 VCU
+ SG_ PL_Factor_PID : 56|8@1- (0.5,0) [-64|63.5] "%" Vector__XXX
+ SG_ PL_ElecPower : 0|16@1- (0.01,0) [-15|80] "kW" Vector__XXX
+ SG_ PL_Factor : 48|8@1+ (0.5,0) [0|127.5] "%" Vector__XXX
+ SG_ PL_CalcPower : 32|16@1- (0.01,0) [-20|160] "kW" Vector__XXX
+ SG_ PL_MaxPower : 16|16@1- (0.01,0) [-15|80] "kW" Vector__XXX
+
+BO_ 214 VCU_Recu: 8 VCU
+ SG_ RE_Bias : 48|16@1- (0.01,0) [-327.68|327.67] "" Vector__XXX
+ SG_ RE_Trq_Rear : 32|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+ SG_ RE_Trq_Front : 16|16@1- (0.001,0) [-32.768|32.767] "Nm" Vector__XXX
+ SG_ RE_Active : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RE_Available : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 218 VCU_LapInfo: 7 VCU
+ SG_ Driven_Distance : 40|16@1+ (0.5,0) [0|32767.5] "m" Vector__XXX
+ SG_ LapCount : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ LapTime_Best : 16|16@1+ (0.002,0) [0|131.07] "s" Vector__XXX
+ SG_ LapTime_Last : 0|16@1+ (0.002,0) [0|131.07] "s" Vector__XXX
+
+BO_ 210 VCU_Wheelspeed: 8 VCU
+ SG_ Wheelspeed_RR : 48|16@1+ (1,0) [0|65535] "rpm" Vector__XXX
+ SG_ Wheelspeed_RL : 32|16@1+ (1,0) [0|65535] "rpm" Vector__XXX
+ SG_ Wheelspeed_FR : 16|16@1+ (1,0) [0|65535] "rpm" Vector__XXX
+ SG_ Wheelspeed_FL : 0|16@1+ (1,0) [0|65535] "rpm" Vector__XXX
+
+BO_ 217 VCU_MC_Faults: 8 VCU
+ SG_ MotorFault_RR : 48|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MotorFault_RL : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MotorFault_FR : 16|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MotorFault_FL : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 219 VCU_Inverter_Temp: 8 VCU
+ SG_ InverterTemp_RR : 48|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ InverterTemp_RL : 32|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ InverterTemp_FR : 16|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ InverterTemp_FL : 0|16@1- (0.1,0) [0|0] "C" Vector__XXX
+
+BO_ 216 VCU_Motor_Temps: 8 VCU
+ SG_ MotorTemp_RR : 48|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ MotorTemp_RL : 32|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ MotorTemp_FR : 16|16@1- (0.1,0) [0|0] "C" Vector__XXX
+ SG_ MotorTemp_FL : 0|16@1- (0.1,0) [0|0] "C" Vector__XXX
+
+BO_ 213 VCU_Torque_Vectoring: 5 VCU
+ SG_ TV_RR_Factor : 30|10@1- (1,0) [-512|511] "%" Vector__XXX
+ SG_ TV_RL_Factor : 20|10@1- (1,0) [-512|511] "%" Vector__XXX
+ SG_ TV_FR_Factor : 10|10@1- (1,0) [-512|511] "%" Vector__XXX
+ SG_ TV_FL_Factor : 0|10@1- (1,0) [-512|511] "%" Vector__XXX
+
+
+
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgTimeoutTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","not_used","not_used","not_used","not_used","Cyclic","not_used","IfActive","NoMsgSendType";
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 0;
+BA_DEF_  "Bus Speed" STRING ;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "MultiplexExtEnabled" ENUM  "No","Yes";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgTimeoutTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgSendType" "NoMsgSendType";
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "Bus Speed" "1000k";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "MultiplexExtEnabled" "No";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_ "DBName" "Vehicle";
+VAL_ 1312 Event 6 "Braketest" 5 "DV" 4 "Endurance" 3 "AutoX" 2 "Skidpad" 1 "Accel" 0 "Testing" ;
+

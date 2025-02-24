@@ -1,0 +1,171 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Xsens_Sensor
+
+
+BO_ 781 XSens_MagneticField: 7 Xsens_Sensor
+ SG_ magZ : 40|16@1- (0.0009765625,0) [-32|32] "" Vector__XXX
+ SG_ magY : 24|16@1- (0.0009765625,0) [-32|32] "" Vector__XXX
+ SG_ magX : 8|16@1- (0.0009765625,0) [-32|32] "" Vector__XXX
+
+BO_ 780 XSens_GNSS_Dop: 8 Xsens_Sensor
+ SG_ hdop : 55|16@0+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ vdop : 39|16@0+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ tdop : 23|16@0+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ pdop : 7|16@0+ (0.01,0) [0|655.35] "" Vector__XXX
+
+BO_ 779 XSens_GNSS_Status: 5 Xsens_Sensor
+ SG_ numSatellites2 : 39|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ UTCValid : 31|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ flags : 23|8@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ numSatellites : 15|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ fixType : 7|8@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 769 XSens_Error: 1 Xsens_Sensor
+
+BO_ 768 XSens_StatusWord: 4 Xsens_Sensor
+ SG_ SelfTestOk : 24|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ OrientationValid : 25|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ GpsValid : 26|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ NoRotation : 28|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ RepresentativeMotion : 29|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ExternalClockSynced : 30|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipAccX : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipAccY : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipAccZ : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipGyrX : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipGyrY : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipGyrZ : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipMagX : 22|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipMagY : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClipMagZ : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Retransmitted : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ClippingDetected : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Interpolated : 12|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SyncIn : 13|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SyncOut : 14|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ FilterMode : 1|3@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ HaveGnssTimePulse : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RtkStatus : 4|2@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 771 XSens_DeltaV: 7 Xsens_Sensor
+ SG_ X : 7|16@0- (7.6293945313E-006,0) [-0.25|0.25] "m/s" Vector__XXX
+ SG_ Y : 23|16@0- (7.6293945313E-006,0) [-0.25|0.25] "m/s" Vector__XXX
+ SG_ Z : 39|16@0- (7.6293945313E-006,0) [-0.25|0.25] "m/s" Vector__XXX
+ SG_ Exponent : 55|8@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 772 XSens_RateOfTurn: 6 Xsens_Sensor
+ SG_ gyrX : 7|16@0- (0.001953125,0) [0|0] "rad/s" Vector__XXX
+ SG_ gyrY : 23|16@0- (0.001953125,0) [0|0] "rad/s" Vector__XXX
+ SG_ gyrZ : 39|16@0- (0.001953125,0) [0|0] "rad/s" Vector__XXX
+
+BO_ 773 XSens_Accel: 6 Xsens_Sensor
+ SG_ accX : 7|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+ SG_ accY : 23|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+ SG_ accZ : 39|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+
+BO_ 774 XSens_FreeAccel: 6 Xsens_Sensor
+ SG_ FreeAccEast : 7|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+ SG_ FreeAccNorth : 23|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+ SG_ FreeAccUp : 39|16@0- (0.00390625,0) [-100|100] "m/s²" Vector__XXX
+
+BO_ 778 XSens_EulerAngles: 6 Xsens_Sensor
+ SG_ roll : 7|16@0- (0.0078125,0) [-180|180] "deg" Vector__XXX
+ SG_ pitch : 23|16@0- (0.0078125,0) [-90|90] "deg" Vector__XXX
+ SG_ yaw : 39|16@0- (0.0078125,0) [-180|180] "deg" Vector__XXX
+
+BO_ 776 XSens_LatLon: 8 Xsens_Sensor
+ SG_ latitude : 7|32@0- (5.9604644775E-008,0) [-90|90] "deg" Vector__XXX
+ SG_ longitude : 39|32@0- (1.1920928955E-007,0) [-180|180] "deg" Vector__XXX
+
+BO_ 777 XSens_Altitude: 4 Xsens_Sensor
+ SG_ altEllipsoid : 7|32@0+ (3.0517578125E-005,0) [0|50000] "m" Vector__XXX
+
+BO_ 775 XSens_Velocity: 6 Xsens_Sensor
+ SG_ velEast : 7|16@0- (0.015625,0) [-500|500] "m/s" Vector__XXX
+ SG_ velNorth : 23|16@0- (0.015625,0) [-500|500] "m/s" Vector__XXX
+ SG_ velUp : 39|16@0- (0.015625,0) [-500|500] "m/s" Vector__XXX
+
+
+
+CM_ BU_ Xsens_Sensor "Generic Xsens Motion Sensor";
+CM_ SG_ 768 SelfTestOk "Set when the self test result was ok";
+CM_ SG_ 768 OrientationValid "Set when the computed orientation is valid. The orientation may be invalid during startup or when the Xsens_Sensor data is clipping during violent (for the device) motion";
+CM_ SG_ 768 GpsValid "Set when the device has a GPS receiver and the receiver says that there is a GPS position fix.";
+CM_ SG_ 768 RepresentativeMotion "Indicates if the In-Run Compass Calibration is doing the representative motion analysis";
+CM_ SG_ 768 ExternalClockSynced "Indicates whether the internal clock is synced with an external clock (Either GNNS or custom provided clock sync)";
+CM_ SG_ 768 ClipAccX "Indicates if there was clipping on the X-axis of the accelerometer";
+CM_ SG_ 768 ClipAccY "Indicates if there was clipping on the Y-axis of the accelerometer";
+CM_ SG_ 768 ClipAccZ "Indicates if there was clipping on the Z-axis of the accelerometer";
+CM_ SG_ 768 ClipGyrX "Indicates if there was clipping on the X-axis of the gyroscope";
+CM_ SG_ 768 ClipGyrY "Indicates if there was clipping on the Y-axis of the gyroscope";
+CM_ SG_ 768 ClipGyrZ "Indicates if there was clipping on the Z-axis of the gyroscope";
+CM_ SG_ 768 ClipMagX "Indicates if there was clipping on the X-axis of the magnetometer";
+CM_ SG_ 768 ClipMagY "Indicates if there was clipping on the Y-axis of the magnetometer";
+CM_ SG_ 768 ClipMagZ "Indicates if there was clipping on the Z-axis of the magnetometer";
+CM_ SG_ 768 Retransmitted "When set Indicates the sample was received as a retransmission";
+CM_ SG_ 768 ClippingDetected "When set Indicates clipping has occurred";
+CM_ SG_ 768 Interpolated "When set Indicates the sample is an interpolation between other samples";
+CM_ SG_ 768 SyncIn "When set indicates a sync-in event has been triggered";
+CM_ SG_ 768 SyncOut "When set Indicates a sync-out event has been generated";
+CM_ SG_ 768 FilterMode "Mask for the 3 bit filter mode field";
+CM_ SG_ 768 HaveGnssTimePulse "Indicates that the 1PPS GNSS time pulse is present";
+CM_ SG_ 768 RtkStatus "Mask for 2 bit RTK status field";
+VAL_ 779 fixType 5 "Time only fix" 4 "GNSS + dead reckoning combined" 3 "3D-Fix" 2 "2D-Fix" 0 "No Fix" 1 "Dead Reckoning only" ;
+VAL_ 768 SelfTestOk 0 "false" 1 "true" ;
+VAL_ 768 OrientationValid 0 "false" 1 "true" ;
+VAL_ 768 GpsValid 0 "false" 1 "true" ;
+VAL_ 768 NoRotation 1 "Aborted" 2 "SamplesRejected" 3 "RunningNormally" ;
+VAL_ 768 RepresentativeMotion 0 "false" 1 "true" ;
+VAL_ 768 ExternalClockSynced 0 "false" 1 "true" ;
+VAL_ 768 ClipAccX 0 "false" 1 "true" ;
+VAL_ 768 ClipAccY 0 "false" 1 "true" ;
+VAL_ 768 ClipAccZ 0 "false" 1 "true" ;
+VAL_ 768 ClipGyrX 0 "false" 1 "true" ;
+VAL_ 768 ClipGyrY 0 "false" 1 "true" ;
+VAL_ 768 ClipGyrZ 0 "false" 1 "true" ;
+VAL_ 768 ClipMagX 0 "false" 1 "true" ;
+VAL_ 768 ClipMagY 0 "false" 1 "true" ;
+VAL_ 768 ClipMagZ 0 "false" 1 "true" ;
+VAL_ 768 Retransmitted 0 "false" 1 "true" ;
+VAL_ 768 ClippingDetected 0 "false" 1 "true" ;
+VAL_ 768 Interpolated 0 "false" 1 "true" ;
+VAL_ 768 SyncIn 0 "false" 1 "true" ;
+VAL_ 768 SyncOut 0 "false" 1 "true" ;
+VAL_ 768 FilterMode 0 "false" 1 "true" ;
+VAL_ 768 HaveGnssTimePulse 0 "false" 1 "true" ;
+VAL_ 768 RtkStatus 0 "No RTK" 1 "RTK floating" 2 "RTK fixed" ;
+
