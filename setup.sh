@@ -4,7 +4,7 @@ git submodule update --init --recursive
 SVPWD=${PWD}
 #build dbcppp
 #on unix
-cd dbcppp
+cd libraries/dbcppp
 mkdir build/
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCMAKE_BUILD_TYPE=Release ..
@@ -25,7 +25,7 @@ CFLAGS="-fPIC" ./configure --prefix=$HOME/.local --static
 make -j$(nproc)
 make install
 #now to mdflib
-cd ${SVPWD}/mdflib
+cd ${SVPWD}/libraries/mdflib
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DZLIB_LIBRARY=$HOME/.local/lib/libz.a -DZLIB_INCLUDE_DIR=$HOME/.local/include -DCMAKE_BUILD_TYPE=Release ..
