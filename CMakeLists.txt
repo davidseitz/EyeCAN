@@ -52,7 +52,7 @@ file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
 # Define executable
 add_executable(EyeCAN main.cpp ${SOURCE_FILES} ${HEADER_FILES})
 
-target_include_directories(EyeCAN PRIVATE ${CMAKE_SOURCE_DIR}/libaries/json/include ${CMAKE_SOURCE_DIR}/libaries/cpp-httplib ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(EyeCAN PRIVATE ${CMAKE_SOURCE_DIR}/libraries/json/include ${CMAKE_SOURCE_DIR}/libraries/cpp-httplib ${CMAKE_SOURCE_DIR}/include)
 
 # Include directories
 target_include_directories(EyeCAN PUBLIC "include" ${DBCPPP_INCLUDE_DIR} ${MDFLIB_INCLUDE_DIR} )
