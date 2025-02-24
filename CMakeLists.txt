@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 23)
 
 include_directories(${CMAKE_SOURCE_DIR}/libaries/json/include)
 include_directories(${CMAKE_SOURCE_DIR}/libaries/cpp-httplib)
-include_directories(${CMAKE_SOURCE_DIR}/src/header)
-include_directories(${CMAKE_SOURCE_DIR}/src/source)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/source)
 
 
 add_executable(EyeCAN main.cpp
