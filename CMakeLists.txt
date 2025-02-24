@@ -6,6 +6,7 @@ project(EyeCAN VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(UNIX)
 # Search for dbcppp library and include directories
 find_library(DBCPPP_LIBRARY NAMES dbcppp
         PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib"
@@ -42,6 +43,8 @@ if (MDFLIB_LIBRARY AND MDFLIB_INCLUDE_DIR)
 else()
     message(FATAL_ERROR "mdflib not found! Ensure it is installed correctly.")
 endif()
+
+endif ()
 
 # Find all source files in the source directory
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/source/*.cpp)
