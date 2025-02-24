@@ -225,10 +225,3 @@ int readMdf() {
     }
     return 0;
 }
-
-int main()
-{
-    printCANSignals("../gfr_dbc_files/Battery.dbc");
-    readMdf();
-}
-

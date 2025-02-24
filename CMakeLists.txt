@@ -43,8 +43,16 @@ else()
     message(FATAL_ERROR "mdflib not found! Ensure it is installed correctly.")
 endif()
 
+# Find all source files in the source directory
+file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/source/*.cpp)
+
+# Find all header files in the include directory
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
+
 # Define executable
-add_executable(EyeCAN "src/main.cpp")
+add_executable(EyeCAN main.cpp ${SOURCE_FILES} ${HEADER_FILES})
+
+target_include_directories(EyeCAN PRIVATE ${CMAKE_SOURCE_DIR}/libaries/json/include ${CMAKE_SOURCE_DIR}/libaries/cpp-httplib ${CMAKE_SOURCE_DIR}/include)
 
 # Include directories
 target_include_directories(EyeCAN PUBLIC "include" ${DBCPPP_INCLUDE_DIR} ${MDFLIB_INCLUDE_DIR} )
@@ -64,6 +72,10 @@ if (MDFLIB_LIBRARY)
 endif()
 
 target_link_libraries(EyeCAN PRIVATE pthread)
+
+if (ws2_32)
+    target_link_libraries(EyeCAN PRIVATE ws2_32)
+endif()
 
 
 
