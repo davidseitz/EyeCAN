@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <nlohmann/json.hpp>
 
+#include <nlohmann/json.hpp>
 #include <eyecanserver.h>
 
 using namespace httplib;
@@ -9,6 +9,7 @@ using json = nlohmann::ordered_json;
 
 void EyeCANServer::initServer() {
 
+    // Set pre-routing handler to allow CORS for api requests
     svr.set_pre_routing_handler([this](const Request& req, Response& res) {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -32,11 +33,12 @@ void EyeCANServer::initServer() {
 
 void EyeCANServer::initApiEndpoints() {
 
+    //TODO Rework check for swagger io
     std::string exists = readFile("static/api/index.html"); // Check if index for swagger io exists
 
-    if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON definition
+    if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON file as api definition
         svr.Get("/api/v1/", [](const Request& req, Response& res) {
-            std::string json = readFile("static/api/eyecan-api-defintion.json");
+            std::string json = readFile("static/api/eyecan-api-definition.json");
             res.set_content(json, "application/json");
         });
     } else {
@@ -65,6 +67,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                 request_json["id"] = "1";
 
                 // Send JSON response
+                res.status = 201; // Created
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
@@ -101,6 +104,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 
         // TODO Delete the knowledgebase article
 
+        res.status = 204 ; // No Content
         res.set_content("The Article you deleted with id: " + uuid, "text/plain");
     });
 
@@ -125,6 +129,7 @@ void EyeCANServer::initFilterEndpoints() {
                 request_json["id"] = "1";
 
                 // Send JSON response
+                res.status = 201; // Created
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
@@ -161,6 +166,7 @@ void EyeCANServer::initFilterEndpoints() {
 
         // TODO Delete the filter
 
+        res.status = 204 ; // No Content
         res.set_content("The filter you deleted with id: " + uuid, "text/plain");
     });
 
@@ -171,6 +177,16 @@ void EyeCANServer::initFilterEndpoints() {
 
         res.set_content("The Page you requested: " + name, "text/plain");
     });
+
+    /*
+    svr.Get("/api/v1/useFilter", [](const Request& req, Response& res) {
+        std::string name = req.get_param_value("page");
+
+        // TODO Use filter
+
+        res.set_content("The Page you requested: " + name, "text/plain");
+    });
+    */
 }
 
 void EyeCANServer::initDatasetEndpoints()
@@ -186,6 +202,7 @@ void EyeCANServer::initDatasetEndpoints()
                 request_json["id"] = "1";
 
                 // Send JSON response
+                res.status = 201; // Created
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
@@ -221,7 +238,7 @@ void EyeCANServer::initDatasetEndpoints()
         std::string uuid = req.get_param_value("uuid");
 
         // TODO Delete the dataset
-
+        res.status = 204 ; // No Content
         res.set_content("The Dataset you deleted with id: " + uuid, "text/plain");
     });
 

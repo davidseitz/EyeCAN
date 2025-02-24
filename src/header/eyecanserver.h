@@ -1,8 +1,8 @@
 #ifndef EYECANSERVER_H
 #define EYECANSERVER_H
 
-#include <httplib.h>
 #include <string>
+#include <httplib.h>
 
 class EyeCANServer {
 public:
