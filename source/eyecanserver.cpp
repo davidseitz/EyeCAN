@@ -37,6 +37,7 @@ void EyeCANServer::initApiEndpoints() {
     std::string exists = readFile("static/api/index.html"); // Check if index for swagger io exists
 
     if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON file as api definition
+        std::cout << "Using JSON file as API definition\n";
         svr.Get("/api/v1/", [](const Request& req, Response& res) {
             std::string json = readFile("static/api/eyecan-api-definition.json");
             res.set_content(json, "application/json");
