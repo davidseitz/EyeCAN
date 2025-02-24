@@ -3,8 +3,8 @@ project(EyeCAN)
 
 set(CMAKE_CXX_STANDARD 23)
 
-include_directories(${CMAKE_SOURCE_DIR}/libaries/json/include)
-include_directories(${CMAKE_SOURCE_DIR}/libaries/cpp-httplib)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/json/include)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/cpp-httplib)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 
