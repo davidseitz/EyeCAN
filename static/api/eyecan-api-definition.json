@@ -1,0 +1,854 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "EyeCAN Visualizer API",
+    "description": "This API is for using the EyeCAN Visualizer",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5255/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Knowledge Base",
+      "description": "Article handling"
+    },
+    {
+      "name": "Filter collection",
+      "description": "Filter handling"
+    },
+    {
+      "name": "Data collection",
+      "description": "Dataset handling"
+    }
+  ],
+  "paths": {
+    "/knowledgebase": {
+      "get": {
+        "tags": [
+          "Knowledge Base"
+        ],
+        "summary": "Get one page of Articles",
+        "description": "Get one page of Articles",
+        "operationId": "getArticles",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page to be loaded",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleList"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No page found"
+          },
+          "400": {
+            "description": "Invalid page number"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Knowledge Base"
+        ],
+        "summary": "Add an Article",
+        "description": "Add a new Article",
+        "operationId": "createArticle",
+        "requestBody": {
+          "description": "Create a new article",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "max. 128 chars",
+                    "example": "Test Title"
+                  },
+                  "date": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "unix timestamp in seconds",
+                    "example": 1739450365
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "max. 128 chars",
+                    "example": "Max Mustermann"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "max. 10000 char",
+                    "example": "Information about an error"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Knowledge Base"
+        ],
+        "summary": "Delete an Article",
+        "description": "Delete an Article",
+        "operationId": "deleteArticle",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "Article id to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deleted"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Knowledge Base"
+        ],
+        "summary": "Update Article",
+        "description": "Update an Article",
+        "operationId": "updateArticle",
+        "requestBody": {
+          "description": "Update an existent article",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      }
+    },
+    "/filters": {
+      "get": {
+        "tags": [
+          "Filter collection"
+        ],
+        "summary": "Get one page of filters",
+        "description": "Get one page of filters",
+        "operationId": "getFilters",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page to be loaded",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterList"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No page found"
+          },
+          "400": {
+            "description": "Invalid page number"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Filter collection"
+        ],
+        "summary": "Add a Filter",
+        "description": "Add a new Filter",
+        "operationId": "createFilter",
+        "requestBody": {
+          "description": "Create a new filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "dataset title"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "signals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "settings": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Filter"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Filter collection"
+        ],
+        "summary": "Delete an Article",
+        "description": "Delete an Article",
+        "operationId": "deleteFilter",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "Filter id to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deleted"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Filter collection"
+        ],
+        "summary": "Update Article",
+        "description": "Update an Article",
+        "operationId": "updateFilter",
+        "requestBody": {
+          "description": "Update an existent filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Filter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Filter"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      }
+    },
+    "/data": {
+      "get": {
+        "tags": [
+          "Data collection"
+        ],
+        "summary": "Get one page of datasets",
+        "description": "Get one page of datasets",
+        "operationId": "getDatasets",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page to be loaded",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetList"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No page found"
+          },
+          "400": {
+            "description": "Invalid page number"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Data collection"
+        ],
+        "summary": "Create fusion dataset",
+        "description": "Create fusion dataset based on mdf4 and dbc",
+        "operationId": "createDataset",
+        "requestBody": {
+          "description": "Create a new dataset",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Dataset"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "displayed in dataset card max. 32 chars",
+                      "example": "dataset title"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "max. 280 chars"
+                    },
+                    "selectedSignalValues": {
+                      "type": "array",
+                      "description": "array of signal values that are selected in this array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Data collection"
+        ],
+        "summary": "Delete a Dataset",
+        "description": "Delete a Dataset",
+        "operationId": "deleteDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "Dataset id too delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deleted"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Data collection"
+        ],
+        "summary": "Edit a Dataset",
+        "description": "Edit a Dataset",
+        "operationId": "editDataset",
+        "requestBody": {
+          "description": "Updated a existent dataset",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "signals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "array of selected signals for this dataset"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "415": {
+            "description": "Wrong Content-Type"
+          },
+          "500": {
+            "description": "An error occurred on the server side"
+          },
+          "507": {
+            "description": "There is no storage capacity left"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+          },
+          "title": {
+            "type": "string",
+            "description": "max. 128 chars",
+            "example": "Test Title"
+          },
+          "date": {
+            "type": "integer",
+            "format": "int64",
+            "description": "unix timestamp in seconds",
+            "example": 1739450365
+          },
+          "author": {
+            "type": "string",
+            "description": "max. 128 chars",
+            "example": "Max Mustermann"
+          },
+          "content": {
+            "type": "string",
+            "description": "max. 10000 char",
+            "example": "Information about an error"
+          }
+        },
+        "xml": {
+          "name": "article"
+        }
+      },
+      "ArticleList": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastpage": {
+            "type": "boolean"
+          },
+          "articles": {
+            "type": "array",
+            "description": "10x Article",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            }
+          }
+        },
+        "xml": {
+          "name": "articlelist"
+        }
+      },
+      "Filter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+          },
+          "title": {
+            "type": "string",
+            "example": "dataset title"
+          },
+          "description": {
+            "type": "string"
+          },
+          "signals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Object"
+              }
+            }
+          }
+        }
+      },
+      "Object": {
+        "type": "object",
+        "properties": {
+          "signal": {
+            "type": "string",
+            "description": "e.g. temprature"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "e.g. range"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          },
+          "aggregation": {
+            "$ref": "#/components/schemas/Aggregation"
+          }
+        }
+      },
+      "Condition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "e.g. average, in period"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "lower and upper threshold",
+              "example": [
+                1,
+                2
+              ]
+            }
+          }
+        }
+      },
+      "Aggregation": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "e.g. between, not between"
+          },
+          "interval": {
+            "type": "integer",
+            "description": "interval in s for the aggregation",
+            "example": 5
+          }
+        }
+      },
+      "FilterList": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastpage": {
+            "type": "boolean"
+          },
+          "filters": {
+            "type": "array",
+            "description": "10x Filters",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            }
+          }
+        },
+        "xml": {
+          "name": "filterlist"
+        }
+      },
+      "Dataset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+          },
+          "title": {
+            "type": "string",
+            "description": "displayed in dataset card max. 32 chars",
+            "example": "dataset title"
+          },
+          "description": {
+            "type": "string",
+            "description": "max. 280 chars"
+          },
+          "selectedSignalValues": {
+            "type": "array",
+            "description": "array of signal values that are selected in this array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            }
+          }
+        },
+        "xml": {
+          "name": "Dataset"
+        }
+      },
+      "Signal": {
+        "type": "object",
+        "properties": {
+          "signalName": {
+            "type": "string",
+            "description": "name of the signal, e.g. temperature"
+          },
+          "signalUnit": {
+            "type": "string",
+            "description": "signal unit, e.g. '°C'"
+          },
+          "signalValues": {
+            "type": "array",
+            "description": "array of value pairs",
+            "items": {
+              "type": "array",
+              "description": "value pair array",
+              "items": {
+                "type": "number",
+                "description": "current value as float, time stamp in seconds",
+                "example": [
+                  3,
+                  1
+                ]
+              }
+            }
+          }
+        }
+      },
+      "DatasetList": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastpage": {
+            "type": "boolean"
+          },
+          "datasets": {
+            "type": "array",
+            "description": "10x datasets",
+            "items": {
+              "$ref": "#/components/schemas/Dataset"
+            }
+          }
+        }
+      }
+    }
+  }
+}
