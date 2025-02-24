@@ -1,0 +1,96 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: TPMS
+VAL_TABLE_ SCbit 1 "ok" 0 "FAULT" ;
+VAL_TABLE_ AIRs 1 "CLOSED" 0 "OPEN" ;
+VAL_TABLE_ Status 1 "ok" 0 "error" ;
+
+
+BO_ 2566845491 TPMS: 8 TPMS
+ SG_ TPMS_Voltage_RR m3 : 32|8@1+ (1,0) [0|255] "V" Vector__XXX
+ SG_ TPMS_Voltage_RL m4 : 32|8@1+ (1,0) [0|255] "V" Vector__XXX
+ SG_ TPMS_Voltage_FR m1 : 32|8@1+ (1,0) [0|255] "V" Vector__XXX
+ SG_ TPMS_Pressure_RR m3 : 8|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+ SG_ TPMS_Pressure_RL m4 : 8|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+ SG_ TPMS_Pressure_FR m1 : 8|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+ SG_ TPMS_Flag_RR m3 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TPMS_Flag_RL m4 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TPMS_Flag_FR m1 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TPMS_AirTemp_RR m3 : 24|8@1+ (1,0) [0|255] "C" Vector__XXX
+ SG_ TPMS_AirTemp_RL m4 : 24|8@1+ (1,0) [0|255] "C" Vector__XXX
+ SG_ TPMS_AirTemp_FR m1 : 24|8@1+ (1,0) [0|255] "C" Vector__XXX
+ SG_ TPMS_Mux M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TPMS_Flag_FL m2 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TPMS_Voltage_FL m2 : 32|8@1+ (1,0) [0|255] "V" Vector__XXX
+ SG_ TPMS_AirTemp_FL m2 : 24|8@1+ (1,0) [0|255] "C" Vector__XXX
+ SG_ TPMS_Pressure_FL m2 : 8|16@1+ (1,0) [0|65535] "kPa" Vector__XXX
+
+
+
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","not_used","not_used","not_used","not_used","Cyclic","not_used","IfActive","NoMsgSendType";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgTimeoutTime" INT 0 0;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 0;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "Bus Speed" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgSendType" "NoMsgSendType";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgTimeoutTime" 0;
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "Bus Speed" "1000k";
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_ "Bus Speed" "1000";
+BA_ "BusType" "CAN";
+BA_ "DBName" "DAQ_CAN";
+

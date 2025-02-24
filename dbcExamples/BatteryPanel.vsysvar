@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<systemvariables version="4">
+  <namespace name="" comment="" interface="">
+    <namespace name="Battery" comment="" interface="">
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="Activate_Charging" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="0" minValue="0" minValuePhys="0" maxValue="1" maxValuePhys="1" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="Activate_HV" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="0" minValue="0" minValuePhys="0" maxValue="1" maxValuePhys="1" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="A" name="Charge_Current" comment="" bitcount="64" isSigned="true" encoding="65001" type="float" startValue="0" minValue="0" maxValue="15" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="kW" name="Charge_Power" comment="Max charge power of the supply to the charger" bitcount="64" isSigned="true" encoding="65001" type="float" startValue="1" minValue="0" maxValue="6.5" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="V" name="Charge_Setpoint" comment="Setpoint for cell charging voltage" bitcount="64" isSigned="true" encoding="65001" type="float" startValue="4.2" minValue="0" maxValue="4.3" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="V" name="Charge_Voltage" comment="" bitcount="64" isSigned="true" encoding="65001" type="float" startValue="550" minValue="280" maxValue="600" />
+    </namespace>
+  </namespace>
+</systemvariables>
