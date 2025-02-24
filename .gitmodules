@@ -1,9 +1,6 @@
 [submodule "dbcppp"]
 	path = libaries/dbcppp
 	url = https://github.com/xR3b0rn/dbcppp.git
-[submodule "gfr_dbc_files"]
-	path = libaries/gfr_dbc_files
-	url = https://github.com/GlobalFormulaRacing/gfr_dbc_files.git
 [submodule "mdflib"]
 	path = libaries/mdflib
 	url = https://github.com/ihedvall/mdflib.git
