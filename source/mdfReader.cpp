@@ -1,12 +1,11 @@
-#include <fstream>
-#include <dbcppp/Network.h>
 
-#include "dbcppp/CApi.h"
-#include <iostream>
-#include <memory>
+
+#include "mdfReader.h"
 
 #include <mdflibrary/MdfChannelObserver.h>
 #include <mdflibrary/MdfReader.h>
+#include <iostream>
+#include <string>
 
 // from uapi/linux/can.h
 using canid_t = uint32_t;
@@ -50,38 +49,6 @@ void receive_frame_data(can_frame* frame)
     // set value for signal s3_1 to 13
     // expected output after decoding and rawToPhys: s3_1 = 15 * 0.5 + 1 = 8.5
     frame->data[2] |= 15;
-}
-
-void printCANSignals(const std::string& dbcFilePath) {
-    // Read the DBC file into a string
-    std::ifstream file(dbcFilePath);
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open DBC file." << std::endl;
-        return;
-    }
-    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-    file.close();
-
-    // Parse the DBC file
-    std::istringstream dbcStream(dbcContent);
-    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);
-    if (!network) {
-        std::cerr << "Error: Failed to parse DBC file." << std::endl;
-        return;
-    }
-
-    // Iterate over all messages and print signals
-    for (const auto& message : network->Messages()) {
-        std::cout << "Message: " << message.Name() << " (ID: " << message.Id() << ")\n";
-        for (const auto& signal : message.Signals()) {
-            std::cout << "  Signal: " << signal.Name()
-                      << ", Start Bit: " << signal.StartBit()
-                      << ", Length: " << signal.BitSize()
-                      << ", Factor: " << signal.Factor()
-                      << ", Offset: " << signal.Offset()
-                      << "\n";
-        }
-    }
 }
 
 
