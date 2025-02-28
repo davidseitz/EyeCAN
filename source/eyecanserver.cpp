@@ -114,6 +114,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 
         // TODO Get the knowledgebase article
 
+        res.status = 200;
         res.set_content("The Page you requested: " + name, "text/plain");
     });
 }
