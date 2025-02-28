@@ -8,12 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Search for dbcppp library and include directories
 find_library(DBCPPP_LIBRARY NAMES dbcppp
-        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib"
+        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib" "C:/local/lib"
         PATH_SUFFIXES ""
 )
 
 find_path(DBCPPP_INCLUDE_DIR dbcppp/Attribute.h
-        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include"
+        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include" "C:/local/include"
         PATH_SUFFIXES ""
 )
 
@@ -27,12 +27,12 @@ endif()
 
 # Search for mdflib library
 find_library(MDFLIB_LIBRARY NAMES mdflibrary
-        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib"
+        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib" "C:/local/lib"
 )
 
 # Search for mdflib include directory
 find_path(MDFLIB_INCLUDE_DIR NAMES mdf/mdfreader.h
-        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include"
+        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include" "C:/local/include"
 )
 
 # Handle mdflib discovery
@@ -60,6 +60,7 @@ target_include_directories(EyeCAN PUBLIC "include" ${DBCPPP_INCLUDE_DIR} ${MDFLI
 target_link_directories(EyeCAN PRIVATE
         /usr/lib/gcc/x86_64-linux-gnu/9
         /lib/x86_64-linux-gnu
+        "C:/local/lib"
 )
 
 # Link libraries if found
@@ -73,11 +74,9 @@ endif()
 
 target_link_libraries(EyeCAN PRIVATE pthread)
 
-if (ws2_32)
+if (WIN32)
     target_link_libraries(EyeCAN PRIVATE ws2_32)
 endif()
-
-
 
 # Enable static linking only for dbcppp and mdflib (optional)
 if (DBCPPP_LIBRARY OR MDFLIB_LIBRARY)
