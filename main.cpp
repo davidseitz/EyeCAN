@@ -1,10 +1,9 @@
 
-#include <eyecanserver.h>
-#include <mdfAndDbcBasics.h>
+#include "dataFusior.h"
 
 int main() {
-    readMdf();
-    EyeCANServer server;
-    server.initServer();
+    DataFusior fusior;
+    fusior.changeDbcData();
+
     return 0;
 }

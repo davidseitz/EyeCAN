@@ -9,7 +9,7 @@
 
 class DataFusior {
 public:
-
+    DataFusior();
     void changeDbcData();
     void changeMdfData();
 
