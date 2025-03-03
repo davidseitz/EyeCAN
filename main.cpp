@@ -3,7 +3,7 @@
 #include <mdfAndDbcBasics.h>
 
 int main() {
-    readMdf();
+    printCANSignals("../dbcExamples/Vehicle.dbc");
     EyeCANServer server;
     server.initServer();
     return 0;

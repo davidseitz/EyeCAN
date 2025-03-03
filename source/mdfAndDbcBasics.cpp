@@ -4,7 +4,7 @@
 #include "dbcppp/CApi.h"
 #include <iostream>
 #include <memory>
-
+#include <sstream>
 #include <mdflibrary/MdfChannelObserver.h>
 #include <mdflibrary/MdfReader.h>
 
