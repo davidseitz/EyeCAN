@@ -1,4 +1,5 @@
-
+#include <fstream>
+#include <dbcppp/Network.h>
 
 #include "mdfReader.h"
 
@@ -7,6 +8,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
+#include <sstream>
+#include <mdflibrary/MdfChannelObserver.h>
+#include <mdflibrary/MdfReader.h>
 
 // from uapi/linux/can.h
 using canid_t = uint32_t;
@@ -52,67 +57,98 @@ void receive_frame_data(can_frame* frame)
     frame->data[2] |= 15;
 }
 
-/**
+void printCANSignals(const std::string& dbcFilePath) {
+    // Read the DBC file into a string
+    std::ifstream file(dbcFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open DBC file." << std::endl;
+        return;
+    }
+    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+
+    // Parse the DBC file
+    std::istringstream dbcStream(dbcContent);
+    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);
+    if (!network) {
+        std::cerr << "Error: Failed to parse DBC file." << std::endl;
+        return;
+    }
+
+    // Iterate over all messages and print signals
+    for (const auto& message : network->Messages()) {
+        std::cout << "Message: " << message.Name() << " (ID: " << message.Id() << ")\n";
+        for (const auto& signal : message.Signals()) {
+            std::cout << "  Signal: " << signal.Name()
+                      << ", Start Bit: " << signal.StartBit()
+                      << ", Length: " << signal.BitSize()
+                      << ", Factor: " << signal.Factor()
+                      << ", Offset: " << signal.Offset()
+                      << "\n";
+        }
+    }
+}
+
+
 int readMdf() {
     {
-        std::ofstream outputFile("output.txt");
-        outputFile << "Read" << std::endl;
+        std::cout << "Read" << std::endl;
         MdfLibrary::MdfReader Reader("../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4");
         Reader.ReadEverythingButData();
         auto Header = Reader.GetHeader();
-        outputFile << "Author: " << Header.GetAuthor().c_str() << std::endl;
-        outputFile << "Department: " << Header.GetDepartment() << std::endl;
-        outputFile << "Description: " << Header.GetDescription() << std::endl;
-        outputFile << "Project: " << Header.GetProject() << std::endl;
-        outputFile << "StartTime: " << Header.GetStartTime() << std::endl;
-        outputFile << "Subject: " << Header.GetSubject() << std::endl;
+        std::cout << "Author: " << Header.GetAuthor().c_str() << std::endl;
+        std::cout << "Department: " << Header.GetDepartment() << std::endl;
+        std::cout << "Description: " << Header.GetDescription() << std::endl;
+        std::cout << "Project: " << Header.GetProject() << std::endl;
+        std::cout << "StartTime: " << Header.GetStartTime() << std::endl;
+        std::cout << "Subject: " << Header.GetSubject() << std::endl;
 
         auto Historys = Header.GetFileHistorys();
-        outputFile << "History: " << Historys.size() << std::endl;
+        std::cout << "History: " << Historys.size() << std::endl;
         for (const auto& Histroy : Historys) {
-            outputFile << "Time: " << Histroy.GetTime() << std::endl;
-            outputFile << "Description: " << Histroy.GetDescription() << std::endl;
-            outputFile << "ToolName: " << Histroy.GetToolName() << std::endl;
-            outputFile << "ToolVendor: " << Histroy.GetToolVendor() << std::endl;
-            outputFile << "ToolVersion: " << Histroy.GetToolVersion() << std::endl;
-            outputFile << "UserName: " << Histroy.GetUserName() << std::endl;
-            outputFile << std::endl;
+            std::cout << "Time: " << Histroy.GetTime() << std::endl;
+            std::cout << "Description: " << Histroy.GetDescription() << std::endl;
+            std::cout << "ToolName: " << Histroy.GetToolName() << std::endl;
+            std::cout << "ToolVendor: " << Histroy.GetToolVendor() << std::endl;
+            std::cout << "ToolVersion: " << Histroy.GetToolVersion() << std::endl;
+            std::cout << "UserName: " << Histroy.GetUserName() << std::endl;
+            std::cout << std::endl;
         }
 
         auto DataGroups = Header.GetDataGroups();
-        outputFile << "DataGroups: " << DataGroups.size() << std::endl;
+        std::cout << "DataGroups: " << DataGroups.size() << std::endl;
         for (const auto& DataGroup : DataGroups) {
             auto ChannelGroups = DataGroup.GetChannelGroups();
-            outputFile << "ChannelGroups: " << ChannelGroups.size() << std::endl;
+            std::cout << "ChannelGroups: " << ChannelGroups.size() << std::endl;
             for (const auto& ChannelGroup : ChannelGroups) {
-                outputFile << "Name: " << ChannelGroup.GetName() << std::endl;
-                outputFile << "Description: " << ChannelGroup.GetDescription()
+                std::cout << "Name: " << ChannelGroup.GetName() << std::endl;
+                std::cout << "Description: " << ChannelGroup.GetDescription()
                           << std::endl;
 
                 auto SourceInformation = ChannelGroup.GetSourceInformation();
-                outputFile << "SI Name: " << SourceInformation.GetName() << std::endl;
-                outputFile << "SI Path: " << SourceInformation.GetPath() << std::endl;
-                outputFile << "SI Description: " << SourceInformation.GetDescription()
+                std::cout << "SI Name: " << SourceInformation.GetName() << std::endl;
+                std::cout << "SI Path: " << SourceInformation.GetPath() << std::endl;
+                std::cout << "SI Description: " << SourceInformation.GetDescription()
                           << std::endl;
 
-                outputFile << "Nof Samples: " << ChannelGroup.GetNofSamples()
+                std::cout << "Nof Samples: " << ChannelGroup.GetNofSamples()
                           << std::endl;
 
                 auto Channels = ChannelGroup.GetChannels();
-                outputFile << "Channels: " << Channels.size() << std::endl;
+                std::cout << "Channels: " << Channels.size() << std::endl;
                 std::vector<MdfLibrary::MdfChannelObserver> Observers;
                 for (const auto& Channel : Channels) {
-                    outputFile << "Name: " << Channel.GetName() << std::endl;
-                    outputFile << "Description: " << Channel.GetDescription() << std::endl;
-                    outputFile << "Type: " << static_cast<int>(Channel.GetType())
+                    std::cout << "Name: " << Channel.GetName() << std::endl;
+                    std::cout << "Description: " << Channel.GetDescription() << std::endl;
+                    std::cout << "Type: " << static_cast<int>(Channel.GetType())
                               << std::endl;
-                    outputFile << "Sync: " << static_cast<int>(Channel.GetSync())
+                    std::cout << "Sync: " << static_cast<int>(Channel.GetSync())
                               << std::endl;
-                    outputFile << "DataType: " << static_cast<int>(Channel.GetDataType())
+                    std::cout << "DataType: " << static_cast<int>(Channel.GetDataType())
                               << std::endl;
-                    outputFile << "DataBytes: " << Channel.GetDataBytes() << std::endl;
-                    outputFile << "Unit: " << Channel.GetUnit() << std::endl;
-                    outputFile << std::endl;
+                    std::cout << "DataBytes: " << Channel.GetDataBytes() << std::endl;
+                    std::cout << "Unit: " << Channel.GetUnit() << std::endl;
+                    std::cout << std::endl;
 
                     Observers.emplace_back(
                         DataGroup, ChannelGroup, Channel);
@@ -121,7 +157,7 @@ int readMdf() {
                 Reader.ReadData(DataGroup);
 
                 for (size_t i = 0; i < ChannelGroup.GetNofSamples(); i++) {
-                    outputFile << "Sample: " << i << std::endl;
+                    std::cout << "Sample: " << i << std::endl;
                     for (const auto& Observer : Observers) {
                         switch (Observer.GetChannel().GetDataType()) {
                             case MdfLibrary::ChannelDataType::CanOpenDate:
@@ -129,7 +165,7 @@ int readMdf() {
                                 uint64_t channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value
+                                std::cout << "Channel: " << channel_value
                                           << ", Eng: " << eng_value << std::endl;
                                 break;
                             }
@@ -138,7 +174,7 @@ int readMdf() {
                                 uint64_t channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value
+                                std::cout << "Channel: " << channel_value
                                           << ", Eng: " << eng_value << std::endl;
                                 break;
                             }
@@ -147,7 +183,7 @@ int readMdf() {
                                 int64_t channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value
+                                std::cout << "Channel: " << channel_value
                                           << ", Eng: " << eng_value << std::endl;
                                 break;
                             }
@@ -156,7 +192,7 @@ int readMdf() {
                                 double channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value
+                                std::cout << "Channel: " << channel_value
                                           << ", Eng: " << eng_value << std::endl;
                                 break;
                             }
@@ -167,7 +203,7 @@ int readMdf() {
                                 std::string channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value
+                                std::cout << "Channel: " << channel_value
                                           << ", Eng: " << eng_value << std::endl;
                                 break;
                             }
@@ -177,7 +213,7 @@ int readMdf() {
                                 std::vector<uint8_t> channel_value, eng_value;
                                 Observer.GetChannelValue(i, channel_value);
                                 Observer.GetEngValue(i, eng_value);
-                                outputFile << "Channel: " << channel_value.size()
+                                std::cout << "Channel: " << channel_value.size()
                                           << ", Eng: " << eng_value.size() << std::endl;
                                 break;
                             }
@@ -185,15 +221,12 @@ int readMdf() {
                                 break;
                         }
                     }
-                    outputFile << std::endl;
+                    std::cout << std::endl;
                 }
-                outputFile << std::endl;
+                std::cout << std::endl;
             }
-            outputFile << std::endl;
+            std::cout << std::endl;
         }
-        outputFile.close();
     }
-
     return 0;
 }
-**/
