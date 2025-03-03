@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <eyecanserver.h>
 
+
 using namespace httplib;
 using json = nlohmann::ordered_json;
 
@@ -72,11 +73,11 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -92,11 +93,11 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -135,11 +136,11 @@ void EyeCANServer::initFilterEndpoints() {
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -155,11 +156,11 @@ void EyeCANServer::initFilterEndpoints() {
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -208,11 +209,11 @@ void EyeCANServer::initDatasetEndpoints()
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -228,11 +229,11 @@ void EyeCANServer::initDatasetEndpoints()
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 

@@ -1,64 +1,67 @@
 #include <gtest/gtest.h>
-#include <boost/beast.hpp>
-#include <boost/asio.hpp>
-#include <boost/beast/http.hpp>
-#include <iostream>
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 
-namespace beast = boost::beast;
-namespace http = beast::http;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
+using json = nlohmann::json;
 
-// Function to send an HTTP GET request using Boost.Beast
-std::string sendGetRequest(const std::string& host, const std::string& port, const std::string& target, const std::string& query) {
-    try {
-        net::io_context ioc;
-        tcp::resolver resolver(ioc);
-        beast::tcp_stream stream(ioc);
-
-        // Resolve the hostname
-        auto const results = resolver.resolve(host, port);
-        stream.connect(results);
-
-        // Create the HTTP request
-        http::request<http::string_body> req{http::verb::get, target + "?" + query, 11};
-        req.set(http::field::host, host);
-        req.set(http::field::user_agent, "Boost.Beast Client");
-
-        // Send the request
-        http::write(stream, req);
-
-        // Receive response
-        beast::flat_buffer buffer;
-        http::response<http::string_body> res;
-        http::read(stream, buffer, res);
-
-        // Close the connection
-        beast::error_code ec;
-        stream.socket().shutdown(tcp::socket::shutdown_both, ec);
-        if (ec && ec != beast::errc::not_connected) {
-            throw beast::system_error{ec};
-        }
-
-        return res.body();
-    } catch (const std::exception& e) {
-        std::cerr << "Request failed: " << e.what() << std::endl;
-        return "";
+class ApiTest : public ::testing::Test {
+protected:
+    void SetUp() override {
+        // Setup code if needed
     }
+
+    void TearDown() override {
+        // Cleanup code if needed
+    }
+};
+
+// TEST Knowledgebase API endpoints
+
+TEST_F(ApiTest, GetKnowledgebaseTest) {
+    httplib::Client client("http://localhost:5255");
+    auto res = client.Get("/api/v1/knowledgebase?page=1");
+
+    ASSERT_NE(res, nullptr);  // Ensure response is not null
+    EXPECT_EQ(res->status, 200);
+
+    // Parse JSON response
+    //json response_json = json::parse(res->body);
+    EXPECT_EQ((std::string) res->body, "The Page you requested: 1");
 }
 
-// Google Test case
-TEST(ApiTest, FiltersEndpoint) {
-    std::string response = sendGetRequest("localhost", "5255", "/api/v1/knowledgebase", "page=1");
+/*
+TEST_F(ApiTest, PostRequestTest) {
+    httplib::Client client("http://jsonplaceholder.typicode.com");
+    json request_body = { {"title", "foo"}, {"body", "bar"}, {"userId", 1} };
 
-    // Check that the response is not empty
-    EXPECT_FALSE(response.empty());
+    auto res = client.Post("/posts", request_body.dump(), "application/json");
 
-    // Check that the response contains expected content
-    EXPECT_NE(response.find("The Page you requested: 1"), std::string::npos);
+    ASSERT_NE(res, nullptr);  // Ensure response is not null
+    EXPECT_EQ(res->status, 201);
+
+    json response_json = json::parse(res->body);
+    EXPECT_EQ(response_json["title"], "foo");
+    EXPECT_EQ(response_json["body"], "bar");
+    EXPECT_EQ(response_json["userId"], 1);
+}
+*/
+
+// TEST Filter API endpoints
+
+TEST_F(ApiTest, GetFilterTest) {
+    httplib::Client client("http://localhost:5255");
+    auto res = client.Get("/api/v1/filters?page=1");
+
+    ASSERT_NE(res, nullptr);  // Ensure response is not null
+    EXPECT_EQ(res->status, 200);
+
+    // Parse JSON response
+    //json response_json = json::parse(res->body);
+    EXPECT_EQ((std::string) res->body, "The Page you requested: 1");
 }
 
-// Main function to run the tests
+// TEST Dataset API endpoints
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
