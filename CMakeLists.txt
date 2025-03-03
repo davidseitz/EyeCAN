@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.30)
 project(EyeCAN)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/g++.exe")
+
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-lstdc++fs)
@@ -14,8 +16,8 @@ include_directories(${CMAKE_SOURCE_DIR}/libraries/cpp-httplib)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Add CPR as a submodule
-set(CPR_DIR ${CMAKE_SOURCE_DIR}/libraries/cpr)
-add_subdirectory(${CPR_DIR})
+#set(CPR_DIR ${CMAKE_SOURCE_DIR}/libraries/cpr)
+#add_subdirectory(${CPR_DIR})
 
 # Option to enable or disable tests
 #option(ENABLE_TESTS "Enable building tests" ON)
@@ -25,7 +27,7 @@ add_executable(EyeCAN main.cpp
         source/eyecanserver.cpp)
 
 # Use the keyword signature for target_link_libraries
-target_link_libraries(EyeCAN PRIVATE ws2_32 cpr::cpr)
+target_link_libraries(EyeCAN PRIVATE ws2_32)
 
 
 # Enable testing
@@ -37,7 +39,7 @@ add_subdirectory(${GTEST_DIR})
 
 # Add test executable
 add_executable(EyeCAN_tests test/test_api_endpoints.cpp)
-target_link_libraries(EyeCAN_tests PRIVATE GTest::gtest GTest::gtest_main cpr::cpr)
+target_link_libraries(EyeCAN_tests PRIVATE GTest::gtest GTest::gtest_main)
 
 # Register the test
 add_test(NAME APITest COMMAND EyeCAN_tests)
