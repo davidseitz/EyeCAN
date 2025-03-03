@@ -10,7 +10,7 @@ namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
 // Function to send an HTTP GET request using Boost.Beast
-std::string sendGetRequest(const std::string& host, const std::string& port, const std::string& target) {
+std::string sendGetRequest(const std::string& host, const std::string& port, const std::string& target, const std::string& query) {
     try {
         net::io_context ioc;
         tcp::resolver resolver(ioc);
@@ -21,7 +21,7 @@ std::string sendGetRequest(const std::string& host, const std::string& port, con
         stream.connect(results);
 
         // Create the HTTP request
-        http::request<http::string_body> req{http::verb::get, target, 11};
+        http::request<http::string_body> req{http::verb::get, target + "?" + query, 11};
         req.set(http::field::host, host);
         req.set(http::field::user_agent, "Boost.Beast Client");
 
@@ -49,13 +49,13 @@ std::string sendGetRequest(const std::string& host, const std::string& port, con
 
 // Google Test case
 TEST(ApiTest, FiltersEndpoint) {
-    std::string response = sendGetRequest("localhost", "8080", "/filters");
+    std::string response = sendGetRequest("localhost", "5255", "/api/v1/knowledgebase", "page=1");
 
     // Check that the response is not empty
     EXPECT_FALSE(response.empty());
 
     // Check that the response contains expected content
-    EXPECT_NE(response.find("expected_data"), std::string::npos);
+    EXPECT_NE(response.find("The Page you requested: 1"), std::string::npos);
 }
 
 // Main function to run the tests

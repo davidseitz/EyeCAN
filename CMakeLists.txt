@@ -15,10 +15,6 @@ include_directories(${CMAKE_SOURCE_DIR}/libraries/json/include)
 include_directories(${CMAKE_SOURCE_DIR}/libraries/cpp-httplib)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Add CPR as a submodule
-#set(CPR_DIR ${CMAKE_SOURCE_DIR}/libraries/cpr)
-#add_subdirectory(${CPR_DIR})
-
 # Option to enable or disable tests
 option(ENABLE_TESTS "Enable building tests" ON)
 
@@ -42,7 +38,7 @@ if (ENABLE_TESTS)
 
     # Add test executable
     add_executable(EyeCAN_tests test/test_api_endpoints.cpp)
-    target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES})
+    target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
 
     # Register the test
     add_test(NAME APITest COMMAND EyeCAN_tests)
