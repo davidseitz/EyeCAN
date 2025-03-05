@@ -16,11 +16,13 @@ public:
   InformationHandler();
   virtual ~InformationHandler() = default;
   virtual int create(json& info) = 0;
-  virtual int edit(json& info, std::string id);
-  virtual int remove(std::string id);
-  virtual std::list<json> get(int page);
+  virtual int edit(json& info, std::string id) = 0;
+  virtual int remove(std::string id) = 0;
+  virtual std::list<json> get(int page) = 0;
 protected:
   std::string localEyeCANPath;
+  int saveToFile(json& info) const;
+  int generate_uuid(std::string& uuid) const;
 };
 
 #endif //INFORMATIONHANDLER_H
