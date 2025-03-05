@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <eyecanserver.h>
+#include <eyecanServer.h>
 
 int main() {
   // Test

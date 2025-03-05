@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include <nlohmann/json.hpp>
-#include <eyecanserver.h>
+#include <eyecanServer.h>
 
 
 using namespace httplib;
@@ -121,19 +121,23 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 }
 
 void EyeCANServer::initFilterEndpoints() {
-    svr.Post("/api/v1/filters", [](const Request& req, Response& res) {
+    svr.Post("/api/v1/filters", [this](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
             try {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                // TODO Save the filter
-                // Set ID for testing
-                request_json["id"] = "1";
+                int status = ruleHandler.create(request_json);
 
                 // Send JSON response
-                res.status = 201; // Created
-                res.set_content(request_json.dump(), "application/json");
+                if (status != 201)
+                {
+                    res.status = status; // Error
+                }else
+                {
+                    res.status = status; // Created successfully
+                    res.set_content(request_json.dump(), "application/json");
+                }
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");

@@ -20,7 +20,12 @@ option(ENABLE_TESTS "Enable building tests" ON)
 
 add_executable(EyeCAN main.cpp
         include/eyecanserver.h
-        source/eyecanserver.cpp)
+        source/eyecanserver.cpp
+        include/informationHandler.h
+        source/informationHandler.cpp
+        include/ruleHandler.h
+        source/ruleHandler.cpp
+)
 
 # Use the keyword signature for target_link_libraries
 target_link_libraries(EyeCAN PRIVATE ws2_32)
