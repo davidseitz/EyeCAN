@@ -62,7 +62,7 @@ int InformationHandler::saveToFile(json& info) const
 int InformationHandler::generate_uuid(std::string& uuid) const
 {
     boost::uuids::random_generator generator;
-    boost::uuids::uuid gen_uuid = generator();
+    const boost::uuids::uuid gen_uuid = generator();
     uuid = to_string(gen_uuid);
 
     // Check if the file already exists
