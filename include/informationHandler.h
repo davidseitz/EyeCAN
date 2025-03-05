@@ -12,15 +12,17 @@
 using json = nlohmann::ordered_json;
 
 class InformationHandler {
-  public:
+public:
     InformationHandler();
     virtual ~InformationHandler() = default;
     virtual int create(json& info) = 0;
     virtual int edit(json& info, std::string id) = 0;
     virtual int remove(std::string id) = 0;
     virtual std::list<json> get(int page) = 0;
-  protected:
+protected:
     std::string localEyeCANPath;
+    int saveToFile(json& info) const;
+    int generate_uuid(std::string& uuid) const;
 };
 
 #endif //INFORMATIONHANDLER_H

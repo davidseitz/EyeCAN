@@ -148,16 +148,15 @@ void EyeCANServer::initFilterEndpoints() {
         }
     });
 
-    svr.Put("/api/v1/filters", [](const Request& req, Response& res) {
+    svr.Put("/api/v1/filters", [this](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
             try {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                // TODO Update the filter
+                int status = ruleHandler.edit(request_json, request_json["id"]);
 
-                // Send JSON response
-                res.set_content(request_json.dump(), "application/json");
+                res.status = status;
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
@@ -168,13 +167,12 @@ void EyeCANServer::initFilterEndpoints() {
         }
     });
 
-    svr.Delete("/api/v1/filters", [](const Request& req, Response& res) {
-        std::string uuid = req.get_param_value("uuid");
+    svr.Delete("/api/v1/filters", [this](const Request& req, Response& res) {
+        const std::string uuid = req.get_param_value("uuid");
 
-        // TODO Delete the filter
+        int status = ruleHandler.remove(uuid);
 
-        res.status = 204 ; // No Content
-        res.set_content("The filter you deleted with id: " + uuid, "text/plain");
+        res.status = status;
     });
 
     svr.Get("/api/v1/filters", [](const Request& req, Response& res) {
