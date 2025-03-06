@@ -1,5 +1,5 @@
 export interface Dataset {
-    id: number;
+    id: string;
     title: string;
     description: string;
     selectedSignalValues: string[];
