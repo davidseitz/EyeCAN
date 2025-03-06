@@ -3,13 +3,6 @@ import {Heading} from "@chakra-ui/react";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
 import FilterPreviewCard from "@/components/dashboard/sidebar/filter-collection/FilterPreviewCard.tsx";
 import mockData from "@/data/MockData.ts";
-import {Dataset} from "@/types/dataset.ts";
-import {useState} from "react";
-import useSelectedFiltersStore from "@/components/dashboard/sidebar/filter-collection/store.ts";
-
-interface FilterCollectionProps {
-    selectedDatasets: Dataset[]
-}
 
 function FilterCollection() {
 
@@ -23,7 +16,6 @@ function FilterCollection() {
                     <FilterPreviewCard
                         key={filter.id}
                         filter={filter}
-                        datasetSignals={["voltage", "current"]}
                     />)
                 }
             </ScrollableContainer>

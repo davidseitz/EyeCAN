@@ -1,14 +1,13 @@
 import {Card, Heading, HStack} from "@chakra-ui/react";
 import ApprovalIcon from "@/components/miscellaneous/ApprovalIcon.tsx";
 import SignalsCard from "@/components/dashboard/sidebar/filter-collection/SignalsCard.tsx";
-import ApplyFilterButton from "@/components/miscellaneous/apply-filter-button/ApplyFilterButton.tsx";
+import ApplyButton from "@/components/miscellaneous/apply-filter-button/ApplyButton.tsx";
 import {Filter} from "@/types/filter.ts";
 import useSelectedFiltersStore from "@/components/dashboard/sidebar/filter-collection/store.ts";
 import useSelectedDatasetStore from "@/store.ts";
 
 interface FilterPreviewCardProps {
     filter: Filter;
-    datasetSignals: string[];
     textPreviewLength?: number;
 }
 
@@ -33,11 +32,12 @@ function FilterPreviewCard({filter, textPreviewLength = 180}: FilterPreviewCardP
             </Card.Body>
             <Card.Footer padding={0} paddingTop={2} marginBottom={5} justifyContent="space-between">
                 <SignalsCard text="Signals" signals={filter.signals}/>
-                <ApplyFilterButton
+                <ApplyButton
                     disabled={!allSignalsIncluded}
                     applicable={allSignalsIncluded}
                     applied={filterIds.includes(filter.id)}
                     margins={{marginTop: 10}}
+                    text={{trueState: "Filter Applied", falseState: "Apply Filter", unavailableState: "Not Applicable"}}
                     onClick={() => filterIds.includes(filter.id) ? removeFilterId : addFilterId}
                 />
             </Card.Footer>
