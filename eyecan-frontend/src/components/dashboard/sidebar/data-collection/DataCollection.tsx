@@ -4,8 +4,8 @@ import {useState} from "react";
 import {Dataset} from "@/types/dataset.ts";
 
 function DataCollection() {
-    const [datasets, setDatasets] = useState<Dataset[]>(mockData.datasets) // TODO How to share this in whole application
-    const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0)
+    const [datasets] = useState<Dataset[]>(mockData.datasets) // TODO How to share this in whole application
+    const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0) // TODO Use a reducer
     const threshold = mockData.datasets.length - 1;
 
     const handleDatasetChange = (increase: boolean) => {

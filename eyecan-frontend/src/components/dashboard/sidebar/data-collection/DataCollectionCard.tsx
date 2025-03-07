@@ -1,4 +1,4 @@
-import {Button, Card, HStack, Text} from "@chakra-ui/react";
+import {Card, HStack, Text} from "@chakra-ui/react";
 import DropShadowContainer from "@/components/miscellaneous/drop-shadow-container/DropShadowContainer.tsx";
 import SelectSignalsDialog from "@/components/dashboard/sidebar/data-collection/SelectSignalsDialog.tsx";
 import ArrowButton from "@/components/miscellaneous/ArrowButton.tsx";

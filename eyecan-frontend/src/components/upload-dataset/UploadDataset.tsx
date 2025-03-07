@@ -1,43 +1,54 @@
 import {
     DialogActionTrigger,
-    DialogBody, DialogCloseTrigger,
-    DialogContent, DialogFooter,
+    DialogBody,
+    DialogCloseTrigger,
+    DialogContent,
+    DialogFooter,
     DialogHeader,
     DialogRoot,
-    DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@chakra-ui/react";
+import {Button, Separator, VStack} from "@chakra-ui/react";
+import FileUploadField from "@/components/upload-dataset/FileUploadField.tsx";
+import TitleDescriptionForm from "@/components/upload-dataset/TitleDescriptionForm.tsx";
 
 interface UploadDatasetProps {
     borderStyle: string;
 }
 
+
+
 function UploadDataset({borderStyle}: UploadDatasetProps) {
+
+
     return (
-        <DialogRoot placement="center">
+        <DialogRoot placement="center" >
             <DialogTrigger asChild>
                 <Button width="100%" borderRadius={10} fontWeight="bold" border={borderStyle} variant="outline" size="sm">
                     Upload Dataset
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent borderRadius={25}>
                 <DialogHeader>
-                    <DialogTitle>Dialog Title</DialogTitle>
+                    <DialogCloseTrigger borderRadius={50}/>
                 </DialogHeader>
                 <DialogBody>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
+
+                    <TitleDescriptionForm/>
+                    <Separator colorPalette="black" variant="dashed" marginY={12}/>
+                    <VStack alignItems="flex-start" width="100%" gap={2}>
+                        <FileUploadField label="Upload .mf4 file:" acceptedFileTypes={['.mf4']}/>
+                        <FileUploadField label="Upload .dbc file:" acceptedFileTypes={['.dbc']}/>
+                    </VStack>
+
                 </DialogBody>
-                <DialogFooter>
+                <DialogFooter justifyContent="space-around">
                     <DialogActionTrigger asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline" paddingX={8} size="xs" borderRadius={8} borderWidth={1} borderColor="black" marginY={6}>
+                            Submit
+                        </Button>
                     </DialogActionTrigger>
-                    <Button>Save</Button>
                 </DialogFooter>
-                <DialogCloseTrigger />
             </DialogContent>
         </DialogRoot>
     )
