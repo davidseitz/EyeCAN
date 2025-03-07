@@ -35,7 +35,7 @@ function UploadDataset({borderStyle}: UploadDatasetProps) {
                 <DialogBody>
 
                     <TitleDescriptionForm/>
-                    <Separator colorPalette="black" variant="dashed" marginY={12}/>
+                    <Separator colorPalette="gray" variant="dashed" marginY={12} size="md"/>
                     <VStack alignItems="flex-start" width="100%" gap={2}>
                         <FileUploadField label="Upload .mf4 file:" acceptedFileTypes={['.mf4']}/>
                         <FileUploadField label="Upload .dbc file:" acceptedFileTypes={['.dbc']}/>
@@ -44,7 +44,7 @@ function UploadDataset({borderStyle}: UploadDatasetProps) {
                 </DialogBody>
                 <DialogFooter justifyContent="space-around">
                     <DialogActionTrigger asChild>
-                        <Button variant="outline" paddingX={8} size="xs" borderRadius={8} borderWidth={1} borderColor="black" marginY={6}>
+                        <Button variant="outline" paddingX={8} size="xs" borderRadius={8} borderWidth={1} borderColor={{base: "black", _dark: "white"}} marginY={6}>
                             Submit
                         </Button>
                     </DialogActionTrigger>

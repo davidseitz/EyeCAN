@@ -29,7 +29,7 @@ function FileUploadField({label, acceptedFileTypes}: FileUploadFieldProps) {
                     </FileUploadClearTrigger>
                 }
             >
-                <FileInput borderColor="black" size="xs" borderRadius={8}/>
+                <FileInput borderColor={{base: "black", _dark: "white"}} size="xs" borderRadius={8}/>
             </InputGroup>
         </FileUploadRoot>
     )
