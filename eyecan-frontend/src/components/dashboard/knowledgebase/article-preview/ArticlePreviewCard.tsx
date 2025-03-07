@@ -9,9 +9,9 @@ interface ArticlePreviewProps {
 
 function ArticlePreviewCard({article}: ArticlePreviewProps) {
     return(
-        <VStack paddingY={2} gap={0}>
+        <VStack paddingY={2} gap={0} onClick={()=> console.log(article)}>
             <ApHeader article={article} />
-            <Text fontSize="sm" lineHeight={1.1} color="gray.500">
+            <Text fontSize="sm" lineHeight={1.1} color="gray.500" textAlign="left">
                 {article.content.length > 500 ? article.content.slice(0, 400) + "..." : article.content}
             </Text>
         </VStack>

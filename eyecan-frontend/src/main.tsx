@@ -10,5 +10,5 @@ createRoot(document.getElementById('root')!).render(
         <ChakraProvider value={defaultSystem}>
             <ColorModeProvider><App/></ColorModeProvider>
         </ChakraProvider>
-    </StrictMode>,
+    </StrictMode>
 )
