@@ -60,8 +60,21 @@ void DataFusior::readChannelDataByCanId(uint32_t canId) {
                         for (const auto& dataGroup : header.GetDataGroups()) {
                             reader.ReadData(dataGroup);
                             for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
-                                std::cout << "ChannelGroup: " << channelGroup.GetName() << " " << channelGroup.GetIndex() << " " << channelGroup.GetRecordId() << " " << channelGroup.GetSourceInformation().GetDescription() << " end" << std::endl;
+                                //std::cout << "ChannelGroup: " << channelGroup.GetName() << " " << channelGroup.GetIndex() << " " << channelGroup.GetRecordId() << " " << channelGroup.GetSourceInformation().GetDescription() << " end" << std::endl;
                                 for (const auto& channel : channelGroup.GetChannels()) {
+                                    if (channel.GetName() == "CAN_DataFrame.ID") {
+                                        MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
+                                        std::cout << "Number of samples: " << channelGroup.GetNofSamples() << std::endl;
+
+                                        for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
+                                            double canIdRaw = -1;
+                                            observer.GetChannelValue(i, canIdRaw);
+
+                                            // Convert to correct type
+                                            auto n_canId = static_cast<uint32_t>(canIdRaw);
+                                            std::cout << "Found CAN ID: " << n_canId << std::endl;
+                                        }
+                                    }
                                     if (channel.GetIndex() == message.Id()) {
                                         MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
                                         std::vector<std::vector<double>> values;
