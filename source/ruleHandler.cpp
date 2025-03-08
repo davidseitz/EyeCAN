@@ -48,44 +48,6 @@ int RuleHandler::create(json& info) {
     return 201;
 }
 
-int RuleHandler::edit(json& info, std::string id) {
-    const std::string rule_file_path = localEyeCANPath + id + ".json";
-
-    // Check if the file exists
-    if (!std::filesystem::exists(rule_file_path)) {
-        return 404; // Not Found
-    }
-
-    // Overwrite the file with the new JSON information
-    try {
-        std::ofstream file(rule_file_path);
-        if (!file.is_open()) {
-            throw std::ios_base::failure("Failed to open file");
-        }
-        file << info.dump(4);
-        file.close();
-    } catch (std::ios_base::failure& e) {
-        return 500; // Internal Server Error
-    } catch (json::exception& e) {
-        return 400; // Bad Request
-    }
-
-    return 200;
-}
-
-int RuleHandler::remove(std::string id) {
-    try {
-        const std::string rule_file_path = localEyeCANPath + id + ".json";
-        if (std::filesystem::remove(rule_file_path)) {
-            return 204; // No Content
-        } else {
-            return 404; // Not Found
-        }
-    } catch (const std::filesystem::filesystem_error& e) {
-        return 500; // Internal Server Error
-    }
-}
-
 std::list<json> RuleHandler::get(int page) {
     //TODO get
     return std::list<json>();

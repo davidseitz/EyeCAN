@@ -16,8 +16,8 @@ public:
     InformationHandler();
     virtual ~InformationHandler() = default;
     virtual int create(json& info) = 0;
-    virtual int edit(json& info, std::string id) = 0;
-    virtual int remove(std::string id) = 0;
+    virtual int edit(const json& info, const std::string& id);
+    virtual int remove(const std::string& id);
     virtual std::list<json> get(int page) = 0;
 protected:
     std::string localEyeCANPath;

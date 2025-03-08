@@ -40,12 +40,50 @@ InformationHandler::InformationHandler() {
     std::filesystem::create_directories(localEyeCANPath);
 }
 
+int InformationHandler::edit(const json& info, const std::string& id) {
+    const std::string informationFilePath = localEyeCANPath + id + ".json";
+
+    // Check if the file exists
+    if (!std::filesystem::exists(informationFilePath)) {
+        return 404; // Not Found
+    }
+
+    // Overwrite the file with the new JSON information
+    try {
+        std::ofstream file(informationFilePath);
+        if (!file.is_open()) {
+            throw std::ios_base::failure("Failed to open file");
+        }
+        file << info.dump(4);
+        file.close();
+    } catch (std::ios_base::failure& e) {
+        return 500; // Internal Server Error
+    } catch (json::exception& e) {
+        return 400; // Bad Request
+    }
+
+    return 200;
+}
+
+int InformationHandler::remove(const std::string& id) {
+    try {
+        const std::string informationFilePath = localEyeCANPath + id + ".json";
+        if (std::filesystem::remove(informationFilePath)) {
+            return 204; // No Content
+        } else {
+            return 404; // Not Found
+        }
+    } catch (const std::filesystem::filesystem_error& e) {
+        return 500; // Internal Server Error
+    }
+}
+
 int InformationHandler::saveToFile(json& info) const
 {
     try {
         const std::string filename = info["id"];
-        const std::string rule_file_path = localEyeCANPath + filename + ".json";
-        std::ofstream file(rule_file_path);
+        const std::string informationFilePath = localEyeCANPath + filename + ".json";
+        std::ofstream file(informationFilePath);
         if (!file.is_open()) {
             throw std::ios_base::failure("Failed to open file");
         }
