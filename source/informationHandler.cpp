@@ -99,14 +99,11 @@ int InformationHandler::saveToFile(json& info) const
 
 int InformationHandler::generate_uuid(std::string& uuid) const
 {
-    boost::uuids::random_generator generator;
-    const boost::uuids::uuid gen_uuid = generator();
-    uuid = to_string(gen_uuid);
-
-    // Check if the file already exists
-    if (std::filesystem::exists(localEyeCANPath + uuid + ".json"))
-    {
-        return 404;
-    }
-    return 201;
+    // create uuid until it is unique
+    do {
+        boost::uuids::random_generator generator;
+        const boost::uuids::uuid gen_uuid = generator();
+        uuid = to_string(gen_uuid);
+    } while (std::filesystem::exists(localEyeCANPath + uuid + ".json"));
+    return 0;
 }

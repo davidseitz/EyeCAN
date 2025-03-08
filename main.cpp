@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include <eyecanServer.h>
+#include <eyeCanServer.h>
+#include <ruleHandler.h>
 
 int main() {
-  // Test
     EyeCANServer server;
     server.initServer();
     return 0;

@@ -10,6 +10,7 @@ public:
     ~RuleHandler() override = default;
     int create(json& info) override;
     std::list<json> get(int page) override;
+    std::string getEyeCANPath() const;
 };
 
 #endif // RULEHANDLER_H

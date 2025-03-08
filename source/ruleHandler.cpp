@@ -18,13 +18,15 @@ RuleHandler::RuleHandler() {
 int RuleHandler::create(json& info) {
     // Generate a random UUID for the rule and check if already exists
     std::string uuid;
-    int status = generate_uuid(uuid);
-    if (status != 201) {
-        return status;
-    }
+    generate_uuid(uuid);
 
     json tmp_json; // Temporary json object to store the rule with correct ordered keys
     try {
+        // Check for required keys
+        if (!info.contains("title") || !info.contains("description") || !info.contains("signals") || !info.contains("settings")) {
+            return 400;
+        }
+
         tmp_json["id"] = uuid;
         tmp_json["title"] = info["title"];
         tmp_json["description"] = info["description"];
@@ -51,4 +53,8 @@ int RuleHandler::create(json& info) {
 std::list<json> RuleHandler::get(int page) {
     //TODO get
     return std::list<json>();
+}
+
+std::string RuleHandler::getEyeCANPath() const {
+    return localEyeCANPath;
 }

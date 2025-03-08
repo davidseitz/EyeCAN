@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include <nlohmann/json.hpp>
-#include <eyecanServer.h>
+#include <eyeCanServer.h>
 
 
 using namespace httplib;
