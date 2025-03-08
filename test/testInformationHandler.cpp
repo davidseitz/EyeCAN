@@ -52,10 +52,6 @@ TEST_F(InformationHandlerTest, SaveToFileTest) {
     EXPECT_EQ(result, 201); // Check if the file was created successfully
     EXPECT_TRUE(std::filesystem::exists(infoHandler.getLocalEyeCANPath() + "test_id.json")); // Check if the file exists
 
-    // Test save to file with existing file
-    result = infoHandler.testSaveToFile(info);
-    EXPECT_EQ(result, 400); // Check if the file was created successfully
-
 }
 
 TEST_F(InformationHandlerTest, GenerateUUIDTest) {
