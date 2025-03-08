@@ -19,8 +19,8 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 option(ENABLE_TESTS "Enable building tests" ON)
 
 add_executable(EyeCAN main.cpp
-        include/eyecanserver.h
-        source/eyecanserver.cpp
+        include/eyeCanServer.h
+        source/eyeCanServer.cpp
         include/informationHandler.h
         source/informationHandler.cpp
 )
@@ -40,7 +40,11 @@ if (ENABLE_TESTS)
     include_directories(${GTEST_INCLUDE_DIRS})
 
     # Add test executable
-    add_executable(EyeCAN_tests test/test_api_endpoints.cpp)
+    add_executable(EyeCAN_tests test/testApiEndpoints.cpp
+            include/informationHandler.h
+            source/informationHandler.cpp
+            test/testInformationHandler.cpp
+    )
     target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
 
     # Register the test

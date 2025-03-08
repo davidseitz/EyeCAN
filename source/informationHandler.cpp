@@ -83,6 +83,11 @@ int InformationHandler::saveToFile(json& info) const
     try {
         const std::string filename = info["id"];
         const std::string informationFilePath = localEyeCANPath + filename + ".json";
+        // Check if the file already exists
+        if (std::filesystem::exists(informationFilePath))
+        {
+            return 400;
+        }
         std::ofstream file(informationFilePath);
         if (!file.is_open()) {
             throw std::ios_base::failure("Failed to open file");
@@ -102,11 +107,5 @@ int InformationHandler::generate_uuid(std::string& uuid) const
     boost::uuids::random_generator generator;
     const boost::uuids::uuid gen_uuid = generator();
     uuid = to_string(gen_uuid);
-
-    // Check if the file already exists
-    if (std::filesystem::exists(localEyeCANPath + uuid + ".json"))
-    {
-        return 404;
-    }
-    return 201;
+    return 0;
 }
