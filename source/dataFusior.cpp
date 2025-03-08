@@ -8,137 +8,102 @@
 #include <mdflibrary/MdfChannelObserver.h>
 #include <mdflibrary/MdfReader.h>
 
+std::ofstream outFile;
+nlohmann::ordered_json jsonData;
+
 DataFusior::DataFusior() {
     // Constructor
-    #ifdef LINUX
-    if (std::filesystem::exists(~/.local/EyeCAN/fusedData.json)) {
-        std::ifstream file(~/.local/EyeCAN/fusedData.json);
-        m_fusedData = nlohmann::ordered_json::parse(file);
-        file.close();
 
-    }else {
-        m_fusedData = nlohmann::ordered_json();
-    }
-    #elif defined(WINDOWS)
-    #elif defined(MAC)
-    #endif
-
-
-}
-
-void DataFusior::changeDbcData() {
-    nlohmann::ordered_json jsonData;
     jsonData["name"] = "FrontendBackendTemplate";
     jsonData["version"] = "1.0.0";
     jsonData["description"] = "Template for Frontend and Backend";
     jsonData["signals"] = nlohmann::ordered_json::array();
 
+    #ifdef __linux__
+    char *homePath = std::getenv("HOME");
+    std::filesystem::path dirPath = std::filesystem::path(homePath) / ".local" / "EyeCAN";
+    std::filesystem::path filePath = dirPath / "fusedData.json";
+    if (!std::filesystem::exists(dirPath)) {
+        std::filesystem::create_directories(dirPath);
+    }
+    outFile.open(filePath);
+    if (!outFile.is_open()) {
+        std::cerr << "Failed to open file: " << filePath << std::endl;
+    }
+    #elif defined(WINDOWS)
+    // Windows-specific file path handling
+    #elif defined(MAC)
+    // macOS-specific file path handling
+    #endif
+}
+
+void DataFusior::readChannelDataByCanId(uint32_t canId) {
     // Read DBC file to get signal information
     std::ifstream dbcFile("../dbcExamples/Vehicle.dbc");
     if (dbcFile.is_open()) {
         auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);
         if (network) {
             for (const auto& message : network->Messages()) {
-                for (const auto& signal : message.Signals()) {
-                    nlohmann::ordered_json signalJson;
-                    signalJson["signalname"] = signal.Name();
-                    signalJson["signalunit"] = signal.Unit();
-                    signalJson["signalvalues"] = nlohmann::ordered_json::array();
+                if (message.Id() == canId) {
+                    for (const auto& signal : message.Signals()) {
+                        nlohmann::ordered_json signalJson;
+                        signalJson["signalname"] = signal.Name();
+                        signalJson["signalunit"] = signal.Unit();
+                        signalJson["signalvalues"] = nlohmann::ordered_json::array();
+                        signalJson["messageID"] = message.Id();
 
-                    // Read corresponding MDF data for this signal
-                    // Note: You'll need to modify this part based on your actual MDF file structure
-                    MdfLibrary::MdfReader reader("../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4");
-                    reader.ReadEverythingButData();
-                    MdfLibrary::MdfHeader header = reader.GetHeader();
+                        // Read corresponding MDF data for this signal
+                        MdfLibrary::MdfReader reader("../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4");
+                        reader.ReadEverythingButData();
+                        MdfLibrary::MdfHeader header = reader.GetHeader();
 
-                    for (const auto& dataGroup : header.GetDataGroups()) {
-                        reader.ReadData(dataGroup);
-                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
-                            for (const auto& channel : channelGroup.GetChannels()) {
-                                if (channel.GetName() == signal.Name()) {
-                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
-                                    std::vector<std::vector<double>> values;
+                        for (const auto& dataGroup : header.GetDataGroups()) {
+                            reader.ReadData(dataGroup);
+                            for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
+                                std::cout << "ChannelGroup: " << channelGroup.GetName() << " " << channelGroup.GetIndex() << " " << channelGroup.GetRecordId() << " " << channelGroup.GetSourceInformation().GetDescription() << " end" << std::endl;
+                                for (const auto& channel : channelGroup.GetChannels()) {
+                                    if (channel.GetIndex() == message.Id()) {
+                                        MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
+                                        std::vector<std::vector<double>> values;
+                                        bool valueFound = false;
 
-                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
-                                        double channelValue, engValue;
-                                        observer.GetChannelValue(i, channelValue);
-                                        observer.GetEngValue(i, engValue);
-                                        signalJson["signalvalues"].push_back({channelValue, engValue});
+                                        for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
+                                            double channelValue, engValue;
+                                            observer.GetChannelValue(i, channelValue);
+                                            observer.GetEngValue(i, engValue);
+                                            signalJson["signalvalues"].push_back({channelValue, engValue});
+                                            valueFound = true;
+                                        }
+
+
+                                        if (!valueFound) {
+                                            std::cerr << "No values found for signal: " << signal.Name() << std::endl;
+                                        }
+                                    }
+                                    else {
                                     }
                                 }
+
                             }
                         }
+                        jsonData["signals"].push_back(signalJson);
                     }
-                    jsonData["signals"].push_back(signalJson);
                 }
             }
         }
         dbcFile.close();
+    } else {
+        std::cerr << "Failed to open DBC file" << std::endl;
     }
+}
 
-    // Save the JSON data to disk
-    +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        std::filesystem::create_directories(std::filesystem::path("~/.local/EyeCAN"));
-    std::ofstream outFile("~/.local/EyeCAN/fusedData.json");
+DataFusior::~DataFusior() {
+    // Destructor
     if (outFile.is_open()) {
         outFile << jsonData.dump(2);
         outFile.close();
         m_fusedData = jsonData;
+    } else {
+        std::cerr << "Outfile is not open" << std::endl;
     }
 }

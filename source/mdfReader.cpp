@@ -1,3 +1,6 @@
+
+#if 0
+
 #include <fstream>
 #include <dbcppp/Network.h>
 
@@ -230,3 +233,4 @@ int readMdf() {
     }
     return 0;
 }
+#endif
