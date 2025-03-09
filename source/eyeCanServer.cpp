@@ -127,7 +127,7 @@ void EyeCANServer::initFilterEndpoints() {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                int status = ruleHandler.create(request_json);
+                const int status = ruleHandler.create(request_json);
 
                 // Send JSON response
                 if (status != 201)
@@ -154,7 +154,7 @@ void EyeCANServer::initFilterEndpoints() {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                int status = ruleHandler.edit(request_json, request_json["id"]);
+                const int status = ruleHandler.edit(request_json, request_json["id"]);
 
                 res.status = status;
             } catch (json::parse_error& e) {
@@ -170,13 +170,13 @@ void EyeCANServer::initFilterEndpoints() {
     svr.Delete("/api/v1/filters", [this](const Request& req, Response& res) {
         const std::string uuid = req.get_param_value("uuid");
 
-        int status = ruleHandler.remove(uuid);
+        const int status = ruleHandler.remove(uuid);
 
         res.status = status;
     });
 
     svr.Get("/api/v1/filters", [](const Request& req, Response& res) {
-        std::string name = req.get_param_value("page");
+        const std::string name = req.get_param_value("page");
 
         // TODO Get the filter
 

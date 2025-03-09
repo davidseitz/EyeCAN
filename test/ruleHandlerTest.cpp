@@ -24,6 +24,7 @@ TEST_F(RuleHandlerTest, createRuleTest) {
     json wrong_rule = {};
     int result = ruleHandler.create(wrong_rule);
     EXPECT_EQ(result, 400);
+    EXPECT_EQ(wrong_rule["id"],nullptr);
 
     // Test json is correct
     json correct_rule = {
@@ -40,6 +41,11 @@ TEST_F(RuleHandlerTest, createRuleTest) {
     };
     result = ruleHandler.create(correct_rule);
     EXPECT_EQ(result, 201);
+    const std::string id = correct_rule["id"];
+    EXPECT_TRUE(std::filesystem::exists(ruleHandler.getEyeCANPath() + id + ".json"));
+
+    // Clean up
+    std::filesystem::remove(ruleHandler.getEyeCANPath() + id + ".json");
 }
 
 /*
