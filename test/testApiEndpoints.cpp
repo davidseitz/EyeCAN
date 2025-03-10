@@ -182,6 +182,7 @@ TEST_F(ApiTest, DeleteFilterTest) {
     file << "test";
     file.close();
 
+    // Successfully deleted file
     res = client.Delete("/api/v1/filters?uuid="+testUuid);
 
     ASSERT_NE(res, nullptr);  // Ensure response is not null

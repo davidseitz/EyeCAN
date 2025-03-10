@@ -175,12 +175,28 @@ void EyeCANServer::initFilterEndpoints() {
         res.status = status;
     });
 
-    svr.Get("/api/v1/filters", [](const Request& req, Response& res) {
-        const std::string name = req.get_param_value("page");
+    svr.Get("/api/v1/filters", [this](const Request& req, Response& res) {
+        const std::string val = req.get_param_value("page");
+        int page = -1;
+        try{
+            page = std::stoi(val);
+        }catch (std::invalid_argument& e) {
+            res.status = 400;
+            res.set_content("Invalid page number", "text/plain");
+            return;
+        }
+        json response;
+        const int status = ruleHandler.get(page,response);
 
-        // TODO Get the filter
-
-        res.set_content("The Page you requested: " + name, "text/plain");
+        if (status != 200)
+        {
+            res.status = status;
+        }
+        else
+        {
+            res.status = status;
+            res.body = response.dump();
+        }
     });
 
     /*

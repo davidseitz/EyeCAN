@@ -9,7 +9,7 @@ public:
     RuleHandler();
     ~RuleHandler() override = default;
     int create(json& info) override;
-    std::list<json> get(int page) override;
+    int get(const int page, json& response) override;
     std::string getEyeCANPath() const;
 };
 

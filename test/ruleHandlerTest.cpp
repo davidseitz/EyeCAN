@@ -9,11 +9,9 @@ class RuleHandlerTest : public ::testing::Test {
 protected:
     RuleHandler ruleHandler;
     void SetUp() override {
-        std::filesystem::create_directories(ruleHandler.getEyeCANPath() + "test/");
     }
 
     void TearDown() override {
-        std::filesystem::remove_all(ruleHandler.getEyeCANPath() + "test/");
     }
 };
 

@@ -50,9 +50,33 @@ int RuleHandler::create(json& info) {
     return 201;
 }
 
-std::list<json> RuleHandler::get(int page) {
-    //TODO get
-    return std::list<json>();
+int RuleHandler::get(const int page, json& response) {
+    if (page < 1) {
+        return 400;
+    }
+    response["page"] = page;
+
+    std::list<json> information;
+    try {
+        // Get requested files
+        getFiles(page, information, response);
+    } catch (std::filesystem::filesystem_error& e) {
+        return 500;
+    } catch (json::exception& e) {
+        return 400;
+    }
+
+    // Check if files are found on this page
+    if (information.empty()) {
+        return 204;
+    }
+
+    // Generate array of requested filters
+    response["filters"] = json::array();
+    for (const auto& info : information) {
+        response["filters"].push_back(info);
+    }
+    return 200;
 }
 
 std::string RuleHandler::getEyeCANPath() const {
