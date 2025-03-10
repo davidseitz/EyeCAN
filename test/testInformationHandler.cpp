@@ -27,6 +27,10 @@ public:
         return generate_uuid(uuid);
     }
 
+    int testGetFiles(const int page, std::list<json>& information, json& response) const {
+        return getFiles(page, information, response);
+    }
+
     std::string getLocalEyeCANPath() {
         return localEyeCANPath;
     }
@@ -59,4 +63,34 @@ TEST_F(InformationHandlerTest, GenerateUUIDTest) {
     int result = infoHandler.testGenerateUUID(uuid);
     EXPECT_EQ(result, 0); // Check if the UUID was generated successfully
     EXPECT_FALSE(uuid.empty()); // Check if the UUID is not empty
+}
+
+TEST_F(InformationHandlerTest, GetFilesTest) {
+    // Save test files
+    for (int i = 0; i < 11; i++) {
+        json info = {{"id", "test_id" + std::to_string(i)}, {"data", "test_data" + std::to_string(i)}};
+        infoHandler.testSaveToFile(info);
+    }
+
+    // Test get files
+    std::list<json> information;
+    json response;
+    int result = infoHandler.testGetFiles(1, information, response);
+    EXPECT_EQ(result, 0); // Check if the files were read successfully
+    EXPECT_EQ(response["lastPage"], false); // Check if it is not the last page
+    EXPECT_EQ(information.size(), 10); // Check if the correct number of files were read
+
+    // Test last page
+    information.clear();
+    result = infoHandler.testGetFiles(2, information, response);
+    EXPECT_EQ(result, 0); // Check if the files were read successfully
+    EXPECT_EQ(response["lastPage"], true); // Check if it is the last page
+    EXPECT_EQ(information.size(), 1); // Check if the correct number of files were read
+
+    // Test negative page number
+    information.clear();
+    result = infoHandler.testGetFiles(-1, information, response);
+    EXPECT_EQ(result, 0); // Check if the files were read successfully
+    EXPECT_EQ(information.size(), 0); // Check if no files were read
+
 }

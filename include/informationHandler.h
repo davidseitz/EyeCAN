@@ -23,6 +23,7 @@ protected:
   std::string localEyeCANPath;
   int saveToFile(json& info) const;
   int generate_uuid(std::string& uuid) const;
+  int getFiles(const int page, std::list<json>& information, json& response) const;
 };
 
 #endif //INFORMATIONHANDLER_H

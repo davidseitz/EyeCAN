@@ -78,6 +78,40 @@ int InformationHandler::remove(const std::string& id) {
     }
 }
 
+int InformationHandler::getFiles(const int page, std::list<json>& information, json& response) const
+{
+    // Get all files in the directory
+    std::vector<std::filesystem::directory_entry> entries;
+    for (const auto& entry : std::filesystem::directory_iterator(localEyeCANPath)) {
+        entries.push_back(entry);
+    }
+
+    // Sort entries by last write time in descending order
+    std::sort(entries.begin(), entries.end(), [](const auto& a, const auto& b) {
+        return std::filesystem::last_write_time(a) > std::filesystem::last_write_time(b);
+    });
+
+    // Calculate the range of files to return
+    const size_t start = (page - 1) * 10;
+    const size_t end = std::min(start + 10, entries.size());
+    if (end == entries.size())
+    {
+        response["lastPage"] = true;
+    }
+    else
+    {
+        response["lastPage"] = false;
+    }
+
+    for (size_t i = start; i < end; ++i) {
+        std::ifstream file(entries[i].path());
+        json info;
+        file >> info;
+        information.push_back(info);
+    }
+    return 0;
+}
+
 int InformationHandler::saveToFile(json& info) const
 {
     try {
