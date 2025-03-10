@@ -182,7 +182,6 @@ void EyeCANServer::initFilterEndpoints() {
             page = std::stoi(val);
         }catch (std::invalid_argument& e) {
             res.status = 400;
-            res.set_content("Invalid page number", "text/plain");
             return;
         }
         json response;
