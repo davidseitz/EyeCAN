@@ -13,7 +13,7 @@ public:
         return 0;
     }
 
-    std::list<json> get(int page) override {
+    int get(int page, json& response) override {
         // Only for test purposes
         return {};
     }

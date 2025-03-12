@@ -1,7 +1,3 @@
-//
-// Created by robin on 05.03.2025.
-//
-
 #ifndef INFORMATIONHANDLER_H
 #define INFORMATIONHANDLER_H
 
