@@ -1,5 +1,4 @@
 #include <articleHandler.h>
-#include <iostream>
 
 ArticleHandler::ArticleHandler() {
 #ifdef _WIN32
