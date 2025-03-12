@@ -1,4 +1,3 @@
-#include "informationHandler.h"
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -66,6 +65,10 @@ int InformationHandler::edit(const json& info, const std::string& id) {
 }
 
 int InformationHandler::remove(const std::string& id) {
+    //Check if id has length of an uuid
+    if (id.size() != 36) {
+        return 400; // Bad Request
+    }
     try {
         const std::string informationFilePath = localEyeCANPath + id + ".json";
         if (std::filesystem::remove(informationFilePath)) {

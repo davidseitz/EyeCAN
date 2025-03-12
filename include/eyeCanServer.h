@@ -3,10 +3,12 @@
 
 #include <string>
 #include <httplib.h>
+#include <ruleHandler.h>
 
 class EyeCANServer {
 public:
     httplib::Server svr;
+    RuleHandler ruleHandler;
     void initServer();
 
 private:

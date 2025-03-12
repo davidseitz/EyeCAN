@@ -23,6 +23,8 @@ add_executable(EyeCAN main.cpp
         source/eyeCanServer.cpp
         include/informationHandler.h
         source/informationHandler.cpp
+        include/ruleHandler.h
+        source/ruleHandler.cpp
 )
 
 # Use the keyword signature for target_link_libraries
@@ -43,6 +45,9 @@ if (ENABLE_TESTS)
     add_executable(EyeCAN_tests test/testApiEndpoints.cpp
             include/informationHandler.h
             source/informationHandler.cpp
+            include/ruleHandler.h
+            source/ruleHandler.cpp
+            test/ruleHandlerTest.cpp
             test/testInformationHandler.cpp
     )
     target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
