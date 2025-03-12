@@ -20,32 +20,32 @@ int RuleHandler::create(json& info) {
     std::string uuid;
     generate_uuid(uuid);
 
-    json tmp_json; // Temporary json object to store the rule with correct ordered keys
+    json tmpJson; // Temporary json object to store the rule with correct ordered keys
     try {
         // Check for required keys
         if (!info.contains("title") || !info.contains("description") || !info.contains("signals") || !info.contains("settings")) {
             return 400;
         }
 
-        tmp_json["id"] = uuid;
-        tmp_json["title"] = info["title"];
-        tmp_json["description"] = info["description"];
-        tmp_json["signals"] = info["signals"];
-        tmp_json["settings"] = info["settings"];
+        tmpJson["id"] = uuid;
+        tmpJson["title"] = info["title"];
+        tmpJson["description"] = info["description"];
+        tmpJson["signals"] = info["signals"];
+        tmpJson["settings"] = info["settings"];
     } catch (json::exception& e) {
         return 400;
     }
 
     // Save the rule to a file
-    int isSaved = saveToFile(tmp_json);
+    int isSaved = saveToFile(tmpJson);
     if ( isSaved != 201){
         return isSaved;
     }
 
     // Return the ID of the rule
-    json id_of_rule;
-    id_of_rule["id"] = uuid;
-    info = id_of_rule;
+    json idOfRule;
+    idOfRule["id"] = uuid;
+    info = idOfRule;
 
     return 201;
 }
