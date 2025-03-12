@@ -16,6 +16,7 @@ protected:
 };
 
 // TEST Knowledgebase API endpoints
+// TODO Implement tests for Knowledgebase API endpoints
 /*
 TEST_F(ApiTest, GetKnowledgebaseTest) {
     httplib::Client client("http://localhost:5255");
@@ -62,22 +63,9 @@ TEST_F(ApiTest, PostFilterTest) {
                 {"setting2", "value2"}
         }}
     };
-    const json testDebugRule = {
-        {"title", "Test Rule"},
-        {"description", "This is a test rule"},
-        {"signals", {
-                {"signal1", "value1"},
-                {"signal2", "value2"}
-        }},
-        {"settings", {
-                {"setting1", "value1"},
-                {"setting2", "value2"}
-        }},
-        {"debug", true}
-    };
 
     // Test Content-Type is not application/json
-    auto res = client.Post("/api/v1/filters", testDebugRule.dump(),"application/test");
+    auto res = client.Post("/api/v1/filters", testRule.dump(),"application/test");
 
     ASSERT_NE(res, nullptr);  // Ensure response is not null
     EXPECT_EQ(res->status, 415); // Unsupported Media Type

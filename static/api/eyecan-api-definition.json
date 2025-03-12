@@ -57,7 +57,7 @@
             }
           },
           "204": {
-            "description": "No page found"
+            "description": "No content on page"
           },
           "400": {
             "description": "Invalid page number"
@@ -116,7 +116,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful created",
+            "description": "Successfully created",
             "content": {
               "application/json": {
                 "schema": {
@@ -160,16 +160,13 @@
         ],
         "responses": {
           "204": {
-            "description": "Successful deleted"
+            "description": "Successfully deleted"
           },
           "400": {
             "description": "Invalid ID supplied"
           },
           "404": {
             "description": "Article to delete not found"
-          },
-          "415": {
-            "description": "Wrong Content-Type"
           },
           "500": {
             "description": "An error occurred on the server side"
@@ -195,14 +192,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Article"
-                }
-              }
-            }
+            "description": "Successfully updated"
           },
           "400": {
             "description": "Invalid input"
@@ -254,7 +244,7 @@
             }
           },
           "204": {
-            "description": "No page found"
+            "description": "No content on page"
           },
           "400": {
             "description": "Invalid page number"
@@ -300,9 +290,14 @@
                   "settings": {
                     "type": "array",
                     "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Object"
+                      "type": "object",
+                      "properties": {
+                        "objects": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/objects"
+                          }
+                        }
                       }
                     }
                   }
@@ -314,11 +309,17 @@
         },
         "responses": {
           "201": {
-            "description": "Successful created",
+            "description": "Successfully created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Filter"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
+                    }
+                  }
                 }
               }
             }
@@ -358,7 +359,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Successful deleted"
+            "description": "Successfully deleted"
           },
           "400": {
             "description": "Invalid ID supplied"
@@ -393,14 +394,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Filter"
-                }
-              }
-            }
+            "description": "Successfully updated"
           },
           "400": {
             "description": "Invalid input"
@@ -452,7 +446,7 @@
             }
           },
           "204": {
-            "description": "No page found"
+            "description": "No content on page"
           },
           "400": {
             "description": "Invalid page number"
@@ -509,29 +503,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "436e2874-ed68-4c31-8267-527c3f5470a3"
-                    },
-                    "title": {
-                      "type": "string",
-                      "description": "displayed in dataset card max. 32 chars",
-                      "example": "dataset title"
-                    },
-                    "description": {
-                      "type": "string",
-                      "description": "max. 280 chars"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Successfully created"
           },
           "400": {
             "description": "Invalid input"
@@ -568,7 +540,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Successful deleted"
+            "description": "Successfully deleted"
           },
           "400": {
             "description": "Invalid ID supplied"
@@ -596,23 +568,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "signals": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "description": "array of selected signals for this dataset"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/Dataset"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful updated"
+            "description": "Successfully updated"
           },
           "400": {
             "description": "Invalid input"
@@ -674,7 +637,8 @@
         "properties": {
           "page": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "example": 1
           },
           "lastpage": {
             "type": "boolean"
@@ -715,15 +679,20 @@
           "settings": {
             "type": "array",
             "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Object"
+              "type": "object",
+              "properties": {
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/objects"
+                  }
+                }
               }
             }
           }
         }
       },
-      "Object": {
+      "objects": {
         "type": "object",
         "properties": {
           "signal": {
