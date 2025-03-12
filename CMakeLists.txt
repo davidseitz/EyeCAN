@@ -15,17 +15,15 @@ include_directories(${CMAKE_SOURCE_DIR}/libraries/json/include)
 include_directories(${CMAKE_SOURCE_DIR}/libraries/cpp-httplib)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+# Collect all source files
+file(GLOB INCLUDE_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
+file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/source/*.cpp)
+file(GLOB TEST_FILES ${CMAKE_SOURCE_DIR}/test/*.cpp)
+
 # Option to enable or disable tests
 option(ENABLE_TESTS "Enable building tests" ON)
 
-add_executable(EyeCAN main.cpp
-        include/eyeCanServer.h
-        source/eyeCanServer.cpp
-        include/informationHandler.h
-        source/informationHandler.cpp
-        include/ruleHandler.h
-        source/ruleHandler.cpp
-)
+add_executable(EyeCAN main.cpp ${INCLUDE_FILES} ${SOURCE_FILES})
 
 # Use the keyword signature for target_link_libraries
 target_link_libraries(EyeCAN PRIVATE ws2_32)
@@ -42,14 +40,8 @@ if (ENABLE_TESTS)
     include_directories(${GTEST_INCLUDE_DIRS})
 
     # Add test executable
-    add_executable(EyeCAN_tests test/testApiEndpoints.cpp
-            include/informationHandler.h
-            source/informationHandler.cpp
-            include/ruleHandler.h
-            source/ruleHandler.cpp
-            test/ruleHandlerTest.cpp
-            test/testInformationHandler.cpp
-    )
+    add_executable(EyeCAN_tests ${TEST_FILES} ${INCLUDE_FILES} ${SOURCE_FILES})
+
     target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
 
     # Register the test

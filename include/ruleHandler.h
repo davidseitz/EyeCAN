@@ -2,7 +2,7 @@
 #ifndef RULEHANDLER_H
 #define RULEHANDLER_H
 
-#include "informationHandler.h"
+#include <informationHandler.h>
 
 class RuleHandler : public InformationHandler {
 public:

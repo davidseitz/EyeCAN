@@ -16,16 +16,14 @@ protected:
 };
 
 TEST_F(RuleHandlerTest, createRuleTest) {
-    RuleHandler ruleHandler;
-
     // Test json is wrong
-    json wrong_rule = {};
-    int result = ruleHandler.create(wrong_rule);
+    json wrongRule = {};
+    int result = ruleHandler.create(wrongRule);
     EXPECT_EQ(result, 400);
-    EXPECT_EQ(wrong_rule["id"],nullptr);
+    EXPECT_EQ(wrongRule["id"],nullptr);
 
     // Test json is correct
-    json correct_rule = {
+    json correctRule = {
         {"title", "Test Rule"},
         {"description", "This is a test rule"},
         {"signals", {
@@ -37,9 +35,9 @@ TEST_F(RuleHandlerTest, createRuleTest) {
             {"setting2", "value2"}
         }}
     };
-    result = ruleHandler.create(correct_rule);
+    result = ruleHandler.create(correctRule);
     EXPECT_EQ(result, 201);
-    const std::string id = correct_rule["id"];
+    const std::string id = correctRule["id"];
     EXPECT_TRUE(std::filesystem::exists(ruleHandler.getEyeCANPath() + id + ".json"));
 
     // Clean up
