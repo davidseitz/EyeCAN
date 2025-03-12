@@ -4,11 +4,13 @@
 #include <string>
 #include <httplib.h>
 #include <ruleHandler.h>
+#include <articleHandler.h>
 
 class EyeCANServer {
 public:
     httplib::Server svr;
     RuleHandler ruleHandler;
+    ArticleHandler articleHandler;
     void initServer();
 
 private:

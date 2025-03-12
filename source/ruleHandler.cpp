@@ -1,4 +1,4 @@
-#include "ruleHandler.h"
+#include <ruleHandler.h>
 
 RuleHandler::RuleHandler() {
 #ifdef _WIN32

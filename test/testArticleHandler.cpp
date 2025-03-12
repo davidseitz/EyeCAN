@@ -65,8 +65,25 @@ TEST_F(ArticleHandlerTest, createArticleTest) {
     };
     result = articleHandler.create(correctArticle);
     EXPECT_EQ(result, 201);
+    EXPECT_EQ(correctArticle.contains("id"), true);
+    EXPECT_EQ(static_cast<std::string>(correctArticle["id"]).size(), 36);
+    EXPECT_EQ(correctArticle.contains("title"), true);
+    EXPECT_EQ(static_cast<std::string>(correctArticle["title"]), "Test Article");
+    EXPECT_EQ(correctArticle.contains("date"), true);
+    EXPECT_EQ(static_cast<std::string>(correctArticle["date"]), "1741777379");
+    EXPECT_EQ(correctArticle.contains("author"), true);
+    EXPECT_EQ(static_cast<std::string>(correctArticle["author"]), "Test Author");
+    EXPECT_EQ(correctArticle.contains("content"), true);
+    EXPECT_EQ(static_cast<std::string>(correctArticle["content"]), "This is a test article");
+
     const std::string id = correctArticle["id"];
     EXPECT_TRUE(std::filesystem::exists(articleHandler.getEyeCANPath() + id + ".json"));
+
+    std::ifstream file(articleHandler.getEyeCANPath() + (std::string) correctArticle["id"] + ".json");
+    json fileJson;
+    file >> fileJson;
+    file.close();
+    EXPECT_EQ(fileJson.dump(), correctArticle.dump());
 
     // Clean up
     std::filesystem::remove(articleHandler.getEyeCANPath() + id + ".json");

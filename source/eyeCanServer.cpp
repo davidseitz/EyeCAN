@@ -58,19 +58,23 @@ void EyeCANServer::initApiEndpoints() {
 }
 
 void EyeCANServer::initKnowledgebaseEndpoints(){
-    svr.Post("/api/v1/knowledgebase", [](const Request& req, Response& res) {
+    svr.Post("/api/v1/knowledgebase", [this](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
             try {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                // TODO Save the knowledgebase article
-                // Set ID for testing
-                request_json["id"] = "2";
+                const int status = articleHandler.create(request_json);
 
                 // Send JSON response
-                res.status = 201; // Created
-                res.set_content(request_json.dump(), "application/json");
+                if (status != 201)
+                {
+                    res.status = status; // Error
+                }else
+                {
+                    res.status = status; // Created successfully
+                    res.set_content(request_json.dump(), "application/json");
+                }
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
@@ -81,16 +85,20 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
         }
     });
 
-    svr.Put("/api/v1/knowledgebase", [](const Request& req, Response& res) {
+    svr.Put("/api/v1/knowledgebase", [this](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
             try {
+                try {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                // TODO Update the knowledgebase article
+                const int status = articleHandler.edit(request_json, request_json["id"]);
 
-                // Send JSON response
-                res.set_content(request_json.dump(), "application/json");
+                res.status = status;
+            } catch (json::parse_error& e) {
+                res.status = 400; // Bad Request
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
+            }
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
@@ -101,22 +109,39 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
         }
     });
 
-    svr.Delete("/api/v1/knowledgebase", [](const Request& req, Response& res) {
-        std::string uuid = req.get_param_value("uuid");
+    svr.Delete("/api/v1/knowledgebase", [this](const Request& req, Response& res) {
+        const std::string uuid = req.get_param_value("uuid");
 
-        // TODO Delete the knowledgebase article
+        const int status = articleHandler.remove(uuid);
 
-        res.status = 204 ; // No Content
-        res.set_content("The Article you deleted with id: " + uuid, "text/plain");
+        res.status = status;
     });
 
-    svr.Get("/api/v1/knowledgebase", [](const Request& req, Response& res) {
-        std::string name = req.get_param_value("page");
+    svr.Get("/api/v1/knowledgebase", [this](const Request& req, Response& res) {
+        const std::string val = req.get_param_value("page");
+        if (val.empty()) {
+            res.status = 400;
+            return;
+        }
+        int page = -1;
+        try{
+            page = std::stoi(val);
+        }catch (std::invalid_argument& e) {
+            res.status = 400;
+            return;
+        }
+        json response;
+        const int status = articleHandler.get(page,response);
 
-        // TODO Get the knowledgebase article
-
-        res.status = 200;
-        res.set_content("The Page you requested: " + name, "text/plain");
+        if (status != 200)
+        {
+            res.status = status;
+        }
+        else
+        {
+            res.status = status;
+            res.body = response.dump();
+        }
     });
 }
 

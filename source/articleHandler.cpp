@@ -23,7 +23,7 @@ int ArticleHandler::create(json& info) {
 
         // Check if lentgh of date is correct
         // TODO Unix timestamp
-        if (((std::string) info["title"]).size() > 128 || ((std::string) info["author"]).size() > 512 || ((std::string) info["content"]).size() > 10000) {
+        if (static_cast<std::string>(info["title"]).size() > 128 || static_cast<std::string>(info["author"]).size() > 512 || static_cast<std::string>(info["content"]).size() > 10000) {
             return 400;
         }
 
@@ -42,10 +42,8 @@ int ArticleHandler::create(json& info) {
         return isSaved;
     }
 
-    // Return the ID of the article
-    json idOfArticle;
-    idOfArticle["id"] = uuid;
-    info = idOfArticle;
+    // Return the article
+    info = tmpJson;
 
     return 201;
 }
