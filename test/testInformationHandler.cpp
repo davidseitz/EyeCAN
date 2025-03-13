@@ -24,7 +24,7 @@ public:
     }
 
     int testGenerateUUID(std::string& uuid) {
-        return generate_uuid(uuid);
+        return generateUuid(uuid);
     }
 
     int testGetFiles(const int page, std::list<json>& information, json& response) const {

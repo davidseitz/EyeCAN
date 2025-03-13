@@ -135,7 +135,7 @@ int InformationHandler::saveToFile(json& info) const
     return 201;
 }
 
-int InformationHandler::generate_uuid(std::string& uuid) const
+int InformationHandler::generateUuid(std::string& uuid) const
 {
     // create uuid until it is unique
     do {
