@@ -1,8 +1,8 @@
-import DashBoardLayoutGrid from "@/components/dashboard/DashBoardLayoutGrid.tsx";
+import DashboardLayoutGrid from "@/components/dashboard/DashboardLayoutGrid.tsx";
 
 function Dashboard() {
     return (
-        <DashBoardLayoutGrid/>
+        <DashboardLayoutGrid/>
     )
 }
 
