@@ -1,20 +1,23 @@
 import {Card, Heading, HStack} from "@chakra-ui/react";
 import ApprovalIcon from "@/components/miscellaneous/ApprovalIcon.tsx";
 import SignalsCard from "@/components/dashboard/sidebar/filter-collection/SignalsCard.tsx";
-import ApplyFilterButton from "@/components/miscellaneous/apply-filter-button/ApplyFilterButton.tsx";
+import ApplyButton from "@/components/miscellaneous/apply-filter-button/ApplyButton.tsx";
 import {Filter} from "@/types/filter.ts";
+import useSelectedFiltersStore from "@/components/dashboard/sidebar/filter-collection/store.ts";
+import useSelectedDatasetStore from "@/store.ts";
 
 interface FilterPreviewCardProps {
     filter: Filter;
-    datasetSignals: string[];
     textPreviewLength?: number;
-    appliedFiltersIds: number[];
-    onApplyFilter: (filterId: number) => void;
 }
 
-function FilterPreviewCard({filter, datasetSignals, textPreviewLength = 180, appliedFiltersIds, onApplyFilter}: FilterPreviewCardProps) {
+function FilterPreviewCard({filter, textPreviewLength = 180}: FilterPreviewCardProps) {
+    const {addFilterId, removeFilterId, filterIds} = useSelectedFiltersStore()
+    const {dataset} = useSelectedDatasetStore()
 
-    const allSignalsIncluded = filter.signals.every(signal => datasetSignals.includes(signal));
+    const allSignalsIncluded = filter.signals.every(signal =>
+        dataset?.signals?.some(datasetSignal => datasetSignal.signalName === signal)
+    );
 
     return (
         <Card.Root backgroundColor="transparent" border="none">
@@ -29,12 +32,13 @@ function FilterPreviewCard({filter, datasetSignals, textPreviewLength = 180, app
             </Card.Body>
             <Card.Footer padding={0} paddingTop={2} marginBottom={5} justifyContent="space-between">
                 <SignalsCard text="Signals" signals={filter.signals}/>
-                <ApplyFilterButton
+                <ApplyButton
                     disabled={!allSignalsIncluded}
                     applicable={allSignalsIncluded}
-                    applied={appliedFiltersIds.includes(filter.id)}
+                    applied={filterIds.includes(filter.id)}
                     margins={{marginTop: 10}}
-                    onClick={() => onApplyFilter(filter.id)}
+                    text={{trueState: "Filter Applied", falseState: "Apply Filter", unavailableState: "Not Applicable"}}
+                    onClick={() => filterIds.includes(filter.id) ? removeFilterId : addFilterId}
                 />
             </Card.Footer>
         </Card.Root>

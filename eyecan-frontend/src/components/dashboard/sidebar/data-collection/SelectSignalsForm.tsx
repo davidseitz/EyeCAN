@@ -22,7 +22,6 @@ function SelectSignalsForm({signals, selectedSignalValues}: SelectSignalsFormPro
                 {signals.map((signal, index) =>
                     <Checkbox value={signal} name={signal} key={index}>{signal}</Checkbox>)}
             </CheckboxGroup>
-            {console.log(framework.field.value)}
         </Fieldset.Root>
     )
 }

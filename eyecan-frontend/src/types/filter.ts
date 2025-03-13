@@ -1,5 +1,5 @@
 export interface Filter {
-    id: number,
+    id: string,
     title: string,
     description: string,
     signals: string[]

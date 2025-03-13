@@ -18,7 +18,7 @@ interface ScrollableContainerProps {
 
 function ScrollableContainer ({ children, width, height, fade, margins }: ScrollableContainerProps)  {
     return (
-        <Box style={{width, height,}} className={styles.scrollbarContainer} marginX={margins?.marginX} marginY={margins?.marginY} >
+        <Box style={{width, height,}} className={styles.scrollbarContainer} marginX={margins?.marginX} marginY={margins?.marginY}>
             {children}
             {fade?.show &&
                 <Box

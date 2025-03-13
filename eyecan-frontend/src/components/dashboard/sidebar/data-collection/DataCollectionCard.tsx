@@ -4,6 +4,8 @@ import SelectSignalsDialog from "@/components/dashboard/sidebar/data-collection/
 import ArrowButton from "@/components/miscellaneous/ArrowButton.tsx";
 import {Dataset} from "@/types/dataset.ts";
 import ScrollableContainer from "@/components/miscellaneous/scollbar-container/ScrollableContainer.tsx";
+import ApplyButton from "@/components/miscellaneous/apply-filter-button/ApplyButton.tsx";
+import useSelectedDatasetStore from "@/store.ts";
 
 interface DataCollectionCardProps {
     dataset: Dataset;
@@ -11,12 +13,20 @@ interface DataCollectionCardProps {
 }
 
 function DataCollectionCard({dataset, onNavigate}: DataCollectionCardProps) {
+    const {dataset: selectedDataset, setDataset, resetDataset} = useSelectedDatasetStore()
 
     return (
         <DropShadowContainer padding={{paddingX: 5, paddingY: 3}} height={"30%"} margins={{marginY: 8}}>
             <Card.Root maxHeight="100%" justifyContent="space-between" backgroundColor="transparent" border="none">
                 <Card.Header maxHeight="20%" fontSize="2xl" fontWeight={700} margin={0} padding={0}>
-                    Datasets
+                    <HStack justifyContent="space-between" alignItems="center" margin={0} padding={0}>
+                        Datasets
+                        <ApplyButton applicable={true}
+                                     applied={selectedDataset?.title === dataset.title}
+                                     text={{trueState: "Loaded", falseState: "Load Dataset"}}
+                                     onClick={dataset.title !== selectedDataset?.title ? () => setDataset(dataset) : () => resetDataset()}                        >
+                        </ApplyButton>
+                    </HStack>
                 </Card.Header>
                 <Card.Body maxHeight="60%" overflow="hidden" lineHeight={1.1} fontSize={10} color="#808080" padding={0}>
                     <ScrollableContainer height="100%">
