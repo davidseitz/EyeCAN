@@ -12,7 +12,7 @@ RuleHandler::RuleHandler() {
 int RuleHandler::create(json& info) {
     // Generate a random UUID for the rule and check if already exists
     std::string uuid;
-    generate_uuid(uuid);
+    generateUuid(uuid);
 
     json tmpJson; // Temporary json object to store the rule with correct ordered keys
     try {

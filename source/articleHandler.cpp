@@ -12,7 +12,7 @@ ArticleHandler::ArticleHandler() {
 int ArticleHandler::create(json& info) {
     // Generate a random UUID for the article and check if already exists
     std::string uuid;
-    generate_uuid(uuid);
+    generateUuid(uuid);
 
     json tmpJson; // Temporary json object to store the article with correct ordered keys
     try {

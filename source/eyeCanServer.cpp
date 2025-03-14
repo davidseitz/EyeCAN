@@ -24,9 +24,15 @@ void EyeCANServer::initServer() {
 
     initApiEndpoints();
 
-    svr.Get("/", [this](const Request&, Response& res) {
-        res.set_content("Here runs the application", "text/plain");
-    });
+    if (std::filesystem::exists("dist/")) {
+        svr.set_mount_point("/", "dist/");
+    } else
+    {
+        svr.Get("/", [&](const Request&, Response& res) {
+            res.status = 404;
+            res.set_content("No frontend found", "text/plain");
+        });
+    }
 
     std::cout << "Server is running on http://localhost:5255/\n";
     svr.listen("0.0.0.0", 5255);
@@ -34,17 +40,15 @@ void EyeCANServer::initServer() {
 
 void EyeCANServer::initApiEndpoints() {
 
-    //TODO Rework check for swagger io
-    std::string exists = readFile("static/api/index.html"); // Check if index for swagger io exists
-
-    if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON file as api definition
-        std::cout << "Using JSON file as API definition\n";
-        svr.Get("/api/v1/", [](const Request& req, Response& res) {
-            std::string json = readFile("static/api/eyecan-api-definition.json");
-            res.set_content(json, "application/json");
-        });
-    } else {
+    if (std::filesystem::exists("static/api/"))
+    {
         svr.set_mount_point("/api/v1", "static/api");
+    }else
+    {
+        svr.Get("/api/v1/", [&](const Request&, Response& res) {
+            res.status = 404;
+            res.set_content("No api Definition found", "text/plain");
+        });
     }
 
     initKnowledgebaseEndpoints();
