@@ -24,9 +24,18 @@ void EyeCANServer::initServer() {
 
     initApiEndpoints();
 
-    svr.Get("/", [this](const Request&, Response& res) {
-        res.set_content("Here runs the application", "text/plain");
-    });
+    if (!std::filesystem::exists("dist/"))
+    {
+        // Application files not found
+        svr.Get("/", [this](const Request&, Response& res) {
+            res.status = 404;
+            res.set_content("Frontend files not found", "text/plain");
+        });
+    }else
+    {
+        // Serve the frontend files
+        svr.set_mount_point("/", "dist/");
+    }
 
     std::cout << "Server is running on http://localhost:5255/\n";
     svr.listen("0.0.0.0", 5255);
@@ -34,23 +43,45 @@ void EyeCANServer::initServer() {
 
 void EyeCANServer::initApiEndpoints() {
 
-    //TODO Rework check for swagger io
-    std::string exists = readFile("static/api/index.html"); // Check if index for swagger io exists
-
-    if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON file as api definition
-        std::cout << "Using JSON file as API definition\n";
-        svr.Get("/api/v1/", [](const Request& req, Response& res) {
-            std::string json = readFile("static/api/eyecan-api-definition.json");
-            res.set_content(json, "application/json");
+    if (!std::filesystem::exists("static/api/"))
+    {
+        // No description files found
+        svr.Get("/api/v1/", [this](const Request&, Response& res) {
+            res.status = 404;
+            res.set_content("Api description not found", "text/plain");
         });
-    } else {
-        svr.set_mount_point("/api/v1", "static/api");
+    }else
+    {
+        if  (!std::filesystem::exists("static/api/index.html") &&
+            !std::filesystem::exists("static/api/eyecan-api-definition.json"))
+        {
+            // No description file found
+            svr.Get("/api/v1/", [this](const Request&, Response& res) {
+                res.status = 404;
+                res.set_content("Api description not found", "text/plain");
+            });
+        }else if (std::filesystem::exists("static/api/index.html"))
+        {
+            // swagger-ui files found
+            svr.set_mount_point("/api/v1/", "static/api/");
+        }
+        else
+        {
+            // Only JSON definition found
+            svr.Get("/api/v1/", [this](const Request&, Response& res) {
+                res.status = 404;
+                const std::string jsonDefinition = readFile("/static/api/eyecan-api-definition.json");
+                res.set_content(jsonDefinition, "application/json");
+            });
+        }
     }
 
+    // Init endpoints for knowledgebase, filters and datasets
     initKnowledgebaseEndpoints();
     initFilterEndpoints();
     initDatasetEndpoints();
 
+    // Stop server endpoint
     svr.Get("/api/v1/stop", [&](const Request&, Response& res) {
         res.set_content("Server is shutting down", "text/plain");
         svr.stop();
