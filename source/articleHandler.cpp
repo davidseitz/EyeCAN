@@ -32,7 +32,7 @@ int ArticleHandler::create(json& info) {
         tmpJson["date"] = info["date"];
         tmpJson["author"] = info["author"];
         tmpJson["content"] = info["content"];
-    } catch (json::exception& e) {
+    } catch (const json::exception&) {
         return 400;
     }
 
@@ -60,9 +60,9 @@ int ArticleHandler::get(const int page, json& response) {
         if (result != 0) {
             return result;
         }
-    } catch (std::filesystem::filesystem_error& e) {
+    } catch (std::filesystem::filesystem_error&) {
         return 500;
-    } catch (json::exception& e) {
+    } catch (json::exception&) {
         return 400;
     }
 

@@ -56,9 +56,9 @@ int InformationHandler::edit(const json& info, const std::string& id) {
         }
         file << info.dump(4);
         file.close();
-    } catch (std::ios_base::failure& e) {
+    } catch (std::ios_base::failure&) {
         return 500; // Internal Server Error
-    } catch (json::exception& e) {
+    } catch (json::exception&) {
         return 400; // Bad Request
     }
 
@@ -86,9 +86,9 @@ int InformationHandler::getFiles(const int page, std::list<json>& information, j
 {
     // Get all files in the directory
     std::vector<std::filesystem::directory_entry> entries;
-    for (const auto& entry : std::filesystem::directory_iterator(localEyeCANPath)) {
-        entries.push_back(entry);
-    }
+    std::copy(std::filesystem::directory_iterator(localEyeCANPath),
+          std::filesystem::directory_iterator(),
+          std::back_inserter(entries));
 
     // Sort entries by last write time in descending order
     std::sort(entries.begin(), entries.end(), [](const auto& a, const auto& b) {
@@ -127,9 +127,9 @@ int InformationHandler::saveToFile(json& info) const
         }
         file << info.dump(4);
         file.close();
-    } catch (std::ios_base::failure& e) { //TODO http status codes
+    } catch (std::ios_base::failure&) { //TODO http status codes
         return 500;
-    } catch (json::exception& e) {
+    } catch (json::exception&) {
         return 400;
     }
     return 201;

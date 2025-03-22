@@ -26,7 +26,7 @@ int RuleHandler::create(json& info) {
         tmpJson["description"] = info["description"];
         tmpJson["signals"] = info["signals"];
         tmpJson["settings"] = info["settings"];
-    } catch (json::exception& e) {
+    } catch (json::exception&) {
         return 400;
     }
 
@@ -54,9 +54,9 @@ int RuleHandler::get(const int page, json& response) {
     try {
         // Get requested files
         getFiles(page, information, response);
-    } catch (std::filesystem::filesystem_error& e) {
+    } catch (std::filesystem::filesystem_error&) {
         return 500;
-    } catch (json::exception& e) {
+    } catch (json::exception&) {
         return 400;
     }
 

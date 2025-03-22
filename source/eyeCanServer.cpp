@@ -106,7 +106,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                     res.status = status; // Created successfully
                     res.set_content(request_json.dump(), "application/json");
                 }
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
@@ -126,11 +126,11 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                 const int status = articleHandler.edit(request_json, request_json["id"]);
 
                 res.status = status;
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
@@ -157,7 +157,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
         int page = -1;
         try{
             page = std::stoi(val);
-        }catch (std::invalid_argument& e) {
+        }catch (const std::invalid_argument&) {
             res.status = 400;
             return;
         }
@@ -194,7 +194,7 @@ void EyeCANServer::initFilterEndpoints() {
                     res.status = status; // Created successfully
                     res.set_content(request_json.dump(), "application/json");
                 }
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
@@ -213,7 +213,7 @@ void EyeCANServer::initFilterEndpoints() {
                 const int status = ruleHandler.edit(request_json, request_json["id"]);
 
                 res.status = status;
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
@@ -236,7 +236,7 @@ void EyeCANServer::initFilterEndpoints() {
         int page = -1;
         try{
             page = std::stoi(val);
-        }catch (std::invalid_argument& e) {
+        }catch (const std::invalid_argument&) {
             res.status = 400;
             return;
         }
@@ -280,7 +280,7 @@ void EyeCANServer::initDatasetEndpoints()
                 // Send JSON response
                 res.status = 201; // Created
                 res.set_content(request_json.dump(), "application/json");
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
@@ -300,7 +300,7 @@ void EyeCANServer::initDatasetEndpoints()
 
                 // Send JSON response
                 res.set_content(request_json.dump(), "application/json");
-            } catch (json::parse_error& e) {
+            } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
