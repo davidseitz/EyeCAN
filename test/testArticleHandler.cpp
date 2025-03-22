@@ -39,7 +39,7 @@ TEST_F(ArticleHandlerTest, createArticleTest) {
     wrongArticle = {
         {"title", "test"},
         {"date", "1741777379"},
-        {"author", std::string (513, 'a')},
+        {"author", std::string (129, 'a')},
         {"content", "This is a test article"}
     };
     result = articleHandler.create(wrongArticle);

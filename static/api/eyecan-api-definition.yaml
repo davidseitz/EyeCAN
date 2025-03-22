@@ -319,11 +319,11 @@ paths:
               properties:
                 title:
                   type: string
-                  description: displayed in dataset card max. 32 chars
+                  description: displayed in dataset card max. 128 chars
                   example: dataset title
                 description:
                   type: string
-                  description: max. 280 chars
+                  description: max. 300 chars
                   example: This is a dataset description.
                 mf4:
                   type: string
@@ -523,11 +523,11 @@ components:
           example: 436e2874-ed68-4c31-8267-527c3f5470a3
         title:
           type: string
-          description: displayed in dataset card max. 32 chars
+          description: displayed in dataset card max. 128 chars
           example: dataset title
         description:
           type: string
-          description: max. 280 chars
+          description: max. 300 chars
         selectedSignalValues:
           type: array
           description: array of signal values that are selected in this array

@@ -477,12 +477,12 @@
                 "properties": {
                   "title": {
                     "type": "string",
-                    "description": "displayed in dataset card max. 32 chars",
+                    "description": "displayed in dataset card max. 128 chars",
                     "example": "dataset title"
                   },
                   "description": {
                     "type": "string",
-                    "description": "max. 280 chars",
+                    "description": "max. 300 chars",
                     "example": "This is a dataset description."
                   },
                   "mf4": {
@@ -777,12 +777,12 @@
           },
           "title": {
             "type": "string",
-            "description": "displayed in dataset card max. 32 chars",
+            "description": "displayed in dataset card max. 128 chars",
             "example": "dataset title"
           },
           "description": {
             "type": "string",
-            "description": "max. 280 chars"
+            "description": "max. 300 chars"
           },
           "selectedSignalValues": {
             "type": "array",

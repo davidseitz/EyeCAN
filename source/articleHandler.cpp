@@ -23,7 +23,7 @@ int ArticleHandler::create(json& info) {
 
         // Check if lentgh of date is correct
         // TODO Unix timestamp
-        if (static_cast<std::string>(info["title"]).size() > 128 || static_cast<std::string>(info["author"]).size() > 512 || static_cast<std::string>(info["content"]).size() > 10000) {
+        if (static_cast<std::string>(info["title"]).size() > 128 || static_cast<std::string>(info["author"]).size() > 128 || static_cast<std::string>(info["content"]).size() > 10000) {
             return 400;
         }
 
