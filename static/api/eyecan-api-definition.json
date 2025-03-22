@@ -485,10 +485,10 @@
                     "description": "max. 280 chars",
                     "example": "This is a dataset description."
                   },
-                  "mfd": {
+                  "mdf": {
                     "type": "string",
                     "format": "binary",
-                    "description": "mfd file to upload"
+                    "description": "mdf file to upload"
                   },
                   "dbc": {
                     "type": "string",

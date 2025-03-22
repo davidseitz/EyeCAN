@@ -267,19 +267,69 @@ void EyeCANServer::initFilterEndpoints() {
 
 void EyeCANServer::initDatasetEndpoints()
 {
-    svr.Post("/api/v1/data", [](const Request& req, Response& res) {
+    svr.Post("/api/v1/data", [this](const Request& req, Response& res) {
+        if (req.is_multipart_form_data()) {
+            try {
+                std::string title, description;
+                std::string mdf_content, dbc_content;
+
+                // Fetch each file separately
+                if (req.has_file("title")) {
+                    title = req.get_file_value("title").content;
+                }
+                if (req.has_file("description")) {
+                    description = req.get_file_value("description").content;
+                }
+                if (req.has_file("mdf")) {
+                    mdf_content = req.get_file_value("mdf").content;
+                }
+                if (req.has_file("dbc")) {
+                    dbc_content = req.get_file_value("dbc").content;
+                }
+
+                if (title.empty() || description.empty() || mdf_content.empty() || dbc_content.empty()) {
+                    res.status = 400; // Bad Request
+                    res.set_content(R"({"error": "Missing required fields or files"})", "application/json");
+                    return;
+                }
+
+                // Create JSON object from the parsed data
+                json request_json = {
+                    {"title", title},
+                    {"description", description},
+                    {"selectedSignalValues", json::array()},
+                };
+
+                // TODO fuse dataset here
+
+                const int status = datasetHandler.create(request_json);
+
+                // Send JSON response
+                if (status != 201) {
+                    res.status = status; // Error
+                } else {
+                    res.status = status; // Created successfully
+                    res.set_content(request_json.dump(), "application/json");
+                }
+            } catch (const std::exception& e) {
+                res.status = 400; // Bad Request
+                res.set_content(R"({"error": "Invalid multipart form data"})", "application/json");
+            }
+        } else {
+            res.status = 415; // Unsupported Media Type
+            res.set_content(R"({"error": "Expected multipart form data"})", "application/json");
+        }
+    });
+
+    svr.Put("/api/v1/data", [this](const Request& req, Response& res) {
         if (req.get_header_value("Content-Type") == "application/json") {
             try {
                 // Parse JSON request body
                 json request_json = json::parse(req.body);
 
-                // TODO Save the dataset
-                // Set ID for testing
-                request_json["id"] = "1";
+                const int status = datasetHandler.edit(request_json, request_json["id"]);
 
-                // Send JSON response
-                res.status = 201; // Created
-                res.set_content(request_json.dump(), "application/json");
+                res.status = status;
             } catch (json::parse_error&) {
                 res.status = 400; // Bad Request
                 res.set_content(R"({"error": "Invalid JSON"})", "application/json");
@@ -290,40 +340,35 @@ void EyeCANServer::initDatasetEndpoints()
         }
     });
 
-    svr.Put("/api/v1/data", [](const Request& req, Response& res) {
-        if (req.get_header_value("Content-Type") == "application/json") {
-            try {
-                // Parse JSON request body
-                json request_json = json::parse(req.body);
+    svr.Delete("/api/v1/data", [this](const Request& req, Response& res) {
+        const std::string uuid = req.get_param_value("uuid");
 
-                // TODO Update the dataset
+        const int status = datasetHandler.remove(uuid);
 
-                // Send JSON response
-                res.set_content(request_json.dump(), "application/json");
-            } catch (json::parse_error&) {
-                res.status = 400; // Bad Request
-                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
-            }
-        } else {
-            res.status = 415; // Unsupported Media Type
-            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
+        res.status = status;
+    });
+
+    svr.Get("/api/v1/data", [this](const Request& req, Response& res) {
+        const std::string val = req.get_param_value("page");
+        int page = -1;
+        try{
+            page = std::stoi(val);
+        }catch (const std::invalid_argument&) {
+            res.status = 400;
+            return;
         }
-    });
+        json response;
+        const int status = datasetHandler.get(page,response);
 
-    svr.Delete("/api/v1/data", [](const Request& req, Response& res) {
-        std::string uuid = req.get_param_value("uuid");
-
-        // TODO Delete the dataset
-        res.status = 204 ; // No Content
-        res.set_content("The Dataset you deleted with id: " + uuid, "text/plain");
-    });
-
-    svr.Get("/api/v1/data", [](const Request& req, Response& res) {
-        std::string name = req.get_param_value("page");
-
-        // TODO Get the dataset
-
-        res.set_content("The Page you requested: " + name, "text/plain");
+        if (status != 200)
+        {
+            res.status = status;
+        }
+        else
+        {
+            res.status = status;
+            res.body = response.dump();
+        }
     });
 }
 
