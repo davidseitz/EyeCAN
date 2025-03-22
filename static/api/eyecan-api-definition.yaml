@@ -325,10 +325,10 @@ paths:
                   type: string
                   description: max. 280 chars
                   example: This is a dataset description.
-                mdf:
+                mf4:
                   type: string
                   format: binary
-                  description: mdf file to upload
+                  description: mf4 file to upload
                 dbc:
                   type: string
                   format: binary

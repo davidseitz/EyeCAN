@@ -271,7 +271,7 @@ void EyeCANServer::initDatasetEndpoints()
         if (req.is_multipart_form_data()) {
             try {
                 std::string title, description;
-                std::string mdf_content, dbc_content;
+                std::string mf4_content, dbc_content;
 
                 // Fetch each file separately
                 if (req.has_file("title")) {
@@ -280,14 +280,14 @@ void EyeCANServer::initDatasetEndpoints()
                 if (req.has_file("description")) {
                     description = req.get_file_value("description").content;
                 }
-                if (req.has_file("mdf")) {
-                    mdf_content = req.get_file_value("mdf").content;
+                if (req.has_file("mf4")) {
+                    mf4_content = req.get_file_value("mf4").content;
                 }
                 if (req.has_file("dbc")) {
                     dbc_content = req.get_file_value("dbc").content;
                 }
 
-                if (title.empty() || description.empty() || mdf_content.empty() || dbc_content.empty()) {
+                if (title.empty() || description.empty() || mf4_content.empty() || dbc_content.empty()) {
                     res.status = 400; // Bad Request
                     res.set_content(R"({"error": "Missing required fields or files"})", "application/json");
                     return;
