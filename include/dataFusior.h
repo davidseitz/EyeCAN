@@ -10,15 +10,16 @@
 
 class DataFusior {
 public:
-    DataFusior();
-    void changeDbcData();
-    void changeMdfData();
+
+    DataFusior(); // Constructor
+    void changeDbcData(); // lTODO
+    void changeMdfData(); // lTODO
     ~DataFusior();
-    nlohmann::ordered_json getFusedData();
-    void readChannelDataByCanId(uint32_t canId);
+    nlohmann::ordered_json getFusedData(); // Getter
+    void readChannelDataByCanId(uint32_t canId); // Parse data of both DBC and MDF files
 
 private:
-    void fuseData();
+    void fuseData(); // Combine DBC and MDF data
     std::ofstream outFile;
     nlohmann::ordered_json jsonData;
     nlohmann::ordered_json m_fusedData;

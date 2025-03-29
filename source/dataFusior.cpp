@@ -39,6 +39,7 @@ DataFusior::DataFusior() {
 
 void DataFusior::readChannelDataByCanId(uint32_t canId) {
     // Read DBC file to get signal information
+    std::filesystem::path mdfPath = std::filesystem::path("../mf4Examples") / "GFR24-2024-08-14_19-09-12.mdf";
     std::ifstream dbcFile("../dbcExamples/Vehicle.dbc");
     if (dbcFile.is_open()) {
         auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);
@@ -53,7 +54,8 @@ void DataFusior::readChannelDataByCanId(uint32_t canId) {
                         signalJson["messageID"] = message.Id();
 
                         // Read corresponding MDF data for this signal
-                        MdfLibrary::MdfReader reader("../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4");
+                        MdfLibrary::MdfReader reader("../mf4Examples/GFR24-2024-08-14_19-09-12.mdf");
+                        jsonData["name"] = mdfPath.filename().string();
                         reader.ReadEverythingButData();
                         MdfLibrary::MdfHeader header = reader.GetHeader();
 
@@ -62,20 +64,10 @@ void DataFusior::readChannelDataByCanId(uint32_t canId) {
                             for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
                                 //std::cout << "ChannelGroup: " << channelGroup.GetName() << " " << channelGroup.GetIndex() << " " << channelGroup.GetRecordId() << " " << channelGroup.GetSourceInformation().GetDescription() << " end" << std::endl;
                                 for (const auto& channel : channelGroup.GetChannels()) {
-                                    if (channel.GetName() == "CAN_DataFrame.ID") {
-                                        MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
-                                        std::cout << "Number of samples: " << channelGroup.GetNofSamples() << std::endl;
-
-                                        for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
-                                            double canIdRaw = -1;
-                                            observer.GetChannelValue(i, canIdRaw);
-
-                                            // Convert to correct type
-                                            auto n_canId = static_cast<uint32_t>(canIdRaw);
-                                            std::cout << "Found CAN ID: " << n_canId << std::endl;
-                                        }
+                                    if (channel.GetName().find("time") != std::string::npos) {
+                                        std::cout << "Time channel found: " << channel.GetName() << std::endl;
                                     }
-                                    if (channel.GetIndex() == message.Id()) {
+                                    if (channel.GetName() == signal.Name()) {
                                         MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
                                         std::vector<std::vector<double>> values;
                                         bool valueFound = false;
@@ -87,12 +79,11 @@ void DataFusior::readChannelDataByCanId(uint32_t canId) {
                                             signalJson["signalvalues"].push_back({channelValue, engValue});
                                             valueFound = true;
                                         }
-
-
-                                        if (!valueFound) {
-                                            std::cerr << "No values found for signal: " << signal.Name() << std::endl;
+                                        if (valueFound == false) {
+                                            std::cerr << "No values found" << std::endl;
                                         }
                                     }
+
                                     else {
                                     }
                                 }
@@ -108,6 +99,10 @@ void DataFusior::readChannelDataByCanId(uint32_t canId) {
     } else {
         std::cerr << "Failed to open DBC file" << std::endl;
     }
+}
+
+nlohmann::ordered_json DataFusior::getFusedData() {
+    return m_fusedData;
 }
 
 DataFusior::~DataFusior() {
