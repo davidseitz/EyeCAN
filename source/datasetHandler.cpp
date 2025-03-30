@@ -41,8 +41,8 @@ int DatasetHandler::create(json& info) {
         return isSaved;
     }
 
-    // Return the article
-    info = tmpJson;
+    // Return the id
+    info["id"] = tmpJson["id"];
 
     return 201;
 }

@@ -6,6 +6,8 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <iostream>
+
 #ifdef _WIN32
 #include <windows.h>
 #include <shlobj.h>

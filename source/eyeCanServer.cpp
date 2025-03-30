@@ -274,17 +274,20 @@ void EyeCANServer::initDatasetEndpoints()
                 std::string mf4_content, dbc_content;
 
                 // Fetch each file separately
-                if (req.has_file("title")) {
-                    title = req.get_file_value("title").content;
-                }
-                if (req.has_file("description")) {
-                    description = req.get_file_value("description").content;
-                }
-                if (req.has_file("mf4")) {
-                    mf4_content = req.get_file_value("mf4").content;
-                }
-                if (req.has_file("dbc")) {
-                    dbc_content = req.get_file_value("dbc").content;
+
+                for (const auto& file : req.files) {
+                    if (file.first == "title") {
+                        title = file.second.content;  // Extract text field
+                    }
+                    if (file.first == "description") {
+                        description = file.second.content;  // Extract text field
+                    }
+                    if (file.first == "mf4") {
+                        mf4_content = file.second.content;  // Extract file content
+                    }
+                    if (file.first == "dbc") {
+                        dbc_content = file.second.content;  // Extract file content
+                    }
                 }
 
                 if (title.empty() || description.empty() || mf4_content.empty() || dbc_content.empty()) {
@@ -301,6 +304,9 @@ void EyeCANServer::initDatasetEndpoints()
                 };
 
                 // TODO fuse dataset here
+
+                // Mock for testing
+                request_json["signals"] = json::array();
 
                 const int status = datasetHandler.create(request_json);
 
