@@ -60,9 +60,4 @@ TEST_F(ApiTest, GetFilterTest) {
     EXPECT_EQ((std::string) res->body, "The Page you requested: 1");
 }
 
-// TEST Dataset API endpoints
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
