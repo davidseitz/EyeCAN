@@ -2,7 +2,7 @@
 //#include <mdfAndDbcBasics.h>
 
 int main() {
-    //readMdf();
+  // Test
     EyeCANServer server;
     server.initServer();
     return 0;

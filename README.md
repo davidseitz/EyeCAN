@@ -11,3 +11,7 @@
 3. Run the executable
 4. Open browser and go to localhost:5255 -> Application
 5. Open browser and go to localhost:5255/api/v1/ -> Api definition
+
+# How to build and setup project
+On Unix: ./setup.h
+Problem: project not finished currently
