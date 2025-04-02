@@ -7,6 +7,8 @@
 #include <dbcppp/Network.h>
 #include <mdflibrary/MdfChannelObserver.h>
 #include <mdflibrary/MdfReader.h>
+#include <codecvt>
+#include <locale>
 
 std::ofstream outFile;
 nlohmann::ordered_json jsonData;
@@ -37,61 +39,76 @@ DataFusior::DataFusior() {
     #endif
 }
 
-void DataFusior::readChannelDataByCanId(uint32_t canId) {
+// Function to check if a string is valid UTF-8
+bool isValidUTF8(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    try {
+        std::wstring wideStr = converter.from_bytes(str);
+    } catch (const std::range_error&) {
+        return false;
+    }
+    return true;
+}
+
+// Function to sanitize a string by removing invalid UTF-8 characters
+std::string sanitizeUTF8(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring wideStr;
+    try {
+        wideStr = converter.from_bytes(str);
+    } catch (const std::range_error&) {
+        wideStr = L"";
+    }
+    return converter.to_bytes(wideStr);
+}
+
+void DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {
     // Read DBC file to get signal information
-    std::filesystem::path mdfPath = std::filesystem::path("../mf4Examples") / "GFR24-2024-08-14_19-09-12.mdf";
-    std::ifstream dbcFile("../dbcExamples/Vehicle.dbc");
+    std::ifstream dbcFile(dbcFilepath);
     if (dbcFile.is_open()) {
         auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);
         if (network) {
             for (const auto& message : network->Messages()) {
-                if (message.Id() == canId) {
-                    for (const auto& signal : message.Signals()) {
-                        nlohmann::ordered_json signalJson;
-                        signalJson["signalname"] = signal.Name();
-                        signalJson["signalunit"] = signal.Unit();
-                        signalJson["signalvalues"] = nlohmann::ordered_json::array();
-                        signalJson["messageID"] = message.Id();
+                for (const auto& signal : message.Signals()) {
+                    std::string signalName = signal.Name();
+                    std::string signalUnit = signal.Unit();
 
-                        // Read corresponding MDF data for this signal
-                        MdfLibrary::MdfReader reader("../mf4Examples/GFR24-2024-08-14_19-09-12.mdf");
-                        jsonData["name"] = mdfPath.filename().string();
-                        reader.ReadEverythingButData();
-                        MdfLibrary::MdfHeader header = reader.GetHeader();
+                    // Sanitize strings before adding to JSON
+                    if (!isValidUTF8(signalName)) {
+                        signalName = sanitizeUTF8(signalName);
+                    }
+                    if (!isValidUTF8(signalUnit)) {
+                        signalUnit = sanitizeUTF8(signalUnit);
+                    }
 
-                        for (const auto& dataGroup : header.GetDataGroups()) {
-                            reader.ReadData(dataGroup);
-                            for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
-                                //std::cout << "ChannelGroup: " << channelGroup.GetName() << " " << channelGroup.GetIndex() << " " << channelGroup.GetRecordId() << " " << channelGroup.GetSourceInformation().GetDescription() << " end" << std::endl;
-                                for (const auto& channel : channelGroup.GetChannels()) {
-                                    if (channel.GetName().find("time") != std::string::npos) {
-                                        std::cout << "Time channel found: " << channel.GetName() << std::endl;
-                                    }
-                                    if (channel.GetName() == signal.Name()) {
-                                        MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
-                                        std::vector<std::vector<double>> values;
-                                        bool valueFound = false;
+                    nlohmann::ordered_json signalJson;
+                    signalJson["signalname"] = signalName;
+                    signalJson["signalunit"] = signalUnit;
+                    signalJson["signalvalues"] = nlohmann::ordered_json::array();
+                    signalJson["messageID"] = message.Id();
 
-                                        for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
-                                            double channelValue, engValue;
-                                            observer.GetChannelValue(i, channelValue);
-                                            observer.GetEngValue(i, engValue);
-                                            signalJson["signalvalues"].push_back({channelValue, engValue});
-                                            valueFound = true;
-                                        }
-                                        if (valueFound == false) {
-                                            std::cerr << "No values found" << std::endl;
-                                        }
-                                    }
+                    // Read corresponding MDF data for this signal
+                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());
+                    reader.ReadEverythingButData();
+                    MdfLibrary::MdfHeader header = reader.GetHeader();
 
-                                    else {
+                    for (const auto& dataGroup : header.GetDataGroups()) {
+                        reader.ReadData(dataGroup);
+                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {
+                            for (const auto& channel : channelGroup.GetChannels()) {
+                                if (channel.GetName() == signal.Name()) {
+                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);
+                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {
+                                        double channelValue, engValue;
+                                        observer.GetChannelValue(i, channelValue);
+                                        observer.GetEngValue(i, engValue);
+                                        signalJson["signalvalues"].push_back({channelValue, engValue});
                                     }
                                 }
-
                             }
                         }
-                        jsonData["signals"].push_back(signalJson);
                     }
+                    jsonData["signals"].push_back(signalJson);
                 }
             }
         }

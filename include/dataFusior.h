@@ -16,7 +16,7 @@ public:
     void changeMdfData(); // lTODO
     ~DataFusior();
     nlohmann::ordered_json getFusedData(); // Getter
-    void readChannelDataByCanId(uint32_t canId); // Parse data of both DBC and MDF files
+    void readAllData( std::string dbcFilepath, std::string mdfFilepath); // Parse data of both DBC and MDF files
 
 private:
     void fuseData(); // Combine DBC and MDF data
