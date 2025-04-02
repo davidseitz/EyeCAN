@@ -4,9 +4,9 @@
 [submodule "mdflib"]
 	path = libraries/mdflib
 	url = https://github.com/ihedvall/mdflib.git
-[submodule "libaries/cpp-httplib"]
+[submodule "libraries/cpp-httplib"]
 	path = libraries/cpp-httplib
 	url = https://github.com/yhirose/cpp-httplib
-[submodule "libaries/json"]
+[submodule "libraries/json"]
 	path = libraries/json
 	url = https://github.com/nlohmann/json

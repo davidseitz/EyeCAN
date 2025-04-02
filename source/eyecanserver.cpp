@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <eyecanserver.h>
 
+
 using namespace httplib;
 using json = nlohmann::ordered_json;
 
@@ -37,6 +38,7 @@ void EyeCANServer::initApiEndpoints() {
     std::string exists = readFile("static/api/index.html"); // Check if index for swagger io exists
 
     if (exists == "<h1>404 Not Found</h1><p>File not found.</p>") { // If not found, use JSON file as api definition
+        std::cout << "Using JSON file as API definition\n";
         svr.Get("/api/v1/", [](const Request& req, Response& res) {
             std::string json = readFile("static/api/eyecan-api-definition.json");
             res.set_content(json, "application/json");
@@ -64,18 +66,18 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 
                 // TODO Save the knowledgebase article
                 // Set ID for testing
-                request_json["id"] = "1";
+                request_json["id"] = "2";
 
                 // Send JSON response
                 res.status = 201; // Created
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -91,11 +93,11 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -113,6 +115,7 @@ void EyeCANServer::initKnowledgebaseEndpoints(){
 
         // TODO Get the knowledgebase article
 
+        res.status = 200;
         res.set_content("The Page you requested: " + name, "text/plain");
     });
 }
@@ -133,11 +136,11 @@ void EyeCANServer::initFilterEndpoints() {
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -153,11 +156,11 @@ void EyeCANServer::initFilterEndpoints() {
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -206,11 +209,11 @@ void EyeCANServer::initDatasetEndpoints()
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 
@@ -226,11 +229,11 @@ void EyeCANServer::initDatasetEndpoints()
                 res.set_content(request_json.dump(), "application/json");
             } catch (json::parse_error& e) {
                 res.status = 400; // Bad Request
-                res.set_content("{\"error\": \"Invalid JSON\"}", "application/json");
+                res.set_content(R"({"error": "Invalid JSON"})", "application/json");
             }
         } else {
             res.status = 415; // Unsupported Media Type
-            res.set_content("{\"error\": \"Expected JSON format\"}", "application/json");
+            res.set_content(R"({"error": "Expected JSON format"})", "application/json");
         }
     });
 

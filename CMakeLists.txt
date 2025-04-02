@@ -17,6 +17,8 @@ find_path(DBCPPP_INCLUDE_DIR dbcppp/Attribute.h
         PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include"
         PATH_SUFFIXES ""
 )
+# Option to enable or disable tests
+option(ENABLE_TESTS "Enable building tests" ON)
 
 # Handle dbcppp discovery
 if (DBCPPP_LIBRARY AND DBCPPP_INCLUDE_DIR)
@@ -85,4 +87,29 @@ endif()
 # Enable static linking only for dbcppp and mdflib (optional)
 if (DBCPPP_LIBRARY OR MDFLIB_LIBRARY)
     set_target_properties(EyeCAN PROPERTIES LINK_SEARCH_START_STATIC OFF)
+endif()
+# Use the keyword signature for target_link_libraries
+target_link_libraries(EyeCAN PRIVATE ws2_32)
+
+# Enable testing
+if (ENABLE_TESTS)
+    enable_testing()
+
+    # Manually specify the GTest paths
+    set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution")
+    set(GTEST_INCLUDE_DIRS "${GTEST_ROOT}/include")
+    set(GTEST_LIBRARIES "${GTEST_ROOT}/lib/libgtest.a" "${GTEST_ROOT}/lib/libgtest_main.a")
+
+    include_directories(${GTEST_INCLUDE_DIRS})
+
+    # Add test executable
+    add_executable(EyeCAN_tests test/test_api_endpoints.cpp)
+    target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
+
+    # Register the test
+    add_test(NAME APITest COMMAND EyeCAN_tests)
+
+    # Enable Google Test discovery
+    include(GoogleTest)
+    gtest_discover_tests(EyeCAN_tests)
 endif()

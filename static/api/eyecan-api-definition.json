@@ -165,6 +165,9 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "404": {
+            "description": "Article to delete not found"
+          },
           "415": {
             "description": "Wrong Content-Type"
           },
@@ -203,6 +206,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Dataset to edit not found"
           },
           "415": {
             "description": "Wrong Content-Type"
@@ -357,6 +363,9 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "404": {
+            "description": "Filter to delete not found"
+          },
           "415": {
             "description": "Wrong Content-Type"
           },
@@ -395,6 +404,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Filter to edit not found"
           },
           "415": {
             "description": "Wrong Content-Type"
@@ -464,11 +476,32 @@
         "description": "Create fusion dataset based on mdf4 and dbc",
         "operationId": "createDataset",
         "requestBody": {
-          "description": "Create a new dataset",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Dataset"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "displayed in dataset card max. 32 chars",
+                    "example": "dataset title"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "max. 280 chars",
+                    "example": "This is a dataset description."
+                  },
+                  "mfd": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "mfd file to upload"
+                  },
+                  "dbc": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "dbc file to upload"
+                  }
+                }
               }
             }
           },
@@ -494,13 +527,6 @@
                     "description": {
                       "type": "string",
                       "description": "max. 280 chars"
-                    },
-                    "selectedSignalValues": {
-                      "type": "array",
-                      "description": "array of signal values that are selected in this array",
-                      "items": {
-                        "type": "string"
-                      }
                     }
                   }
                 }
@@ -547,6 +573,9 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "404": {
+            "description": "Dataset to delete not found"
+          },
           "415": {
             "description": "Wrong Content-Type"
           },
@@ -587,6 +616,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Dataset to edit not found"
           },
           "415": {
             "description": "Wrong Content-Type"
