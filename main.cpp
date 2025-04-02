@@ -1,9 +1,8 @@
-
 #include <eyeCanServer.h>
-#include <mdfAndDbcBasics.h>
+//#include <mdfAndDbcBasics.h>
 
 int main() {
-    readMdf();
+    //readMdf();
     EyeCANServer server;
     server.initServer();
     return 0;

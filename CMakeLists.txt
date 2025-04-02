@@ -5,16 +5,37 @@ project(EyeCAN VERSION 0.1)
 # CONFIGURATION
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Platform-specific configurations
+if (WIN32)
+    set(CMAKE_C_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/gcc.exe")
+    set(CMAKE_CXX_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/g++.exe")
+    set(INSTALL_PREFIX "C:/Users/$ENV{USERNAME}/local")  # Adjust this for your Windows path
+elseif (UNIX)
+    target_link_directories(EyeCAN PRIVATE
+            /usr/lib/gcc/x86_64-linux-gnu/9
+            /lib/x86_64-linux-gnu
+    )
+    set(INSTALL_PREFIX "$ENV{HOME}/.local")
+endif()
+
+# Replace with the actual path where Boost is installed
+set(BOOST_ROOT "C:/Program Files/boost/boost_1_87_0")
+find_package(Boost REQUIRED)
+
+
+message(STATUS "Using INSTALL_PREFIX: ${INSTALL_PREFIX}")
 
 # Search for dbcppp library and include directories
 find_library(DBCPPP_LIBRARY NAMES dbcppp
-        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib"
-        PATH_SUFFIXES ""
+        PATHS "${INSTALL_PREFIX}/lib"
+        "${CMAKE_SOURCE_DIR}/dbcppp/lib"  # Fallback to source directory
 )
 
 find_path(DBCPPP_INCLUDE_DIR dbcppp/Attribute.h
-        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include"
-        PATH_SUFFIXES ""
+        PATHS "${INSTALL_PREFIX}/include"
+        "${CMAKE_SOURCE_DIR}/dbcppp/include"  # Fallback to source directory
 )
 
 # Handle dbcppp discovery
@@ -25,14 +46,15 @@ else()
     set(DBCPPP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/dbcppp/include")
 endif()
 
-# Search for mdflib library
+# Search for mdflib library and include directories
 find_library(MDFLIB_LIBRARY NAMES mdflibrary
-        PATHS "$ENV{HOME}/.local/lib" "/usr/local/lib" "/usr/lib"
+        PATHS "${INSTALL_PREFIX}/lib"
+        "${CMAKE_SOURCE_DIR}/mdflib/lib"  # Fallback to source directory
 )
 
-# Search for mdflib include directory
 find_path(MDFLIB_INCLUDE_DIR NAMES mdf/mdfreader.h
-        PATHS "$ENV{HOME}/.local/include" "/usr/local/include" "/usr/include"
+        PATHS "${INSTALL_PREFIX}/include"
+        "${CMAKE_SOURCE_DIR}/mdflib/include"  # Fallback to source directory
 )
 
 # Handle mdflib discovery
@@ -43,77 +65,41 @@ else()
     message(FATAL_ERROR "mdflib not found! Ensure it is installed correctly.")
 endif()
 
-# Find all source files in the source directory
+# Collect all source and header files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/source/*.cpp)
-
-# Find all header files in the include directory
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
 
 # Define executable
 add_executable(EyeCAN main.cpp ${SOURCE_FILES} ${HEADER_FILES})
 
-target_include_directories(EyeCAN PRIVATE ${CMAKE_SOURCE_DIR}/libraries/json/include ${CMAKE_SOURCE_DIR}/libraries/cpp-httplib ${CMAKE_SOURCE_DIR}/include)
-
 # Include directories
-target_include_directories(EyeCAN PUBLIC "include" ${DBCPPP_INCLUDE_DIR} ${MDFLIB_INCLUDE_DIR} )
-
-target_link_directories(EyeCAN PRIVATE
-        /usr/lib/gcc/x86_64-linux-gnu/9
-        /lib/x86_64-linux-gnu
+include_directories(
+        ${CMAKE_SOURCE_DIR}/libraries/json/include
+        ${CMAKE_SOURCE_DIR}/libraries/cpp-httplib
+        ${CMAKE_SOURCE_DIR}/include
+        ${DBCPPP_INCLUDE_DIR}
+        ${MDFLIB_INCLUDE_DIR}
 )
 
-# Link libraries if found
-if (DBCPPP_LIBRARY)
-    target_link_libraries(EyeCAN PRIVATE ${DBCPPP_LIBRARY})
+target_link_libraries(EyeCAN PRIVATE ${DBCPPP_LIBRARY} ${MDFLIB_LIBRARY})
+
+if (WIN32)
+    target_link_libraries(EyeCAN PRIVATE ws2_32)
 endif()
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_C_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/gcc.exe")
-set(CMAKE_CXX_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/g++.exe")
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-lstdc++fs)
-endif()
-
-include_directories(${CMAKE_SOURCE_DIR}/libraries/json/include)
-include_directories(${CMAKE_SOURCE_DIR}/libraries/cpp-httplib)
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
-# Collect all source files
-file(GLOB INCLUDE_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
-file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/source/*.cpp)
-file(GLOB TEST_FILES ${CMAKE_SOURCE_DIR}/test/*.cpp)
-
-# Option to enable or disable tests
+# Enable testing if requested
 option(ENABLE_TESTS "Enable building tests" ON)
-
-add_executable(EyeCAN main.cpp ${INCLUDE_FILES} ${SOURCE_FILES})
-
-# Use the keyword signature for target_link_libraries
-target_link_libraries(EyeCAN PRIVATE ws2_32)
-
-# Enable testing
 if (ENABLE_TESTS)
     enable_testing()
-
-    # Manually specify the GTest paths
     set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution")
     set(GTEST_INCLUDE_DIRS "${GTEST_ROOT}/include")
     set(GTEST_LIBRARIES "${GTEST_ROOT}/lib/libgtest.a" "${GTEST_ROOT}/lib/libgtest_main.a")
 
     include_directories(${GTEST_INCLUDE_DIRS})
-
-    # Add test executable
-    add_executable(EyeCAN_tests ${TEST_FILES} ${INCLUDE_FILES} ${SOURCE_FILES})
-
+    file(GLOB TEST_FILES ${CMAKE_SOURCE_DIR}/test/*.cpp)
+    add_executable(EyeCAN_tests ${TEST_FILES} ${SOURCE_FILES} ${HEADER_FILES})
     target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
-
-    # Register the test
     add_test(NAME APITest COMMAND EyeCAN_tests)
-
-    # Enable Google Test discovery
     include(GoogleTest)
     gtest_discover_tests(EyeCAN_tests)
 endif()
