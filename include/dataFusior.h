@@ -12,8 +12,6 @@ class DataFusior {
 public:
 
     DataFusior(); // Constructor
-    void changeDbcData(); // lTODO
-    void changeMdfData(); // lTODO
     ~DataFusior();
     nlohmann::ordered_json getFusedData(); // Getter
     void readAllData( std::string dbcFilepath, std::string mdfFilepath); // Parse data of both DBC and MDF files
