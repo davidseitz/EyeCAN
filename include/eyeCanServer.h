@@ -3,10 +3,16 @@
 
 #include <string>
 #include <httplib.h>
+#include <ruleHandler.h>
+#include <articleHandler.h>
+#include <datasetHandler.h>
 
 class EyeCANServer {
 public:
     httplib::Server svr;
+    RuleHandler ruleHandler;
+    ArticleHandler articleHandler;
+    DatasetHandler datasetHandler;
     void initServer();
 
 private:

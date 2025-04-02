@@ -37,7 +37,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleList'
         '204':
-          description: No page found
+          description: No content on page
         '400':
           description: Invalid page number
         '415':
@@ -79,7 +79,7 @@ paths:
         required: true
       responses:
         '201':
-          description: Successful created
+          description: Successfully created
           content:
             application/json:
               schema:
@@ -108,11 +108,11 @@ paths:
             format: uuid
       responses:
         '204':
-          description: Successful deleted
+          description: Successfully deleted
         '400':
           description: Invalid ID supplied
-        '415':
-          description: Wrong Content-Type
+        '404':
+          description: Article to delete not found
         '500':
           description: An error occurred on the server side
     put:
@@ -129,13 +129,11 @@ paths:
               $ref: '#/components/schemas/Article'
       responses:
         '200':
-          description: Successful updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Article'
+          description: Successfully updated
         '400':
           description: Invalid input
+        '404':
+          description: Dataset to edit not found
         '415':
           description: Wrong Content-Type
         '500':
@@ -165,7 +163,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FilterList'
         '204':
-          description: No page found
+          description: No content on page
         '400':
           description: Invalid page number
         '415':
@@ -199,17 +197,24 @@ paths:
                 settings:
                   type: array
                   items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Object'
+                    type: object
+                    properties:
+                      objects:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/objects'
         required: true
       responses:
         '201':
-          description: Successful created
+          description: Successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Filter'
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 436e2874-ed68-4c31-8267-527c3f5470a3
         '400':
           description: Invalid input
         '415':
@@ -234,9 +239,11 @@ paths:
             format: uuid
       responses:
         '204':
-          description: Successful deleted
+          description: Successfully deleted
         '400':
           description: Invalid ID supplied
+        '404':
+          description: Filter to delete not found
         '415':
           description: Wrong Content-Type
         '500':
@@ -255,13 +262,11 @@ paths:
               $ref: '#/components/schemas/Filter'
       responses:
         '200':
-          description: Successful updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Filter'
+          description: Successfully updated
         '400':
           description: Invalid input
+        '404':
+          description: Filter to edit not found
         '415':
           description: Wrong Content-Type
         '500':
@@ -291,7 +296,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DatasetList'
         '204':
-          description: No page found
+          description: No content on page
         '400':
           description: Invalid page number
         '415':
@@ -307,35 +312,31 @@ paths:
       description: Create fusion dataset based on mdf4 and dbc
       operationId: createDataset
       requestBody:
-        description: Create a new dataset
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Dataset'
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: displayed in dataset card max. 128 chars
+                  example: dataset title
+                description:
+                  type: string
+                  description: max. 300 chars
+                  example: This is a dataset description.
+                mf4:
+                  type: string
+                  format: binary
+                  description: mf4 file to upload
+                dbc:
+                  type: string
+                  format: binary
+                  description: dbc file to upload
         required: true
       responses:
         '201':
-          description: Successful created
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    example: 436e2874-ed68-4c31-8267-527c3f5470a3
-                  title:
-                    type: string
-                    description: displayed in dataset card max. 32 chars
-                    example: dataset title
-                  description:
-                    type: string
-                    description: max. 280 chars
-                  selectedSignalValues:
-                    type: array
-                    description: array of signal values that are selected in this array
-                    items:
-                      type: string
+          description: Successfully created
         '400':
           description: Invalid input
         '415':
@@ -360,9 +361,11 @@ paths:
             format: uuid
       responses:
         '204':
-          description: Successful deleted
+          description: Successfully deleted
         '400':
           description: Invalid ID supplied
+        '404':
+          description: Dataset to delete not found
         '415':
           description: Wrong Content-Type
         '500':
@@ -378,25 +381,20 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                signals:
-                  type: array
-                  items:
-                    type: string
-                    description: array of selected signals for this dataset
+              $ref: '#/components/schemas/Dataset'
       responses:
         '200':
-          description: Successful updated
+          description: Successfully updated
         '400':
           description: Invalid input
+        '404':
+          description: Dataset to edit not found
         '415':
           description: Wrong Content-Type
         '500':
           description: An error occurred on the server side
         '507':
           description: There is no storage capacity left
-
 components:
   schemas:
     Article:
@@ -431,6 +429,7 @@ components:
         page:
           type: integer
           format: int64
+          example: 1
         lastpage:
           type: boolean
         articles:
@@ -459,10 +458,13 @@ components:
         settings:
           type: array
           items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Object'
-    Object:
+            type: object
+            properties:
+              objects:
+                type: array
+                items:
+                  $ref: '#/components/schemas/objects'
+    objects:
       type: object
       properties:
         signal:
@@ -521,11 +523,11 @@ components:
           example: 436e2874-ed68-4c31-8267-527c3f5470a3
         title:
           type: string
-          description: displayed in dataset card max. 32 chars
+          description: displayed in dataset card max. 128 chars
           example: dataset title
         description:
           type: string
-          description: max. 280 chars
+          description: max. 300 chars
         selectedSignalValues:
           type: array
           description: array of signal values that are selected in this array
