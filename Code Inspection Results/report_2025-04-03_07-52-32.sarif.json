@@ -1,0 +1,1798 @@
+{
+  "$schema": "https://raw.githubusercontent.com/schemastore/schemastore/master/src/schemas/json/sarif-2.1.0-rtm.5.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "CLion",
+          "version": "243.26053.34",
+          "informationUri": "https://www.jetbrains.com?utm_source=product&utm_medium=link&utm_campaign=CL&utm_content=2024.3",
+          "rules": [
+            {
+              "id": "CppLocalVariableMayBeConst",
+              "name": "Local variable can be made const"
+            },
+            {
+              "id": "CppMemberFunctionMayBeStatic",
+              "name": "Member function can be made static"
+            },
+            {
+              "id": "CppPassValueParameterByConstReference",
+              "name": "Pass value parameters by const reference"
+            },
+            {
+              "id": "CppTooWideScopeInitStatement",
+              "name": "Variable can be moved to init statement"
+            },
+            {
+              "id": "CppTooWideScope",
+              "name": "Variable can be moved to inner scope"
+            },
+            {
+              "id": "CppClassNeedsConstructorBecauseOfUninitializedMember",
+              "name": "Class should have a user-defined constructor because of an uninitialized data member"
+            },
+            {
+              "id": "CppFunctionIsNotImplemented",
+              "name": "Function is not implemented"
+            },
+            {
+              "id": "CppUninitializedNonStaticDataMember",
+              "name": "Non-static data member is uninitialized"
+            },
+            {
+              "id": "CppUnusedIncludeDirective",
+              "name": "Possibly unused #include directive"
+            },
+            {
+              "id": "CppRedundantQualifier",
+              "name": "Redundant qualifier"
+            },
+            {
+              "id": "CppTemplateArgumentsCanBeDeduced",
+              "name": "Template arguments can be deduced"
+            },
+            {
+              "id": "ClangTidy",
+              "name": "Clang-Tidy"
+            },
+            {
+              "id": "SpellCheckingInspection",
+              "name": "Typo"
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "workingDirectory": {
+            "uri": "file:///home/eyecandevelopment/CLionProjects/EyeCAN/"
+          }
+        }
+      ],
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'filePath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'dbcFilepath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'mdfFilepath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'fusedData' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'dirPath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'mdfFilepath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppLocalVariableMayBeConst",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'dbcFilepath' can be made const"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppMemberFunctionMayBeStatic",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Member function can be made static"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dbcReader.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 43,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 1515,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#include \"dbcReader.h\"\n\n\nvoid dbcReader::printCANSignals(const std::string& dbcFilePath) {\n    // Read the DBC file into a string\n    std::ifstream file(dbcFilePath);\n    if (!file.is_open()) {\n        std::cerr << \"Error: Could not open DBC file.\" << std::endl;\n        return;\n    }\n    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());\n    file.close();\n\n    // Parse the DBC file\n    std::istringstream dbcStream(dbcContent);\n    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);\n    if (!network) {\n        std::cerr << \"Error: Failed to parse DBC file.\" << std::endl;\n        return;\n    }\n\n    // Iterate over all messages and print signals\n    for (const auto& message : network->Messages()) {\n        std::cout << \"Message: \" << message.Name() << \" (ID: \" << message.Id() << \")\\n\";\n        for (const auto& signal : message.Signals()) {\n            std::cout << \"  Signal: \" << signal.Name()\n                      << \", Start Bit: \" << signal.StartBit()\n                      << \", Length: \" << signal.BitSize()\n                      << \", Factor: \" << signal.Factor()\n                      << \", Offset: \" << signal.Offset()\n                      << \", Min: \" << signal.Minimum()\n                      << \", Max: \" << signal.Maximum()\n                      << \", Unit: \" << signal.Unit()\n                      << \", Comment: \" << signal.Comment()\n                      << \"\\n\";\n        }\n    }\n}\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppPassValueParameterByConstReference",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Parameter 'mdfFilepath' is copied for each invocation, consider passing by const reference"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppPassValueParameterByConstReference",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Parameter 'dbcFilepath' is copied for each invocation, consider passing by const reference"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppTooWideScopeInitStatement",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Variable 'dbcFile' can be moved to if-init-statement"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppTooWideScope",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Variable 'network' can be moved to if-statement"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppTooWideScope",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Variable 'converter' can be moved to inner scope"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppClassNeedsConstructorBecauseOfUninitializedMember",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Class 'DataFusiorTest' should have a user-defined constructor because field 'fusior' is not initialized"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppFunctionIsNotImplemented",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Function 'void DataFusior::fuseData()' is not implemented"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "include/dataFusior.h"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 26,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 578,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#ifndef DATAFUSIOR_H\n#define DATAFUSIOR_H\n\n#include <fstream>\n#include <nlohmann/json.hpp>\n\nclass DataFusior {\npublic:\n\n    DataFusior(); // Constructor\n    ~DataFusior();\n    nlohmann::ordered_json getFusedData(); // Getter\n    void readAllData( std::string dbcFilepath, std::string mdfFilepath); // Parse data of both DBC and MDF files\n\nprivate:\n    void fuseData(); // Combine DBC and MDF data\n    std::ofstream outFile;\n    nlohmann::ordered_json jsonData;\n    nlohmann::ordered_json m_fusedData;\n};\n#endif //DATAFUSIOR_H\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUninitializedNonStaticDataMember",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Non-static data member 'fusior' is uninitialized"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUnusedIncludeDirective",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possibly unused #include directive"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "include/dbcReader.h"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 24,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 343,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#ifndef DBCREADER_H\n#define DBCREADER_H\n\n#include \"dbcppp/CApi.h\"\n#include <dbcppp/Network.h>\n#include <iostream>\n#include <memory>\n#include <fstream>\n\n\nclass dbcReader {\npublic:\n    dbcReader() = default;\n    void printCANSignals(const std::string& dbcFilePath);\n};\n\n\n\n#endif //DBCREADER_H\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUnusedIncludeDirective",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possibly unused #include directive"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "include/dbcReader.h"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 24,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 343,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#ifndef DBCREADER_H\n#define DBCREADER_H\n\n#include \"dbcppp/CApi.h\"\n#include <dbcppp/Network.h>\n#include <iostream>\n#include <memory>\n#include <fstream>\n\n\nclass dbcReader {\npublic:\n    dbcReader() = default;\n    void printCANSignals(const std::string& dbcFilePath);\n};\n\n\n\n#endif //DBCREADER_H\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUnusedIncludeDirective",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possibly unused #include directive"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "include/dbcReader.h"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 24,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 343,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#ifndef DBCREADER_H\n#define DBCREADER_H\n\n#include \"dbcppp/CApi.h\"\n#include <dbcppp/Network.h>\n#include <iostream>\n#include <memory>\n#include <fstream>\n\n\nclass dbcReader {\npublic:\n    dbcReader() = default;\n    void printCANSignals(const std::string& dbcFilePath);\n};\n\n\n\n#endif //DBCREADER_H\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUnusedIncludeDirective",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possibly unused #include directive"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppUnusedIncludeDirective",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Possibly unused #include directive"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "include/dbcReader.h"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 24,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 343,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#ifndef DBCREADER_H\n#define DBCREADER_H\n\n#include \"dbcppp/CApi.h\"\n#include <dbcppp/Network.h>\n#include <iostream>\n#include <memory>\n#include <fstream>\n\n\nclass dbcReader {\npublic:\n    dbcReader() = default;\n    void printCANSignals(const std::string& dbcFilePath);\n};\n\n\n\n#endif //DBCREADER_H\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppRedundantQualifier",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Redundant qualifier"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testMain.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 6,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 133,
+                  "snippet": {
+                    "text": "#include <gtest/gtest.h>\n\nint main(int argc, char **argv) {\n    ::testing::InitGoogleTest(&argc, argv);\n    return RUN_ALL_TESTS();\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppRedundantQualifier",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Redundant qualifier"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppRedundantQualifier",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Redundant qualifier"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppRedundantQualifier",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Redundant qualifier"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CppTemplateArgumentsCanBeDeduced",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Template arguments can be deduced"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dbcReader.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 43,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 1515,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#include \"dbcReader.h\"\n\n\nvoid dbcReader::printCANSignals(const std::string& dbcFilePath) {\n    // Read the DBC file into a string\n    std::ifstream file(dbcFilePath);\n    if (!file.is_open()) {\n        std::cerr << \"Error: Could not open DBC file.\" << std::endl;\n        return;\n    }\n    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());\n    file.close();\n\n    // Parse the DBC file\n    std::istringstream dbcStream(dbcContent);\n    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);\n    if (!network) {\n        std::cerr << \"Error: Failed to parse DBC file.\" << std::endl;\n        return;\n    }\n\n    // Iterate over all messages and print signals\n    for (const auto& message : network->Messages()) {\n        std::cout << \"Message: \" << message.Name() << \" (ID: \" << message.Id() << \")\\n\";\n        for (const auto& signal : message.Signals()) {\n            std::cout << \"  Signal: \" << signal.Name()\n                      << \", Start Bit: \" << signal.StartBit()\n                      << \", Length: \" << signal.BitSize()\n                      << \", Factor: \" << signal.Factor()\n                      << \", Offset: \" << signal.Offset()\n                      << \", Min: \" << signal.Minimum()\n                      << \", Max: \" << signal.Maximum()\n                      << \", Unit: \" << signal.Unit()\n                      << \", Comment: \" << signal.Comment()\n                      << \"\\n\";\n        }\n    }\n}\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ClangTidy",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Constructor does not initialize these fields: fusior"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/testDataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 79,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 2087,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 02.04.25.\n//\n// test/testDataFusior.cpp\n\n#include \"dataFusior.h\"\n#include <gtest/gtest.h>\n#include <fstream>\n#include <nlohmann/json.hpp>\n\n// Test fixture for DataFusior\nclass DataFusiorTest : public ::testing::Test {\nprotected:\n    DataFusior* fusior;\n\n    void SetUp() override {\n        fusior = new DataFusior();\n    }\n\n    void TearDown() override {\n        delete fusior;\n    }\n};\n\n// Test constructor\nTEST_F(DataFusiorTest, Constructor) {\n    ASSERT_TRUE(fusior != nullptr);\n}\n\n// Test readAllData method\nTEST_F(DataFusiorTest, ReadAllData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if jsonData is populated\n    nlohmann::ordered_json jsonData = fusior->getFusedData();\n    ASSERT_FALSE(jsonData[\"signals\"].empty());\n}\n\n// Test getFusedData method\nTEST_F(DataFusiorTest, GetFusedData) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Get the fused data\n    nlohmann::ordered_json fusedData = fusior->getFusedData();\n\n    // Check if the returned data is not empty\n    ASSERT_FALSE(fusedData.empty());\n}\n\n// Test destructor\nTEST_F(DataFusiorTest, Destructor) {\n    // Use stubs for file paths\n    std::string dbcFilepath = \"../dbcExamples/Vehicle.dbc\";\n    std::string mdfFilepath = \"../mf4Examples/Testing_Ehingen_19d_2019-05-04_14-35-43.mf4\";\n\n    // Call the method\n    fusior->readAllData(dbcFilepath, mdfFilepath);\n\n    // Check if the file is created and contains data\n    std::ifstream inFile(\"../mf4Examples/fusedData.json\");\n    ASSERT_TRUE(inFile.is_open());\n\n    nlohmann::ordered_json jsonData;\n    inFile >> jsonData;\n    ASSERT_FALSE(jsonData.empty());\n    inFile.close();\n}\n\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ClangTidy",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Method 'printCANSignals' can be made static"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dbcReader.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 43,
+                  "endColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 1515,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n\n#include \"dbcReader.h\"\n\n\nvoid dbcReader::printCANSignals(const std::string& dbcFilePath) {\n    // Read the DBC file into a string\n    std::ifstream file(dbcFilePath);\n    if (!file.is_open()) {\n        std::cerr << \"Error: Could not open DBC file.\" << std::endl;\n        return;\n    }\n    std::string dbcContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());\n    file.close();\n\n    // Parse the DBC file\n    std::istringstream dbcStream(dbcContent);\n    auto network = dbcppp::INetwork::LoadDBCFromIs(dbcStream);\n    if (!network) {\n        std::cerr << \"Error: Failed to parse DBC file.\" << std::endl;\n        return;\n    }\n\n    // Iterate over all messages and print signals\n    for (const auto& message : network->Messages()) {\n        std::cout << \"Message: \" << message.Name() << \" (ID: \" << message.Id() << \")\\n\";\n        for (const auto& signal : message.Signals()) {\n            std::cout << \"  Signal: \" << signal.Name()\n                      << \", Start Bit: \" << signal.StartBit()\n                      << \", Length: \" << signal.BitSize()\n                      << \", Factor: \" << signal.Factor()\n                      << \", Offset: \" << signal.Offset()\n                      << \", Min: \" << signal.Minimum()\n                      << \", Max: \" << signal.Maximum()\n                      << \", Unit: \" << signal.Unit()\n                      << \", Comment: \" << signal.Comment()\n                      << \"\\n\";\n        }\n    }\n}\n"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ClangTidy",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "The const qualified parameter 'dbcFilepath' is copied for each invocation; consider making it a reference"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "ClangTidy",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "The const qualified parameter 'mdfFilepath' is copied for each invocation; consider making it a reference"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "source/dataFusior.cpp"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "endLine": 134,
+                  "endColumn": 2,
+                  "charOffset": 0,
+                  "charLength": 4910,
+                  "snippet": {
+                    "text": "//\n// Created by eyecandevelopment on 25.02.25.\n//\n#include \"dataFusior.h\"\n\n#include <fstream>\n#include <dbcppp/Network.h>\n#include <mdflibrary/MdfChannelObserver.h>\n#include <mdflibrary/MdfReader.h>\n#include <codecvt>\n#include <locale>\n\nstd::ofstream outFile;\nnlohmann::ordered_json jsonData;\n\nDataFusior::DataFusior() {\n    // Constructor\n\n    jsonData[\"name\"] = \"FrontendBackendTemplate\";\n    jsonData[\"version\"] = \"1.0.0\";\n    jsonData[\"description\"] = \"Template for Frontend and Backend\";\n    jsonData[\"signals\"] = nlohmann::ordered_json::array();\n\n    #ifdef __linux__\n    char *homePath = std::getenv(\"HOME\");\n    std::filesystem::path dirPath = std::filesystem::path(homePath) / \".local\" / \"EyeCAN\";\n    std::filesystem::path filePath = dirPath / \"fusedData.json\";\n    if (!std::filesystem::exists(dirPath)) {\n        std::filesystem::create_directories(dirPath);\n    }\n    outFile.open(filePath);\n    if (!outFile.is_open()) {\n        std::cerr << \"Failed to open file: \" << filePath << std::endl;\n    }\n    #elif defined(WINDOWS)\n    // Windows-specific file path handling\n    #elif defined(MAC)\n    // macOS-specific file path handling\n    #endif\n}\n\n// Function to check if a string is valid UTF-8\nbool isValidUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    try {\n        std::wstring wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        return false;\n    }\n    return true;\n}\n\n// Function to sanitize a string by removing invalid UTF-8 characters\nstd::string sanitizeUTF8(const std::string& str) {\n    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;\n    std::wstring wideStr;\n    try {\n        wideStr = converter.from_bytes(str);\n    } catch (const std::range_error&) {\n        wideStr = L\"\";\n    }\n    return converter.to_bytes(wideStr);\n}\n\nvoid DataFusior::readAllData(const std::string dbcFilepath, const std::string mdfFilepath) {\n    // Read DBC file to get signal information\n    std::ifstream dbcFile(dbcFilepath);\n    if (dbcFile.is_open()) {\n        auto network = dbcppp::INetwork::LoadDBCFromIs(dbcFile);\n        if (network) {\n            for (const auto& message : network->Messages()) {\n                for (const auto& signal : message.Signals()) {\n                    std::string signalName = signal.Name();\n                    std::string signalUnit = signal.Unit();\n\n                    // Sanitize strings before adding to JSON\n                    if (!isValidUTF8(signalName)) {\n                        signalName = sanitizeUTF8(signalName);\n                    }\n                    if (!isValidUTF8(signalUnit)) {\n                        signalUnit = sanitizeUTF8(signalUnit);\n                    }\n\n                    nlohmann::ordered_json signalJson;\n                    signalJson[\"signalname\"] = signalName;\n                    signalJson[\"signalunit\"] = signalUnit;\n                    signalJson[\"signalvalues\"] = nlohmann::ordered_json::array();\n                    signalJson[\"messageID\"] = message.Id();\n\n                    // Read corresponding MDF data for this signal\n                    MdfLibrary::MdfReader reader(mdfFilepath.c_str());\n                    reader.ReadEverythingButData();\n                    MdfLibrary::MdfHeader header = reader.GetHeader();\n\n                    for (const auto& dataGroup : header.GetDataGroups()) {\n                        reader.ReadData(dataGroup);\n                        for (const auto& channelGroup : dataGroup.GetChannelGroups()) {\n                            for (const auto& channel : channelGroup.GetChannels()) {\n                                if (channel.GetName() == signal.Name()) {\n                                    MdfLibrary::MdfChannelObserver observer(dataGroup, channelGroup, channel);\n                                    for (size_t i = 0; i < channelGroup.GetNofSamples(); i++) {\n                                        double channelValue, engValue;\n                                        observer.GetChannelValue(i, channelValue);\n                                        observer.GetEngValue(i, engValue);\n                                        signalJson[\"signalvalues\"].push_back({channelValue, engValue});\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    jsonData[\"signals\"].push_back(signalJson);\n                }\n            }\n        }\n        dbcFile.close();\n    } else {\n        std::cerr << \"Failed to open DBC file\" << std::endl;\n    }\n}\n\nnlohmann::ordered_json DataFusior::getFusedData() {\n    return m_fusedData;\n}\n\nDataFusior::~DataFusior() {\n    // Destructor\n    if (outFile.is_open()) {\n        outFile << jsonData.dump(2);\n        outFile.close();\n        m_fusedData = jsonData;\n    } else {\n        std::cerr << \"Outfile is not open\" << std::endl;\n    }\n}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'httplib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 110,
+                  "startColumn": 119,
+                  "endLine": 110,
+                  "endColumn": 141,
+                  "charOffset": 3727,
+                  "charLength": 22,
+                  "snippet": {
+                    "text": "/libraries/cpp-httplib"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 21,
+                  "endLine": 58,
+                  "endColumn": 43,
+                  "charOffset": 1858,
+                  "charLength": 22,
+                  "snippet": {
+                    "text": "Found mdflib library: "
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 11,
+                  "endLine": 32,
+                  "endColumn": 29,
+                  "charOffset": 947,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "DBCPPP_INCLUDE_DIR"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 1,
+                  "endLine": 37,
+                  "endColumn": 26,
+                  "charOffset": 1107,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "# Handle dbcppp discovery"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 1,
+                  "endLine": 56,
+                  "endColumn": 26,
+                  "charOffset": 1769,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "# Handle mdflib discovery"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 24,
+                  "endLine": 38,
+                  "endColumn": 42,
+                  "charOffset": 1156,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "DBCPPP_INCLUDE_DIR"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'MDFLIB'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 11,
+                  "endLine": 51,
+                  "endColumn": 29,
+                  "charOffset": 1606,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "MDFLIB_INCLUDE_DIR"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 35,
+                  "endLine": 27,
+                  "endColumn": 41,
+                  "charOffset": 816,
+                  "charLength": 6,
+                  "snippet": {
+                    "text": "dbcppp"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 21,
+                  "endLine": 59,
+                  "endColumn": 53,
+                  "charOffset": 1920,
+                  "charLength": 32,
+                  "snippet": {
+                    "text": "Found mdflib include directory: "
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'httplib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 28,
+                  "endLine": 74,
+                  "endColumn": 50,
+                  "charOffset": 2445,
+                  "charLength": 22,
+                  "snippet": {
+                    "text": "/libraries/cpp-httplib"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 21,
+                  "endLine": 39,
+                  "endColumn": 35,
+                  "charOffset": 1196,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "Found dbcppp: "
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 29,
+                  "endLine": 29,
+                  "endColumn": 40,
+                  "charOffset": 889,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "/dbcppp/lib"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 29,
+                  "endLine": 53,
+                  "endColumn": 44,
+                  "charOffset": 1717,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "/mdflib/include"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'eyecan'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 30,
+                  "endLine": 128,
+                  "endColumn": 51,
+                  "charOffset": 4364,
+                  "charLength": 21,
+                  "snippet": {
+                    "text": "/eyecan-frontend/dist"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 48,
+                  "charOffset": 966,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "dbcppp/Attribute.h"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 5,
+                  "endLine": 38,
+                  "endColumn": 19,
+                  "charOffset": 1137,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "DBCPPP_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'MDFLIB'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 14,
+                  "endLine": 46,
+                  "endColumn": 28,
+                  "charOffset": 1450,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "MDFLIB_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 22,
+                  "endLine": 41,
+                  "endColumn": 72,
+                  "charOffset": 1258,
+                  "charLength": 50,
+                  "snippet": {
+                    "text": "dbcppp not found. Using local dbcppp source files."
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 1,
+                  "endLine": 45,
+                  "endColumn": 52,
+                  "charOffset": 1385,
+                  "charLength": 51,
+                  "snippet": {
+                    "text": "# Search for mdflib library and include directories"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 29,
+                  "endLine": 34,
+                  "endColumn": 44,
+                  "charOffset": 1055,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "/dbcppp/include"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 29,
+                  "endLine": 48,
+                  "endColumn": 40,
+                  "charOffset": 1548,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "/mdflib/lib"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'MDFLIB'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 24,
+                  "endLine": 57,
+                  "endColumn": 42,
+                  "charOffset": 1818,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "MDFLIB_INCLUDE_DIR"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 27,
+                  "charOffset": 1319,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "DBCPPP_INCLUDE_DIR"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflib'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 26,
+                  "endLine": 61,
+                  "endColumn": 77,
+                  "charOffset": 2008,
+                  "charLength": 51,
+                  "snippet": {
+                    "text": "mdflib not found! Ensure it is installed correctly."
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 13,
+                  "endLine": 111,
+                  "endColumn": 27,
+                  "charOffset": 3791,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "DBCPPP_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'MDFLIB'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 115,
+                  "startColumn": 13,
+                  "endLine": 115,
+                  "endColumn": 27,
+                  "charOffset": 3910,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "MDFLIB_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'MDFLIB'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 5,
+                  "endLine": 57,
+                  "endColumn": 19,
+                  "charOffset": 1799,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "MDFLIB_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 1,
+                  "endLine": 26,
+                  "endColumn": 52,
+                  "charOffset": 730,
+                  "charLength": 51,
+                  "snippet": {
+                    "text": "# Search for dbcppp library and include directories"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'dbcppp'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 48,
+                  "endLine": 42,
+                  "endColumn": 63,
+                  "charOffset": 1358,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "/dbcppp/include"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'DBCPPP'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 14,
+                  "endLine": 27,
+                  "endColumn": 28,
+                  "charOffset": 795,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "DBCPPP_LIBRARY"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SpellCheckingInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Typo: In word 'mdflibrary'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "CMakeLists.txt"
+                },
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 35,
+                  "endLine": 46,
+                  "endColumn": 45,
+                  "charOffset": 1471,
+                  "charLength": 10,
+                  "snippet": {
+                    "text": "mdflibrary"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
