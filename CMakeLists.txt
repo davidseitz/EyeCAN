@@ -13,11 +13,7 @@ if (WIN32)
     set(CMAKE_CXX_COMPILER "C:/Program Files/JetBrains/CLion 2024.3.1.1/bin/mingw/bin/g++.exe")
     set(INSTALL_PREFIX "C:/Users/$ENV{USERNAME}/local")  # Adjust this for your Windows path
 elseif (UNIX)
-    target_link_directories(EyeCAN PRIVATE
-            /usr/lib/gcc/x86_64-linux-gnu/9
-            /lib/x86_64-linux-gnu
-    )
-    set(INSTALL_PREFIX "$ENV{HOME}/.local")
+
 endif()
 
 # Replace with the actual path where Boost is installed
@@ -87,19 +83,46 @@ if (WIN32)
     target_link_libraries(EyeCAN PRIVATE ws2_32)
 endif()
 
+if (UNIX)
+    target_link_libraries(EyeCAN PRIVATE pthread)
+endif()
+
 # Enable testing if requested
 option(ENABLE_TESTS "Enable building tests" ON)
 if (ENABLE_TESTS)
     enable_testing()
-    set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution")
-    set(GTEST_INCLUDE_DIRS "${GTEST_ROOT}/include")
-    set(GTEST_LIBRARIES "${GTEST_ROOT}/lib/libgtest.a" "${GTEST_ROOT}/lib/libgtest_main.a")
+    if(UNIX)
+        find_package(GTest REQUIRED)
+    else()
+        set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution")
+        set(GTEST_INCLUDE_DIRS "${GTEST_ROOT}/include")
+        set(GTEST_LIBRARIES "${GTEST_ROOT}/lib/libgtest.a" "${GTEST_ROOT}/lib/libgtest_main.a")
+    endif ()
 
     include_directories(${GTEST_INCLUDE_DIRS})
     file(GLOB TEST_FILES ${CMAKE_SOURCE_DIR}/test/*.cpp)
     add_executable(EyeCAN_tests ${TEST_FILES} ${SOURCE_FILES} ${HEADER_FILES})
-    target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
+    if (ws32)
+        target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} ws2_32)
+    endif ()
+    if(UNIX)
+        target_include_directories(EyeCAN_tests PUBLIC "include" ${DBCPPP_INCLUDE_DIR} ${MDFLIB_INCLUDE_DIR} )
+        target_include_directories(EyeCAN_tests PRIVATE ${CMAKE_SOURCE_DIR}/libraries/json/include ${CMAKE_SOURCE_DIR}/libraries/cpp-httplib ${CMAKE_SOURCE_DIR}/include)
+        if (DBCPPP_LIBRARY)
+            target_link_libraries(EyeCAN_tests PRIVATE ${DBCPPP_LIBRARY})
+        endif()
+
+        if (MDFLIB_LIBRARY)
+            target_link_libraries(EyeCAN_tests PRIVATE ${MDFLIB_LIBRARY})
+        endif()
+
+        target_link_libraries(EyeCAN_tests PRIVATE ${GTEST_LIBRARIES} pthread)
+    endif ()
     add_test(NAME APITest COMMAND EyeCAN_tests)
     include(GoogleTest)
     gtest_discover_tests(EyeCAN_tests)
 endif()
+
+# Copy static files to debug folder
+file(COPY ${CMAKE_SOURCE_DIR}/static DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/eyecan-frontend/dist DESTINATION ${CMAKE_BINARY_DIR})
