@@ -1,10 +1,8 @@
-import Dashboard from "@/components/dashboard/Dashboard.tsx";
+import DashboardLayoutGrid from "@/components/dashboard/DashboardLayoutGrid.tsx";
 
 function App() {
 
-  return (
-    <Dashboard/>
-  )
+  return (<DashboardLayoutGrid/>)
 }
 
 export default App
