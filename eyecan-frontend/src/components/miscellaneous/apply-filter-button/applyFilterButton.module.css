@@ -1,0 +1,19 @@
+.applyFilterButton {
+    font-size: 8px;
+    font-weight: bold;
+    color: #808080;
+    padding: 1px 8px;
+    border: 1px solid #808080;
+    border-radius: 3px;
+}
+
+.applyFilterButton:hover {
+    cursor: pointer;
+    background-color: #808080;
+    color: white;
+}
+
+.applyFilterButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
