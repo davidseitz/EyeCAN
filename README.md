@@ -1,8 +1,9 @@
 # Pre-requisites
 
-**Before building how to get the submodule libaries:**
-1. git submodule init
-2. git submodule update
+**Boost installed on system**
+**GTest installed on system**
+**make sure all submodules are intialized correctly**
+
 
 # How to start server
 
@@ -13,5 +14,5 @@
 5. Open browser and go to localhost:5255/api/v1/ -> Api definition
 
 # How to build and setup project
-On Unix: ./setup.h
+On Unix: ./setup.h (tested on Ubuntu)
 Problem: project not finished currently
