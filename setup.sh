@@ -7,7 +7,7 @@ SVPWD=${PWD}
 cd libraries/dbcppp
 mkdir build/
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCMAKE_BUILD_TYPE=Release ..
+cmake -Dbuild_tools=OFF -Dbuild_examples=OFF -Dbuild_tests=OFF -Dbuild_kcd=OFF -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCMAKE_BUILD_TYPE=Release .. 
 make -j
 make RunTests
 make install
@@ -59,3 +59,12 @@ make install
 cd ${SVPWD}
 
 echo "You should now be able to build the project!"
+
+mkdir build
+cd build
+cmake -DCMAKE_PREFIX_PATH=$HOME/.local -DCMAKE_BUILD_TYPE=Release ..
+make -j$(nproc)
+make install
+make RunTests
+
+
