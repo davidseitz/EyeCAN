@@ -14,5 +14,5 @@
 5. Open browser and go to localhost:5255/api/v1/ -> Api definition
 
 # How to build and setup project
-On Unix: ./setup.h (tested on Ubuntu)
+On Unix: ./setup.h (tested on Ubuntu, you might need to disable the KCD option in the dbcppp submodule)
 Problem: project not finished currently
